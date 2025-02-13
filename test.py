@@ -1,0 +1,1 @@
+# Testitiedosto versiohallinnan toiminnan varmistamiseksi
