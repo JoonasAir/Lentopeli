@@ -23,9 +23,10 @@ import multiprocessing
 def criminal_timer(state:bool, criminal_db:dict, time:int):
     while state.value:
         sleep(time)
-        criminal_db["Airport"] += 1
-        # Tulostetaan jokaisen muutoksen jälkeen rikollisen edistyminen
-        print("\nTulostus criminal_timer() -funktion loopista: Rikollisen edistyminen: ", criminal_db["Airport"])
+        if state.value:
+            criminal_db["Airport"] += 1
+            # Tulostetaan jokaisen muutoksen jälkeen rikollisen edistyminen
+            print("\nTulostus criminal_timer() -funktion loopista: Rikollisen edistyminen: ", criminal_db["Airport"])
 
 # Käyttäessämme multiprocessing-kirjastoa, täytyy se tehdä main-blockin sisältä, en tiedä miksi, selvitän tämän
 if __name__ == "__main__":
@@ -56,8 +57,17 @@ if __name__ == "__main__":
 
     # Funktion loopin boolean-arvon vaihto --> False, jotta looppi ei jää "ikuiseksi"
     state.value = False
-    # Prosessin pysäytys
+    
+    # Pakotetaan prosessin lopetus multiprocessing-kirjaston terminate():lla, koska kyseisen prosessin ajamassa criminal_timer()-funktiossa 
+    # käytetään sleep-funktiota. Ilman prosessin lopetuksen pakotusta, ns. prosessin rauhallisella lopetuksella, join():illa, 
+    # prosessin funktio ajetaan loppuun ennen prosessin sulkemista, eli jos kyseinen prosessi lopetettaisiin join():illa, 
+    # pelaaja voisi joutua odottamaan jopa minuutin niin, ettei voi tehdä pelissä mitään. 
+    # terminate() sulkee prosessin välittömästi
+    # join() odottaa prosessin päättymisen, jonka jälkeen vasta jatketaan seuraavalle riville 
+    # ajamme myös joinin, jolla varmistamme että taustaprosessi sulkeutui 
+    ProcessCriminalTimer.terminate()
     ProcessCriminalTimer.join()
+    
     # Sanakirjan "Airport"-avaimen arvon tulostus, jolla varmistetaan taustaprosessina pyörineen funktion toimivuus
     print("\nTulostus lopussa: Rikollisen edistyminen: ", criminal_db["Airport"])
 
@@ -66,3 +76,4 @@ if __name__ == "__main__":
     # Pelin lopussa pysäytetään funktion looppi ja suljetaan taustaprosessi 
 
     # Täytyy miettiä yhdessä, että kun saavumme lentokentälle, jossa rikollinen on, voiko hän enää lentää seuraavalle kentälle sillä aikaa, kun käymme kysymässä turvallisuuspäälliköltä rikollisesta 
+
