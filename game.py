@@ -1,7 +1,13 @@
+from difficulty import difficulty
+from time import sleep
+import multiprocessing
+from criminal_timer_multiprocessing import criminal_timer
 
 
 # aloitusvalikko
+
 #   1. aloita uusi peli
+
 #   2. highscores 
 #           (Tulostaa top 10 pisteet käyttäjä voi valita vaikeustason 
 #           jonka parhaat tulokset tulostetaan. Pelinimi voi esiintyä 
@@ -9,18 +15,18 @@
 #   3. harjoittele pelin tehtäviä
 #   4. sulje peli
 #   5. ?
-
-# uusi_peli (tiedot tallennetaan tietokantaan)
+print(1)
+# uusi peli (tiedot tallennetaan tietokantaan)
 #   - pelinimi
-#   - pelin vaikeustason valinta, vaikeustaso määrää:
-#       - pelaajan rahat
-#       - aika löytää rikollinen
-#       - kuinka monta virhettä sallitaan
-#       - randomtoiminnoista saatavien hyötyjen (silminnäkijä WC:ssä) 
-#         mahdollisuus kasvaa helpolla ja pienenee vaikealla vaikeustasolla
-#       - rikollinen on X lentoasemaa pelaajaa edellä pelin alussa
+screen_name = str(input("Syötä pelinimesi: "))
+print(2)
+#    - pelin vaikeustason valinta
+game_money, game_time, mistakes_allowed, random_luck, criminal_head_start, criminal_time = difficulty()
+print(3)
 #   - kysymysten tyypin valinta (matikka, fysiikka, yleiset tms.)?
+
 #   - arvotaan pelin aloituspiste (iso lentokenttä euroopasta)
+ 
  
 # pelin taustatarina (Y/N)
 # (pelaajalle hänen halutessaan tulostetaan pelin taustatarina)
@@ -28,6 +34,26 @@
 
 # pelaaja on saanut vihjeen että rikollinen on ollut lentokentällä X
 # peli alkaa kyseiseltä lentokentältä
+if __name__ == "__main__":
+    print(4)
+# En tiedä mitä tarkalleen tekee mutta selvitän
+    try:
+        manager = multiprocessing.Manager()
+    except Exception as e:
+        print(f"An error occurred: {e}")
+    print(5)
+    criminal_timer_state = manager.Value('b', True)
+# Luodaan rikolliselle sanakirja, johon {criminal_time} välein lisätään arvoon +1 
+# (TÄMÄ POISTETAAN JA FUNKTIOON LISÄTÄÄN TIETOKANTAA MUOKKAAVA KOMENTO)
+    print(6)
+    criminal_db = manager.dict({"Progress": criminal_head_start})
+# Prosessin määrittely
+    print(7)
+    ProcessCriminalTimer = multiprocessing.Process(target=criminal_timer, args=(criminal_timer_state, criminal_db, criminal_time))
+# Prosessin käynnistys
+    print(8)
+    ProcessCriminalTimer.start()
+    print(9)
 
 # pelaajalle aukeaa lentokentällä valikko, mitä hän voi tehdä:
 #   1. käy puhumassa turvallisuuspäällikön kanssa 
@@ -72,7 +98,21 @@
 #   2. rikollinen pääsee turmelemaan X määrän lentoasemia
 #   3. aika loppuu
 #   4. lennät harhaan tai joudut huijatuksi liian monta kertaa
- 
+
+
+
+# Muutetaan criminal_timer -funktion loopin arvo --> False, jotta looppi ei jää taustalle pyörimään
+    criminal_timer_state.value = False
+    print(10)
+# Pakotetaan taustaprosessin lopetus, sillä prosessin loopissa sleep-funktio 
+# (muuten pelaaja joutuu odottamaan tässä kohtaa niin pitkään, että rikollinen lentää seuraavalle lentoasemalle)
+    ProcessCriminalTimer.terminate()
+    print(11)
+# Varmistetaan, että taustaprosessi on päättynyt
+    ProcessCriminalTimer.join()
+    print(12)
+
+
 # Pelin päättyessä: 
 #   1. pisteet lasketaan
 #   2. tulostuu pelatun pelin tilastot (pelinimi, kuinka mones pelinimellä pelattu peli, vaikeustaso, pisteet, kulunut aika, rahat alussa, kulutetut rahat, lentojen määrä, harhalentojen määrä, junamatkojen määrä, harhajunamatkojen määrä, harhajunamatkojen kilometrit, huijatuksi joutumisen kerrat)

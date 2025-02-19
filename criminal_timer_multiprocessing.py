@@ -20,13 +20,16 @@ import multiprocessing
 #       funktion while-loopille boolean-arvo, jonka avulla pelin lopussa saadaan pysäytettyä looppi
 #       sanakirja, johon päivitetään rikollisen edistyminen pelissä. 
 #       sleep-funktiolle sekuntit integerinä, jolla määritämme, kuinka kauan rikollisella kestää tehdä tuhotyöt ja lentää seuraavaan paikkaan
-def criminal_timer(state:bool, criminal_db:dict, time:int):
-    while state.value:
+def criminal_timer(criminal_timer_state:bool, criminal_db:dict, time:int):
+    while criminal_timer_state.value:
         sleep(time)
-        if state.value:
+        if criminal_timer_state.value:
             criminal_db["Airport"] += 1
             # Tulostetaan jokaisen muutoksen jälkeen rikollisen edistyminen
             print("\nTulostus criminal_timer() -funktion loopista: Rikollisen edistyminen: ", criminal_db["Airport"])
+def criminal_timer_multiprocess():
+    pass
+
 
 # Käyttäessämme multiprocessing-kirjastoa, täytyy se tehdä main-blockin sisältä, en tiedä miksi, selvitän tämän
 if __name__ == "__main__":
@@ -34,12 +37,12 @@ if __name__ == "__main__":
     criminal_time = int(5)
     # En tiedä mitä tarkalleen tekee mutta selvitän
     manager = multiprocessing.Manager()
-    # Funktion loopin boolean-arvo, selvitän vielä miksi täytyy määrittää näin, eikä voida käyttää helpompaa "state = True" -tapaa
-    state = manager.Value('b', True)
+    # Funktion loopin boolean-arvo, selvitän vielä miksi täytyy määrittää näin, eikä voida käyttää helpompaa "criminal_timer_state = True" -tapaa
+    criminal_timer_state = manager.Value('b', True)
     # Luodaan rikolliselle sanakirja (pelissä käytetään tietokantaa), johon muutetaan taustalla ajettavan funktion avulla rikollisen edistyminen 
-    criminal_db = manager.dict({"Airport": 3})
+    criminal_db = manager.dict({"Progress": 3})
     # Prosessin määrittely
-    ProcessCriminalTimer = multiprocessing.Process(target=criminal_timer, args=(state, criminal_db, criminal_time))
+    ProcessCriminalTimer = multiprocessing.Process(target=criminal_timer, args=(criminal_timer_state, criminal_db, criminal_time))
     # Prosessin käynnistys
     ProcessCriminalTimer.start()
 
@@ -56,7 +59,7 @@ if __name__ == "__main__":
     
 
     # Funktion loopin boolean-arvon vaihto --> False, jotta looppi ei jää "ikuiseksi"
-    state.value = False
+    criminal_timer_state.value = False
     
     # Pakotetaan prosessin lopetus multiprocessing-kirjaston terminate():lla, koska kyseisen prosessin ajamassa criminal_timer()-funktiossa 
     # käytetään sleep-funktiota. Ilman prosessin lopetuksen pakotusta, ns. prosessin rauhallisella lopetuksella, join():illa, 
