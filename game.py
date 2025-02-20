@@ -3,7 +3,13 @@ from time import sleep
 import multiprocessing
 from criminal_timer_multiprocessing import criminal_timer
 
-
+# Käyttäessämme multiprocessing-kirjastoa kirjoitamme koodin main blockkiin, sillä käytämme multiprocessing-kirjastoa. 
+# (Importit ja funktioiden määritykset tehdään ennen main blockia)
+# Aina uuden multiprocessing-prosessin käynnistyessä tämä uusi prosessi suorittaa koodin ensimmäisestä rivistä lähtien, 
+# jotta saa tarvittavat importit ja funktiot muistiinsa. Jotta vältymme ylimääräisiltä, esim. tulostuksilta, 
+# kirjoitamme print-funktion main-blockin sisään ja näin tämä tulostus tapahtuu vain pääprosessin toimesta. 
+# (multiprocessing-prosessin __name__ on "__mp_main__") 
+if __name__ == "__main__":
 # aloitusvalikko
 
 #   1. aloita uusi peli
@@ -14,15 +20,13 @@ from criminal_timer_multiprocessing import criminal_timer
 #           vain kerran tulostetussa listassa.)        
 #   3. harjoittele pelin tehtäviä
 #   4. sulje peli
-#   5. ?
-print(1)
+
+
 # uusi peli (tiedot tallennetaan tietokantaan)
 #   - pelinimi
-screen_name = str(input("Syötä pelinimesi: "))
-print(2)
+    screen_name = str(input("Syötä pelinimesi: "))
 #    - pelin vaikeustason valinta
-game_money, game_time, mistakes_allowed, random_luck, criminal_head_start, criminal_time = difficulty()
-print(3)
+    game_money, game_time, mistakes_allowed, random_luck, criminal_head_start, criminal_time = difficulty()
 #   - kysymysten tyypin valinta (matikka, fysiikka, yleiset tms.)?
 
 #   - arvotaan pelin aloituspiste (iso lentokenttä euroopasta)
@@ -34,26 +38,17 @@ print(3)
 
 # pelaaja on saanut vihjeen että rikollinen on ollut lentokentällä X
 # peli alkaa kyseiseltä lentokentältä
-if __name__ == "__main__":
-    print(4)
-# En tiedä mitä tarkalleen tekee mutta selvitän
-    try:
-        manager = multiprocessing.Manager()
-    except Exception as e:
-        print(f"An error occurred: {e}")
-    print(5)
+
+
+    # Managerin avulla saamme tiedon liikkumaan prosessien välillä (kun pääohjelmasta muutamme criminal_timer_state -> False niin taustaprosessin looppi sulkeutuu)
+    manager = multiprocessing.Manager()
+    # Funktion loopin boolean-arvo. Edellisessä kommentissa kerrottu miksei voida käyttää helpompaa "criminal_timer_state = True" -tapaa tämän määrittämiseen
     criminal_timer_state = manager.Value('b', True)
-# Luodaan rikolliselle sanakirja, johon {criminal_time} välein lisätään arvoon +1 
-# (TÄMÄ POISTETAAN JA FUNKTIOON LISÄTÄÄN TIETOKANTAA MUOKKAAVA KOMENTO)
-    print(6)
-    criminal_db = manager.dict({"Progress": criminal_head_start})
-# Prosessin määrittely
-    print(7)
-    ProcessCriminalTimer = multiprocessing.Process(target=criminal_timer, args=(criminal_timer_state, criminal_db, criminal_time))
-# Prosessin käynnistys
-    print(8)
+    # Prosessin määrittely
+    ProcessCriminalTimer = multiprocessing.Process(target=criminal_timer, args=(criminal_timer_state, criminal_time))
+    # Prosessin käynnistys
     ProcessCriminalTimer.start()
-    print(9)
+
 
 # pelaajalle aukeaa lentokentällä valikko, mitä hän voi tehdä:
 #   1. käy puhumassa turvallisuuspäällikön kanssa 
@@ -101,16 +96,13 @@ if __name__ == "__main__":
 
 
 
-# Muutetaan criminal_timer -funktion loopin arvo --> False, jotta looppi ei jää taustalle pyörimään
+    # Muutetaan criminal_timer -funktion loopin arvo --> False, jotta looppi ei jää taustalle pyörimään
     criminal_timer_state.value = False
-    print(10)
-# Pakotetaan taustaprosessin lopetus, sillä prosessin loopissa sleep-funktio 
-# (muuten pelaaja joutuu odottamaan tässä kohtaa niin pitkään, että rikollinen lentää seuraavalle lentoasemalle)
+    # Pakotetaan taustaprosessin lopetus, sillä prosessin loopissa sleep-funktio 
+    # (muuten pelaaja joutuu odottamaan tässä kohtaa niin pitkään, että rikollinen lentää seuraavalle lentoasemalle)
     ProcessCriminalTimer.terminate()
-    print(11)
-# Varmistetaan, että taustaprosessi on päättynyt
+    # Varmistetaan, että taustaprosessi on päättynyt
     ProcessCriminalTimer.join()
-    print(12)
 
 
 # Pelin päättyessä: 
