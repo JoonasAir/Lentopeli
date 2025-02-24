@@ -1,5 +1,4 @@
 from difficulty import difficulty
-from time import sleep
 import multiprocessing
 from criminal_timer_multiprocessing import criminal_timer
 
@@ -23,10 +22,13 @@ if __name__ == "__main__":
 
 
 # uusi peli (tiedot tallennetaan tietokantaan)
+
 #   - pelinimi
     screen_name = str(input("Syötä pelinimesi: "))
+    
 #    - pelin vaikeustason valinta
-    game_money, game_time, mistakes_allowed, random_luck, criminal_head_start, criminal_time = difficulty()
+    game_parameters = difficulty() # sanakirjan avaimet: 'game_money', 'game_time', 'mistakes_allowed', 'random_luck', 'criminal_head_start', 'criminal_time'. Arvot selitetty @ difficulty.py
+    
 #   - kysymysten tyypin valinta (matikka, fysiikka, yleiset tms.)?
 
 #   - arvotaan pelin aloituspiste (iso lentokenttä euroopasta)
@@ -45,7 +47,7 @@ if __name__ == "__main__":
     # Funktion loopin boolean-arvo. Edellisessä kommentissa kerrottu miksei voida käyttää helpompaa "criminal_timer_state = True" -tapaa tämän määrittämiseen
     criminal_timer_state = manager.Value('b', True)
     # Prosessin määrittely
-    ProcessCriminalTimer = multiprocessing.Process(target=criminal_timer, args=(criminal_timer_state, criminal_time))
+    ProcessCriminalTimer = multiprocessing.Process(target=criminal_timer, args=(criminal_timer_state, game_parameters['criminal_time']))
     # Prosessin käynnistys
     ProcessCriminalTimer.start()
 
