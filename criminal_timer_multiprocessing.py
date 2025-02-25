@@ -7,11 +7,16 @@ import multiprocessing
 #       funktion while-loopille boolean-muuttuja, jonka avulla pelin lopussa saadaan pysäytettyä looppi
 #       sleep-funktiolle sekuntit, jolla määritämme, kuinka kauan rikollinen viipyy lentoasemalla ennen kun lentää seuraavaan
 # Funktio lisää tietokannan criminal-tauluun X ajan välein uuden lentoaseman
-def criminal_timer(criminal_timer_state:bool, time:int):
+
+
+####################### MUOKKAUS KESKEN #############################
+def criminal_timer(criminal_timer_state:bool, time:int, criminal_locations:list):
     while criminal_timer_state.value:
         sleep(time)
         if criminal_timer_state.value:
-            pass # TIETOKANNAN CRIMINAL-TAULUN MUOKKAUSKOMENTO
+            ICAO = 0 # TIETOKANNAN AIRPORT-TAULUSTA ICAO-KOODI
+            criminal_locations.append(ICAO)
+    return criminal_locations
 
 
 # Käyttäessämme multiprocessing-kirjastoa kirjoitamme koodin main blockkiin 
