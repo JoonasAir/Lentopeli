@@ -13,12 +13,12 @@
 def difficulty():
     state = True
     while state:
-        difficulty_input = str(input("Valitse pelin vaikeustaso. 'H' = Helppo, 'N' = Normaali, 'V' = Vaikea: "))
+        difficulty_input = str(input("Choose difficulty of the game: 'E' = Easy, 'N' = Normal, 'H' = Hard"))
 
         # Python tulkitsee pienet ja isot kirjaimet eri merkkeinä, esim. "h" == "H" palauttaa arvon False vaikka kirjain on sama
         # Tästä syystä käytämme if-lausekkeen ehdossa käyttäjän syötteessä .upper() -metodia ja vertaamme tätä isoon kirjaimeen
         # .upper() muuttaa merkkijonon pienet kirjaimet isoiksi 
-        if difficulty_input.upper() == "H":     # Helppo vaikeustaso
+        if difficulty_input.upper() == "E":     # Helppo vaikeustaso
             game_money = 5000       # rahat alussa
             game_time = 60*5        # peliaika sekunteina
             mistakes_allowed = 3    # kun virhemäärät ylittävät tämän, peli päättyy (agentti vaihtuu)
@@ -26,6 +26,7 @@ def difficulty():
             criminal_head_start = 2 # rikollinen on tämän verran edellä pelin alussa
             criminal_time = 60      # tämän ajan välein rikollinen lentää seuraavalle lentokentälle
             state = False           # pysäyttää tämän funktion loopin
+            difficulty = "Easy"     # pelin vaikeustaso, tietovisakysymysten vaikeustason määräämiseen
 
         elif difficulty_input.upper() == "N":   # Normaali vaikeustaso
             game_money = 3500       # rahat alussa
@@ -35,8 +36,10 @@ def difficulty():
             criminal_head_start = 3 # rikollinen on tämän verran edellä pelin alussa
             criminal_time = 45      # tämän ajan välein rikollinen lentää seuraavalle lentokentälle
             state = False           # pysäyttää tämän funktion loopin
+            difficulty = "Normal"   # pelin vaikeustaso, tietovisakysymysten vaikeustason määräämiseen
 
-        elif difficulty_input.upper() == "V":   # Vaikea vaikeustaso
+
+        elif difficulty_input.upper() == "H":   # Vaikea vaikeustaso
             game_money = 2500       # rahat alussa
             game_time = 60*3        # peliaika sekunteina
             mistakes_allowed = 0    # kun virhemäärät ylittävät tämän, peli päättyy (agentti vaihtuu)
@@ -44,6 +47,8 @@ def difficulty():
             criminal_head_start = 4 # rikollinen on tämän verran edellä pelin alussa
             criminal_time = 30      # tämän ajan välein rikollinen lentää seuraavalle lentokentälle
             state = False           # pysäyttää tämän funktion loopin
+            difficulty = "Hard"     # pelin vaikeustaso, tietovisakysymysten vaikeustason määräämiseen
+
 
         elif difficulty_input.upper() == "X":   # Tämä "X" on tarkoitettu pelin testaamiseen, tämä poistetaan oikeasta pelistä
             game_money = 5000       # Voit muuttaa arvoja haluamallasi tavalla testatessasi pelin toimintaa
@@ -53,6 +58,7 @@ def difficulty():
             criminal_head_start = 2 
             criminal_time = 60      
             state = False
+            difficulty = "Easy"     # pelin vaikeustaso, tietovisakysymysten vaikeustason määräämiseen
 
         else:
             print("Annoit virheellisen syötteen, koita jotain seuraavista: 'H', 'T', 'V'")
@@ -64,7 +70,8 @@ def difficulty():
         'mistakes_allowed':mistakes_allowed, 
         'random_luck':random_luck, 
         'criminal_head_start':criminal_head_start, 
-        'criminal_time':criminal_time}
+        'criminal_time':criminal_time,
+        'difficulty':difficulty}
     
     return parameters
 
