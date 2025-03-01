@@ -1,52 +1,64 @@
 from time import sleep
-from difficulty import difficulty
+from game_setup import game_setup
 import multiprocessing
+import mysql.connector
+
+# Setting up a connection to our database
+connection = mysql.connector.connect(
+    collation = "utf8mb4_general_ci",
+    host = '127.0.0.1',
+    port = 3306,
+    database = "flight_game",
+    user = "python",
+    password = "koulu123",
+    autocommit = True
+)
 
 
-# Määritämme tässä funktion, jolle annetaan argumenteiksi: 
-#       funktion while-loopille boolean-muuttuja, jonka avulla pelin lopussa saadaan pysäytettyä looppi
-#       sleep-funktiolle sekuntit, jolla määritämme, kuinka kauan rikollinen viipyy lentoasemalla ennen kun lentää seuraavaan
-# Funktio lisää tietokannan criminal-tauluun X ajan välein uuden lentoaseman
-
-
-####################### MUOKKAUS KESKEN #############################
-def criminal_timer(criminal_timer_state:bool, time:int, criminal_locations:list):
+# Here we define a function that adds a new airport to the criminal table in the database at intervals of X time
+# Thwe function takes the following arguments:
+#       1. criminal_timer_state - a boolean variable for the function's while-loop, which allows us to stop the loop at the end of the game
+#       2. time - seconds for the sleep function, which determines how long the criminal stays at the airport before flying to the next one
+def criminal_new_location():
+    sql = "INSERT INTO criminal (location) SELECT ident FROM airport WHERE continent = 'EU' AND type = 'large_airport' AND ident NOT IN (SELECT location FROM criminal) ORDER BY RAND() LIMIT 1;"
+    cursor = connection.cursor()
+    cursor.execute(sql)
+    
+def criminal_timer(criminal_timer_state: bool, time: int):
+#    sql = "INSERT INTO criminal (location) SELECT ident FROM airport WHERE continent = 'EU' AND type = 'large_airport' AND ident NOT IN (SELECT location FROM criminal) ORDER BY RAND() LIMIT 1;"
+#    cursor = connection.cursor()
     while criminal_timer_state.value:
         sleep(time)
         if criminal_timer_state.value:
-            ICAO = 0 # TIETOKANNAN AIRPORT-TAULUSTA ICAO-KOODI
-            criminal_locations.append(ICAO)
-    return criminal_locations
+            criminal_new_location()
+#            cursor.execute(sql)
 
 
-# Käyttäessämme multiprocessing-kirjastoa kirjoitamme koodin main blockkiin 
-# (poislukien Importit ja funktioiden määritykset, jotka tehdään ennen main blockia)
-# Aina uuden multiprocessing-prosessin käynnistyessä tämä uusi prosessi suorittaa
-# tiedostomme ensimmäisestä rivistä lähtien, jotta saa tarvittavat importit ja funktiot muistiinsa. 
-# Jotta vältymme sotkulta (siltä, että kaikki rivit suoritetaan kaikkien prosessien toimesta)
-# kirjoitamme main-blockin sisään koodin suoritukset ja 
-# ennen main-blockkia vain importit ja funktioiden määritykset
-# multiprocessing-prosessin __name__ on "__mp_main__" 
-# tästä syystä seuraavaa if-lauseketta (eli main blockia) ei suoriteta multiprosessien toimesta
+
+# When using the multiprocessing library, we write the code inside the main block
+#   (excluding imports and function definitions, which are done before the main block).
+# Every time a new multiprocessing process starts, this new process executes,
+#   our file from the first line to get the necessary variables, imports and functions into it's memory.
+# To avoid confusion (so that all lines are not executed by all processes),
+#   we write the code execution inside the main block and
+#   only imports and function definitions before the main block.
+# The __name__ of the multiprocessing process is "__mp_main__"
+#   for this reason, the following if statement (main block) is not executed by the subprocesses.
 
 if __name__ == "__main__": # Main block
-    game_parameters = difficulty() # Pelin määrittely
+    game_dict = game_setup() # Setting up game parameters (screen_name, difficulty)
 
-    # Managerin avulla saamme tiedon liikkumaan prosessien välillä. Kun pääohjelmasta muutamme criminal_timer_state.value -> False niin taustaprosessin looppi sulkeutuu
-    manager = multiprocessing.Manager()
-    # Funktion loopin boolean-arvo. Edellisessä kommentissa kerrottu miksei voida käyttää helpompaa "criminal_timer_state = True" -tapaa tämän määrittämiseen
-    criminal_timer_state = manager.Value('b', True)
-    # Prosessin määrittely
-    ProcessCriminalTimer = multiprocessing.Process(target=criminal_timer, args=(criminal_timer_state, game_parameters['criminal_time']))
-    # Prosessin käynnistys
+    manager = multiprocessing.Manager() # Manager allows multiple processeses to modify a variable
+    criminal_timer_state = manager.Value('b', True) # Shared boolean to control the loop. With this the main process can stop the loop that is ran by the other process
+    # Defining and starting new process for criminal_timer function
+    ProcessCriminalTimer = multiprocessing.Process(target=criminal_timer, args=(criminal_timer_state, game_dict['criminal_time']))
     ProcessCriminalTimer.start()
 
 
+    state = True
+    while state:
+        state = input(": ")
 
-    # Tässä kohdassa voimme ajaa mitä vain koodia samaan aikaan, 
-    # kun criminal_timer() -funktion looppi pyörii taustaprosessina 
-    print(game_parameters)
-    print(game_parameters['criminal_time'])
 
 
 
@@ -66,4 +78,4 @@ if __name__ == "__main__": # Main block
     
 
     # Pelin alkaessa siis määritetään criminal_timer() -funktio ajettavaksi kirjaston avulla taustaprosessina
-    # Pelin lopussa pysäytetään funktion looppi ja suljetaan taustaprosessi 
+    # Pelin lopussa pysäytetään funktion looppi ja suljetaan taustaprosessi

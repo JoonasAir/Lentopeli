@@ -1,6 +1,20 @@
-from difficulty import difficulty
+from encodings.punycode import T
+from criminal_headstart import criminal_headstart
+from game_setup import game_setup
 import multiprocessing
 from criminal_timer_multiprocessing import criminal_timer
+import mysql.connector
+
+
+connection = mysql.connector.connect(
+    collation = "utf8mb4_general_ci",
+    host = '127.0.0.1',
+    port = 3306,
+    database = "flight_game",
+    user = "python",
+    password = "koulu123",
+    autocommit = True
+)
 
 # Käyttäessämme multiprocessing-kirjastoa kirjoitamme koodin main blockkiin, sillä käytämme multiprocessing-kirjastoa. 
 # (Importit ja funktioiden määritykset tehdään ennen main blockia)
@@ -10,11 +24,9 @@ from criminal_timer_multiprocessing import criminal_timer
 # (multiprocessing-prosessin __name__ on "__mp_main__") 
 if __name__ == "__main__":
 # aloitusvalikko
-
 #   1. aloita uusi peli
-
 #   2. highscores 
-#           (Tulostaa top 10 pisteet käyttäjä voi valita vaikeustason 
+#           (Tulostaa top 10 pisteet, käyttäjä voi valita vaikeustason 
 #           jonka parhaat tulokset tulostetaan. Pelinimi voi esiintyä 
 #           vain kerran tulostetussa listassa.)        
 #   3. harjoittele pelin tehtäviä
@@ -23,11 +35,9 @@ if __name__ == "__main__":
 
 # uusi peli (tiedot tallennetaan tietokantaan)
 
-#   - pelinimi
-    screen_name = str(input("Syötä pelinimesi: "))
-    
-#    - pelin vaikeustason valinta
-    game_parameters = difficulty() # sanakirjan avaimet: 'game_money', 'game_time', 'mistakes_allowed', 'random_luck', 'criminal_head_start', 'criminal_time'. Arvot selitetty @ difficulty.py
+#    - pelinimen ja vaikeustason valinta
+    game_dict = game_setup() # sanakirjan avaimet: 'game_money', 'game_time', 'mistakes_allowed', 'random_luck', 'criminal_headstart', 'criminal_time', 'screen_name'
+    criminal_headstart(game_dict["criminal_headstart"]) # clears criminal table and adds "criminal_headstart" amount of airports 
     
 #   - kysymysten tyypin valinta (matikka, fysiikka, yleiset tms.)?
 
@@ -47,11 +57,13 @@ if __name__ == "__main__":
     # Funktion loopin boolean-arvo. Edellisessä kommentissa kerrottu miksei voida käyttää helpompaa "criminal_timer_state = True" -tapaa tämän määrittämiseen
     criminal_timer_state = manager.Value('b', True)
     # Prosessin määrittely
-    ProcessCriminalTimer = multiprocessing.Process(target=criminal_timer, args=(criminal_timer_state, game_parameters['criminal_time']))
+    ProcessCriminalTimer = multiprocessing.Process(target=criminal_timer, args=(criminal_timer_state, game_dict['criminal_time']))
     # Prosessin käynnistys
     ProcessCriminalTimer.start()
 
-
+    while True:
+        input("Press enter to continue. \n")
+        break
 # pelaajalle aukeaa lentokentällä valikko, mitä hän voi tehdä:
 #   1. käy puhumassa turvallisuuspäällikön kanssa 
 #           (selvittää onko rikollinen käynyt lentoasemalla)
@@ -71,8 +83,6 @@ if __name__ == "__main__":
 #   5. osta lentolippu
 #           (voimme ostaa ICAO-koodilla lentolipun)
 #
-#   6. matkusta junalla 
-#           (voimme ostaa ICAO-koodilla junaliput oikeaan määränpäähän)
 # 
 #   7. jäljellä oleva aika ja raha
 # 
@@ -109,7 +119,7 @@ if __name__ == "__main__":
 
 # Pelin päättyessä: 
 #   1. pisteet lasketaan
-#   2. tulostuu pelatun pelin tilastot (pelinimi, kuinka mones pelinimellä pelattu peli, vaikeustaso, pisteet, kulunut aika, rahat alussa, kulutetut rahat, lentojen määrä, harhalentojen määrä, junamatkojen määrä, harhajunamatkojen määrä, harhajunamatkojen kilometrit, huijatuksi joutumisen kerrat)
+#   2. tulostuu pelatun pelin tilastot (pelinimi, kuinka mones pelinimellä pelattu peli, vaikeustaso, pisteet, kulunut aika, rahat alussa, kulutetut rahat, lentojen määrä, harhalentojen määrä, huijatuksi joutumisen kerrat)
 #   3. jos kyseessä pelinimen paras pistetulos, tallennetaan tietokantaan tietokantaan kyseiselle riville tieto tästä, jos pelinimellä aikaisempia pelejä, poistetaan aikaisempi merkintä
 
 # paluu aloitusvalikkoon
