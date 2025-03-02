@@ -1,3 +1,16 @@
+import mysql.connector
+
+# Setting up a connection to our database
+connection = mysql.connector.connect(
+    collation = "utf8mb4_general_ci",
+    host = '127.0.0.1',
+    port = 3306,
+    database = "flight_game",
+    user = "python",
+    password = "koulu123",
+    autocommit = True
+)
+
 def game_setup():
     # parameters for each difficulty
     difficulty_settings = {
@@ -39,9 +52,17 @@ def game_setup():
         }
     }
 
+    # Screen_name input
     screen_name = str(input("Enter your game name: ")) 
 
-    state = True # user will be asked for a difficulty until one of the defined inputs is given
+    # Starting location
+    sql = "SELECT ident FROM airport WHERE continent = 'EU' AND type = 'large_airport' AND ident NOT IN (SELECT location FROM criminal) ORDER BY RAND() LIMIT 1;"
+    cursor = connection.cursor(dictionary=True)
+    cursor.execute(sql)
+    result = cursor.fetchone()
+
+    # Get parameters for game from difficulty_settings dictionary
+    state = True # user will be asked for a difficulty until valid inputs is given
     while state:
         difficulty_input = str(input("Choose difficulty of the game: 'E' = Easy, 'N' = Normal, 'H' = Hard: "))
 
@@ -51,7 +72,10 @@ def game_setup():
         else:
             print("You entered an invalid input.")
 
+
+    # Add screen_name and starting location to dictionary that is returned after
     game_parameters["screen_name"] = screen_name # adding player's name to dictionary
+    game_parameters["player_location"] = result["ident"]
     
     return game_parameters # return dictionary with parameters and screen name
 
@@ -61,5 +85,6 @@ def game_setup():
 if __name__ == "__main__":
     game_parameters = game_setup()
     print(game_parameters)
-    print(game_parameters["game_money"])
-    print(game_parameters["screen_name"])
+    print(f"You have {game_parameters["game_money"]}€ in your bank account. ")
+    print(f"Screen name: {game_parameters["screen_name"]}")
+    print(f"You're at an airport with ICAO code: {game_parameters["player_location"]}")

@@ -1,0 +1,1 @@
+"ALTER TABLE criminal AUTO_INCREMENT = 1;"

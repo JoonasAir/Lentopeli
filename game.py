@@ -1,4 +1,3 @@
-from encodings.punycode import T
 from criminal_headstart import criminal_headstart
 from game_setup import game_setup
 import multiprocessing
@@ -16,110 +15,95 @@ connection = mysql.connector.connect(
     autocommit = True
 )
 
-# Käyttäessämme multiprocessing-kirjastoa kirjoitamme koodin main blockkiin, sillä käytämme multiprocessing-kirjastoa. 
-# (Importit ja funktioiden määritykset tehdään ennen main blockia)
-# Aina uuden multiprocessing-prosessin käynnistyessä tämä uusi prosessi suorittaa koodin ensimmäisestä rivistä lähtien, 
-# jotta saa tarvittavat importit ja funktiot muistiinsa. Jotta vältymme ylimääräisiltä, esim. tulostuksilta, 
-# kirjoitamme print-funktion main-blockin sisään ja näin tämä tulostus tapahtuu vain pääprosessin toimesta. 
-# (multiprocessing-prosessin __name__ on "__mp_main__") 
-if __name__ == "__main__":
-# aloitusvalikko
-#   1. aloita uusi peli
-#   2. highscores 
-#           (Tulostaa top 10 pisteet, käyttäjä voi valita vaikeustason 
-#           jonka parhaat tulokset tulostetaan. Pelinimi voi esiintyä 
-#           vain kerran tulostetussa listassa.)        
-#   3. harjoittele pelin tehtäviä
-#   4. sulje peli
+if __name__ == "__main__": # Main block
+
+# Start menu (new game, highscores, quiz practice, instructions, exit game)
 
 
-# uusi peli (tiedot tallennetaan tietokantaan)
+# New game 
 
-#    - pelinimen ja vaikeustason valinta
-    game_dict = game_setup() # sanakirjan avaimet: 'game_money', 'game_time', 'mistakes_allowed', 'random_luck', 'criminal_headstart', 'criminal_time', 'screen_name'
+#    - screen_name, starting location and difficulty
+    game_dict = game_setup() # sanakirjan avaimet: 'game_money', 'game_time', 'mistakes_allowed', 'random_luck', 'criminal_headstart', 'criminal_time', 'screen_name', 'player_location'
     criminal_headstart(game_dict["criminal_headstart"]) # clears criminal table and adds "criminal_headstart" amount of airports 
     
-#   - kysymysten tyypin valinta (matikka, fysiikka, yleiset tms.)?
-
-#   - arvotaan pelin aloituspiste (iso lentokenttä euroopasta)
+#   - type of quiz questions? (math, physics, programming, etc.)
  
  
-# pelin taustatarina (Y/N)
-# (pelaajalle hänen halutessaan tulostetaan pelin taustatarina)
+# background story of the game (Y/N) = (player can read or skip the story)
 
 
-# pelaaja on saanut vihjeen että rikollinen on ollut lentokentällä X
-# peli alkaa kyseiseltä lentokentältä
+
+# Game starts from random airport
 
 
-    # Managerin avulla saamme tiedon liikkumaan prosessien välillä (kun pääohjelmasta muutamme criminal_timer_state -> False niin taustaprosessin looppi sulkeutuu)
+    # Using Manager to share state between processes (when we change criminal_timer_state to False in the main program, the loop in the background process will close)
     manager = multiprocessing.Manager()
-    # Funktion loopin boolean-arvo. Edellisessä kommentissa kerrottu miksei voida käyttää helpompaa "criminal_timer_state = True" -tapaa tämän määrittämiseen
+    # Boolean value for the function loop. We have to use manager because we need this variable in both processes
     criminal_timer_state = manager.Value('b', True)
-    # Prosessin määrittely
+    # Define the process
     ProcessCriminalTimer = multiprocessing.Process(target=criminal_timer, args=(criminal_timer_state, game_dict['criminal_time']))
-    # Prosessin käynnistys
+    # Start the process
     ProcessCriminalTimer.start()
 
     while True:
         input("Press enter to continue. \n")
         break
-# pelaajalle aukeaa lentokentällä valikko, mitä hän voi tehdä:
-#   1. käy puhumassa turvallisuuspäällikön kanssa 
-#           (selvittää onko rikollinen käynyt lentoasemalla)
+# The player is presented with a menu at the airport, where they can choose what to do:
+#   1. Talk to the security chief
+#           (find out if the criminal has been at the airport)
 # 
-#   2. käy WC:ssä
-#           (mahdollisuus silminnäkijän tapaamiseen. 
-#           Silminnäkijä voi myös huijata sinua)
+#   2. Visit the restroom
+#           (chance to meet an eyewitness. 
+#           The eyewitness might also deceive you)
 #
-#   3. käy kahvilla
-#           (mahdollisuus silminnäkijän tapaamiseen. 
-#           Silminnäkijä voi myös huijata sinua)
+#   3. Have a coffee
+#           (chance to meet an eyewitness. 
+#           The eyewitness might also deceive you)
 #
-#   4. käy syömässä
-#           (mahdollisuus silminnäkijän tapaamiseen. 
-#           Silminnäkijä voi myös huijata sinua)
+#   4. Have a meal
+#           (chance to meet an eyewitness. 
+#           The eyewitness might also deceive you)
 #
-#   5. osta lentolippu
-#           (voimme ostaa ICAO-koodilla lentolipun)
+#   5. Buy a flight ticket
+#           (we can buy a flight ticket using the ICAO code)
 #
 # 
-#   7. jäljellä oleva aika ja raha
+#   7. Check remaining time and money
 # 
-#   8. *käy palvelinhuoneessa* --> löysit johtolangan 
-#           (tämä näkyy pelaajalle jos olemme käyneet 
-#           puhumassa turvallisuuspäällikölle ja jos 
-#           rikollinen on käynyt lentoasemalla)
+#   8. *Visit the server room* --> found a clue 
+#           (this option is visible to the player if they have 
+#           talked to the security chief and if the criminal 
+#           has been at the airport)
 #
-#   9. *ratkaise johtolanka* --> tietovisakysymykset
-#           (tämä näkyy pelaajalle, 
-#           kun olemme käyneet palvelinhuoneessa)
+#   9. *Solve the clue* --> quiz questions
+#           (this option is visible to the player 
+#           after visiting the server room)
 #
-#   8. *palaa edelliselle lentokentälle*
-#           (tämä näkyy pelaajalle, jos olemme käyneet
-#           puhumassa turvallisuuspäällikölle ja jos
-#           rikollinen ei ole käynyt lentoasemalla)
+#   8. *Return to the previous airport*
+#           (this option is visible to the player if they have 
+#           talked to the security chief and if the criminal 
+#           has not been at the airport)
 
-# Peli päättyy, kun:
-#   1. pääset samalle lentokentälle jossa rikollinen on
-#   2. rikollinen pääsee turmelemaan X määrän lentoasemia
-#   3. aika loppuu
-#   4. lennät harhaan tai joudut huijatuksi liian monta kertaa
+# The game ends when:
+#   1. You reach the same airport as the criminal
+#   2. The criminal manages to sabotage X number of airports
+#   3. Time runs out
+#   4. You fly off course or get deceived too many times
 
 
 
-    # Muutetaan criminal_timer -funktion loopin arvo --> False, jotta looppi ei jää taustalle pyörimään
+    # Ending the loop running in the background process
     criminal_timer_state.value = False
-    # Pakotetaan taustaprosessin lopetus, sillä prosessin loopissa sleep-funktio 
-    # (muuten pelaaja joutuu odottamaan tässä kohtaa niin pitkään, että rikollinen lentää seuraavalle lentoasemalle)
+    # Force the termination of the background process, as the process loop contains a sleep function 
+    # (otherwise the player would have to wait until the criminal flies to the next airport)
     ProcessCriminalTimer.terminate()
-    # Varmistetaan, että taustaprosessi on päättynyt
+    # Ensure the background process has ended before moving on
     ProcessCriminalTimer.join()
 
 
-# Pelin päättyessä: 
-#   1. pisteet lasketaan
-#   2. tulostuu pelatun pelin tilastot (pelinimi, kuinka mones pelinimellä pelattu peli, vaikeustaso, pisteet, kulunut aika, rahat alussa, kulutetut rahat, lentojen määrä, harhalentojen määrä, huijatuksi joutumisen kerrat)
-#   3. jos kyseessä pelinimen paras pistetulos, tallennetaan tietokantaan tietokantaan kyseiselle riville tieto tästä, jos pelinimellä aikaisempia pelejä, poistetaan aikaisempi merkintä
+# When the game ends:
+#   1. Scores are calculated
+#   2. The game statistics are printed (screen name, how many games played with this screen name, difficulty level, score, elapsed time, money at the start, money spent, number of flights, number of off-course flights, number of times deceived)
+#   3. If this is the best score for the screen name, save this information to the database. If there are previous games with this screen name, remove the previous entry
 
-# paluu aloitusvalikkoon
+# Return to the start menu

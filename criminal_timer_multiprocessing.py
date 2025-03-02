@@ -25,25 +25,12 @@ def criminal_new_location():
     cursor.execute(sql)
     
 def criminal_timer(criminal_timer_state: bool, time: int):
-#    sql = "INSERT INTO criminal (location) SELECT ident FROM airport WHERE continent = 'EU' AND type = 'large_airport' AND ident NOT IN (SELECT location FROM criminal) ORDER BY RAND() LIMIT 1;"
-#    cursor = connection.cursor()
     while criminal_timer_state.value:
         sleep(time)
         if criminal_timer_state.value:
             criminal_new_location()
-#            cursor.execute(sql)
 
 
-
-# When using the multiprocessing library, we write the code inside the main block
-#   (excluding imports and function definitions, which are done before the main block).
-# Every time a new multiprocessing process starts, this new process executes,
-#   our file from the first line to get the necessary variables, imports and functions into it's memory.
-# To avoid confusion (so that all lines are not executed by all processes),
-#   we write the code execution inside the main block and
-#   only imports and function definitions before the main block.
-# The __name__ of the multiprocessing process is "__mp_main__"
-#   for this reason, the following if statement (main block) is not executed by the subprocesses.
 
 if __name__ == "__main__": # Main block
     game_dict = game_setup() # Setting up game parameters (screen_name, difficulty)
@@ -57,7 +44,7 @@ if __name__ == "__main__": # Main block
 
     state = True
     while state:
-        state = input(": ")
+        state = input(f"\nA new location is added to criminal table every {game_dict["criminal_time"]} seconds. \nPress enter to quit.")
 
 
 
