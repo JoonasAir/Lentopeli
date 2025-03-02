@@ -1,17 +1,11 @@
-# Ignore __pycache__ directories
 __pycache__/
 
-# Ignore virtual environment directory
 venv/
 
-# Ignore environment variable files
 .env
 
-# Ignore compiled Python files
 *.pyc
 
-# Ignore log files
-*.log
-
-# Ignore temporary files
 *.tmp
+
+tempCodeRunnerFile.py
