@@ -27,7 +27,7 @@ if __name__ == "__main__": # Main block
     criminal_headstart(game_dict["criminal_headstart"]) # clears criminal table and adds "criminal_headstart" amount of airports 
     
 #   quiz questions
- 
+
  
 #   background story of the game (Y/N) = (player can read or skip the story)
 
