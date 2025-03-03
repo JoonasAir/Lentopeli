@@ -22,20 +22,20 @@ if __name__ == "__main__": # Main block
 
 # New game 
 
-#    - screen_name, starting location and difficulty
-    game_dict = game_setup() # sanakirjan avaimet: 'game_money', 'game_time', 'mistakes_allowed', 'random_luck', 'criminal_headstart', 'criminal_time', 'screen_name', 'player_location'
+#   screen_name, starting location and difficulty parameters returned in dictionary
+    game_dict = game_setup() # sanakirjan avaimet: 'game_money', 'game_time', 'random_luck', 'criminal_headstart', 'criminal_time', 'screen_name', 'player_location'
     criminal_headstart(game_dict["criminal_headstart"]) # clears criminal table and adds "criminal_headstart" amount of airports 
     
-#   - type of quiz questions? (math, physics, programming, etc.)
+#   quiz questions
  
  
-# background story of the game (Y/N) = (player can read or skip the story)
+#   background story of the game (Y/N) = (player can read or skip the story)
 
 
 
-# Game starts from random airport
+#   Game starts
 
-
+    # Defining and starting a background process for criminal_timer function
     # Using Manager to share state between processes (when we change criminal_timer_state to False in the main program, the loop in the background process will close)
     manager = multiprocessing.Manager()
     # Boolean value for the function loop. We have to use manager because we need this variable in both processes
@@ -45,44 +45,46 @@ if __name__ == "__main__": # Main block
     # Start the process
     ProcessCriminalTimer.start()
 
-    while True:
-        input("Press enter to continue. \n")
-        break
+
 # The player is presented with a menu at the airport, where they can choose what to do:
+
 #   1. Talk to the security chief
 #           (find out if the criminal has been at the airport)
-# 
+
+
 #   2. Visit the restroom
 #           (chance to meet an eyewitness. 
 #           The eyewitness might also deceive you)
-#
+
+
 #   3. Have a coffee
 #           (chance to meet an eyewitness. 
 #           The eyewitness might also deceive you)
-#
+
+
 #   4. Have a meal
 #           (chance to meet an eyewitness. 
 #           The eyewitness might also deceive you)
-#
+
+
 #   5. Buy a flight ticket
 #           (we can buy a flight ticket using the ICAO code)
-#
-# 
+
+ 
 #   7. Check remaining time and money
-# 
-#   8. *Visit the server room* --> found a clue 
+ 
+
+#  *8. Solve the clue --> quiz questions
 #           (this option is visible to the player if they have 
 #           talked to the security chief and if the criminal 
 #           has been at the airport)
-#
-#   9. *Solve the clue* --> quiz questions
-#           (this option is visible to the player 
-#           after visiting the server room)
-#
-#   8. *Return to the previous airport*
+
+
+#  *8. Try to solve the previous clue again --> same quiz question as earlier
 #           (this option is visible to the player if they have 
 #           talked to the security chief and if the criminal 
 #           has not been at the airport)
+
 
 # The game ends when:
 #   1. You reach the same airport as the criminal
@@ -103,7 +105,7 @@ if __name__ == "__main__": # Main block
 
 # When the game ends:
 #   1. Scores are calculated
-#   2. The game statistics are printed (screen name, how many games played with this screen name, difficulty level, score, elapsed time, money at the start, money spent, number of flights, number of off-course flights, number of times deceived)
-#   3. If this is the best score for the screen name, save this information to the database. If there are previous games with this screen name, remove the previous entry
+#   2. The game statistics are printed (screen name, how many games played with this screen name, difficulty level, score, elapsed time, money at the start, money spent, number of flights, number of off-course flights)
+#   3. Save game stats to the leaderboard table
 
 # Return to the start menu
