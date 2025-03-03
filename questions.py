@@ -23,7 +23,7 @@ def ask_difficulty():
     user_choice = int(input("Choose your difficulty level:\n"))
     
     # Määritellään vaikeusasteet
-    difficulty_levels = {1: "easy", 2: "medium", 3: "hard\n"}
+    difficulty_levels = {1: "easy", 2: "medium", 3: "hard"}
 
     # Tarkistetaan, että käyttäjän valinta on oikein ja palautetaan valittu vaikeusaste
     while user_choice not in difficulty_levels:
