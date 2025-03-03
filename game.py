@@ -3,6 +3,7 @@ from game_setup import game_setup
 import multiprocessing
 from criminal_timer_multiprocessing import criminal_timer
 import mysql.connector
+from questions import ask_category, get_questions, ask_question
 
 
 connection = mysql.connector.connect(
@@ -20,13 +21,17 @@ if __name__ == "__main__": # Main block
 # Start menu (new game, highscores, quiz practice, instructions, exit game)
 
 
-# New game 
+########## New game ########## 
 
 #   screen_name, starting location and difficulty parameters returned in dictionary
-    game_dict = game_setup() # sanakirjan avaimet: 'game_money', 'game_time', 'random_luck', 'criminal_headstart', 'criminal_time', 'screen_name', 'player_location'
+    game_dict = game_setup() # keys of the dictionary: 'game_money', 'game_time', 'random_luck', 'criminal_headstart', 'criminal_time', 'screen_name', 'player_location', 'difficulty', 'quiz_category'
     criminal_headstart(game_dict["criminal_headstart"]) # clears criminal table and adds "criminal_headstart" amount of airports 
     
-#   quiz questions
+#   Choosing category of quiz questions
+    game_dict["quiz_category"] = ask_category()
+#   Get quiz questions with right difficulty and category
+    quiz_questions = get_questions(game_dict["difficulty"], game_dict["quiz_category"])
+
 
  
 #   background story of the game (Y/N) = (player can read or skip the story)
