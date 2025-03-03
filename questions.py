@@ -140,7 +140,8 @@ def start_game():
     print(f"Your score: {score}/3")
 
 # Käynnistetään peli
-start_game()
+if __name__ == "__main__": # testikoodi main blockin sisällä, jotta sitä ei ajeta heti importin yhteydessä
+    start_game()
 
 
 
