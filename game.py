@@ -6,6 +6,8 @@ from questions import ask_category, get_questions, ask_question
 
 
 def new_game():
+    print("At any moment of the game give 't' as an input to get remaining time.")
+
 #   screen_name, starting location and difficulty parameters returned in dictionary
     game_dict = game_setup() # keys of the dictionary: 'game_money', 'game_time', 'random_luck', 'criminal_headstart', 'criminal_time', 'screen_name', 'player_location', 'difficulty', 'quiz_category'
     criminal_headstart(game_dict["criminal_headstart"]) # clears criminal table and adds "criminal_headstart" amount of airports 
@@ -14,7 +16,7 @@ def new_game():
     game_dict["quiz_category"] = ask_category()
 #   Get quiz questions with right difficulty and category
     quiz_questions = get_questions(game_dict["difficulty"], game_dict["quiz_category"])
-    print(game_dict["quiz_category"])
+
 
 
 #   background story of the game (Y/N) = (player can read or skip the story)
@@ -37,49 +39,17 @@ def new_game():
         inp = input(": ")
         if inp == "":
             break
+
 # The player is presented with a menu at the airport, where they can choose what to do:
+    #aiport_menu()
 
-#   1. Talk to the security chief
-#           (find out if the criminal has been at the airport)
-
-
-#   2. Visit the restroom
-#           (chance to meet an eyewitness. 
-#           The eyewitness might also deceive you)
-
-
-#   3. Have a coffee
-#           (chance to meet an eyewitness. 
-#           The eyewitness might also deceive you)
-
-
-#   4. Have a meal
-#           (chance to meet an eyewitness. 
-#           The eyewitness might also deceive you)
-
-
-#   5. Buy a flight ticket
-#           (we can buy a flight ticket using the ICAO code)
-
-
-#   7. Check remaining time and money
-
-
-#  *8. Solve the clue --> quiz questions
-#           (this option is visible to the player if they have 
-#           talked to the security chief and if the criminal 
-#           has been at the airport)
-
-
-#  *8. Try to solve the previous clue again --> same quiz question as earlier
-#           (this option is visible to the player if they have 
-#           talked to the security chief and if the criminal 
-#           has not been at the airport)
 
 
 # The game ends when:
 #   1. You reach the same airport as the criminal
+
 #   2. The criminal manages to sabotage X number of airports
+
 #   3. Time runs out
 #   4. You fly off course or get deceived too many times
 
