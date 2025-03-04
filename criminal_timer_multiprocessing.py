@@ -4,6 +4,13 @@ import multiprocessing
 from mysql_connection import mysql_connection
 
 
+# tässä tiedostossa on määritetty kaksi funktiota: 
+#   1. criminal_new_location(), joka ei vaadi parametrejä. Funktio lisää criminal-tauluun uuden ICAO-koodin
+#   2. criminal_timer(), joka on tarkoitettu ajettavaksi taustalla multiprocessing-kirjaston avulla. Funktio haluaa parametrit:
+#       1. criminal_timer_state = funktion sisäiselle loopille pelin alussa True ja pelin lopussa tämä arvo muutetaan -> False
+#       2. time = sekuntit jonka välein criminal-tauluun lisätään uusi ICAO-koodi criminal_new_location() -funktion avulla
+#   Nämä funktiot eivät palauta mitään.
+
 # Here we define a function that adds a new airport to the criminal table in the database at intervals of X time
 # Thwe function takes the following arguments:
 #       1. criminal_timer_state - a boolean variable for the function's while-loop, which allows us to stop the loop at the end of the game

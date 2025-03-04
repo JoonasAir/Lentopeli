@@ -1,3 +1,5 @@
+# .gitignore tiedostossa määritettyjä tiedostoja, sekä kansioita ei pushata GitHubiin
+
 __pycache__/
 
 venv/

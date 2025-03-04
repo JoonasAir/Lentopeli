@@ -1,5 +1,7 @@
 from mysql_connection import mysql_connection
 
+# game_setup() funktiossa käyttäjä valitsee pelin vaikeusasteen, pelinimen, sekä pelaajalle arvotaan aloituslentokenttä
+# tiedot palautetaan sanakirjana
 
 def game_setup():
     # parameters for each difficulty
@@ -48,13 +50,13 @@ def game_setup():
     result = cursor.fetchone()
 
     # Get parameters for game from difficulty_settings dictionary
-    state = True # user will be asked for a difficulty until valid inputs is given
-    while state:
+    # user will be asked for a difficulty until valid inputs is given
+    while True:
         difficulty_input = str(input("Choose difficulty of the game: 'E' = Easy, 'N' = Normal, 'H' = Hard: "))
 
         if difficulty_input.upper() in difficulty_settings:
             game_parameters = difficulty_settings[difficulty_input.upper()] # stores the parameters ​​of the difficulty selected by the user 
-            state = False
+            break # break out from loop when valid input is given
         else:
             print("You entered an invalid input.")
 
