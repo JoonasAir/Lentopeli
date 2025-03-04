@@ -12,49 +12,63 @@ def game_setup():
             'game_money': 5000,         # money at the beginning of the game
             'game_time': 60*5,          # time at the beginning of the game
             'eco_points': 100,          # eco points at the beginning of the game
+            'player_location':str,      # player's current location (ICAO)
+            'screen_name':str,          # player's screen name
             'random_luck': 0.05,        # the possibility of benefiting from random functions
             'criminal_headstart': 2,    # the criminal's head start at the start of the game
             'criminal_time': 60,        # the time interval at which the criminal flies to the next location
             'difficulty': 'easy',       # difficulty for quiz questions
             'talk_to_chief': False,     # have we talked to security chief at current airport or not? True=yes, False=no
             'previous_quiz_answer':bool,# did we answer right or wrong on previous quiz question? True=right, False=wrong
-            'clue_solved': False        # have we solved a clue at current airport? True=yes, False=no
+            'clue_solved': False,       # have we solved a clue at current airport? True=yes, False=no
+            'criminal_was_here':bool,   # security chief tells us if the criminal has been at the air port or not. True=has been, False=has not been
         },
         'N': { # Normal
             'game_money': 3500,         # money at the beginning of the game
             'game_time': 60*4,          # time at the beginning of the game
             'eco_points': 100,          # eco points at the beginning of the game
+            'player_location':str,      # player's current location (ICAO)
+            'screen_name':str,          # player's screen name
             'random_luck': 0.025,       # the possibility of benefiting from random functions
             'criminal_headstart': 3,    # the criminal's head start at the start of the game
             'criminal_time': 45,        # the time interval at which the criminal flies to the next location
             'difficulty': 'medium',       # difficulty for quiz questions
             'talk_to_chief': False,     # have we talked to security chief at current airport or not? True=yes, False=no
             'previous_quiz_answer':bool,# did we answer right or wrong on previous quiz question? True=right, False=wrong
-            'clue_solved': False        # have we solved a clue at current airport? True=yes, False=no
+            'clue_solved': False,       # have we solved a clue at current airport? True=yes, False=no
+            'criminal_was_here':bool,   # security chief tells us if the criminal has been at the air port or not. True=has been, False=has not been
         },
         'H': { # Hard
             'game_money': 2500,         # money at the beginning of the game
             'game_time': 60*3,          # time at the beginning of the game
             'eco_points': 100,          # eco points at the beginning of the game
+            'player_location':str,      # player's current location (ICAO)
+            'screen_name':str,          # player's screen name
             'random_luck': 0.01,        # the possibility of benefiting from random functions
             'criminal_headstart': 4,    # the criminal's head start at the start of the game
             'criminal_time': 30,        # the time interval at which the criminal flies to the next location
             'difficulty': 'hard',       # difficulty for quiz questions
             'talk_to_chief': False,     # have we talked to security chief at current airport or not? True=yes, False=no
             'previous_quiz_answer':bool,# did we answer right or wrong on previous quiz question? True=right, False=wrong
-            'clue_solved': False        # have we solved a clue at current airport? True=yes, False=no
+            'clue_solved': False,       # have we solved a clue at current airport? True=yes, False=no
+            'criminal_was_here':bool,   # security chief tells us if the criminal has been at the air port or not. True=has been, False=has not been
+            'got_lucky': bool           # if we got lucky or not 
         },
-        'X': { # For testing purposes. Feel free to adjust during testing. This will be removed from actual game.
+        'X': { # For testing purposes. Feel free to adjust during testing. This will be removed from the actual game.
             'game_money': 5000,         # money at the beginning of the game
             'game_time': 60*5,          # time at the beginning of the game
             'eco_points': 100,          # eco points at the beginning of the game
+            'player_location':str,      # player's current location (ICAO)
+            'screen_name':str,          # player's screen name
             'random_luck': 0.05,        # the possibility of benefiting from random functions
             'criminal_headstart': 4,    # the criminal's head start at the start of the game
             'criminal_time': 3,         # the time interval at which the criminal flies to the next location
             'difficulty': 'easy',       # difficulty for quiz questions
             'talk_to_chief': False,     # have we talked to security chief at current airport or not? True=yes, False=no
             'previous_quiz_answer':bool,# did we answer right or wrong on previous quiz question? True=right, False=wrong
-            'clue_solved': False        # have we solved a clue at current airport? True=yes, False=no
+            'clue_solved': False,       # have we solved a clue at current airport? True=yes, False=no
+            'criminal_was_here':bool,   # security chief tells us if the criminal has been at the air port or not. True=has been, False=has not been
+            'got_lucky': bool           # if we got lucky or not 
         }
     }
 
