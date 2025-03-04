@@ -10,7 +10,7 @@ def quiz_icao(answer:bool):
     cursor = mysql_connection.cursor(dictionary=True)
 
     if answer == True:      # return right ICAO-code
-        sql = "SELECT ident FROM airport WHERE continent = 'EU' AND type = 'large_airport' ORDER BY RAND() LIMIT 1;"
+        sql = "SELECT location FROM criminal WHERE visited = 0 LIMIT 1;"
         cursor.execute(sql)
         result = cursor.fetchone()
         return result
