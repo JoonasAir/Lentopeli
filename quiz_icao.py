@@ -1,27 +1,28 @@
-import mysql.connector
 from mysql_connection import mysql_connection
 
-# take boolean as parameter:
-#   True    ->    return right ICAO
-#   False   ->    return random ICAO 
+# takes following parameters:
+#   1. boolean (from ask_question() -function)
+#       True    ->    return ICAO for the next location in the criminal-table the player has not visited yet 
+#       False   ->    return random ICAO (not player's current location and not found in criminal-table)
+#   2. Player's current location (ICAO-code)
 
 
-def quiz_icao(answer:bool):
-    cursor = mysql_connection.cursor(dictionary=True)
+def quiz_icao(answer:bool, player_location):
+    cursor = mysql_connection.cursor()
 
     if answer == True:      # return right ICAO-code
         sql = "SELECT location FROM criminal WHERE visited = 0 LIMIT 1;"
         cursor.execute(sql)
         result = cursor.fetchone()
-        return result
+        return result[0]
 
     elif answer == False:   # return wrong ICAO-code
-        sql = "SELECT ident FROM airport WHERE continent = 'EU' AND type = 'large_airport' ORDER BY RAND() LIMIT 1;"
+        sql = f"SELECT ident FROM airport WHERE continent = 'EU' AND type = 'large_airport' AND ident NOT IN (SELECT location FROM criminal) AND ident != '{player_location}' ORDER BY RAND() LIMIT 1;"
         cursor.execute(sql)
         result = cursor.fetchone()
-        return result
+        return result[0]
 
 
-if __name__ == "__main__":
-    print(quiz_icao(True))
-    print(quiz_icao(False))
+if __name__ == "__main__": # Test code
+    print(quiz_icao(True, "EFHK"))
+    print(quiz_icao(False, "EFHK"))
