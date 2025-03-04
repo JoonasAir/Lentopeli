@@ -39,7 +39,7 @@ def ask_category():
     categories = [
     "General Knowledge",
     "Entertainment: Books",
-    "Entertainment: Movies",
+    "Entertainment: Film",
     "Entertainment: Music",
     "Entertainment: Musicals & Theatres",
     "Entertainment: Television",
