@@ -20,15 +20,25 @@ def ask_difficulty():
     print("2. Medium")
     print("3. Hard\n")
     
-    user_choice = int(input("Choose your difficulty level:\n"))
-    
     # Määritellään vaikeusasteet
     difficulty_levels = {1: "easy", 2: "medium", 3: "hard"}
 
+    #user_choice = (input("Enter the number corresponding to your choice: "))
+
     # Tarkistetaan, että käyttäjän valinta on oikein ja palautetaan valittu vaikeusaste
-    while user_choice not in difficulty_levels:
-        print("Invalid choice, please try again!")
-        user_choice = int(input("Enter the number corresponding to your choice: "))
+    while True:
+        try:
+            user_choice = int(input("Enter the number corresponding to your choice: "))
+            if 1 <= user_choice <= 3:
+                break
+            print("Wrong input, try!")
+        except: 
+            print("Wrong input, try again!")
+            
+            
+
+
+        
     # Palauttaa valitun vaikeusasteen
     return difficulty_levels[user_choice]
 
@@ -68,12 +78,18 @@ def ask_category():
     for i, category in enumerate(categories, 1):
         print(f"{i}. {category}")
 
-    # Kysytään kategoriaa niin kauan kunnes annettu vastaus on joku numeron 1 ja listan pituuden väliltä
-    select_category = int(input("Choose your category: "))
-    while select_category < 1 or select_category > len(categories):
-        print("Invalid choise. Please choose again!")
-        select_category = int(input("Choose your category: "))
 
+    # Kysytään kategoriaa niin kauan kunnes annettu vastaus on joku numeron 1 ja 22 väliltä
+    while True:
+        try:
+            select_category = int(input("Enter the number corresponding to your choice: "))
+            if 1 <= select_category <= 24:
+                break
+            print("Wrong input, try!")
+        except: 
+            print("Wrong input, try again!")
+
+    
     # Palautetaan valittu kategoria, miinustetaan siitä 1 koska listan tulostuksessa lisättiin numeroinnin takia 1
     return categories[select_category -1]
 
@@ -85,8 +101,6 @@ def get_questions(difficulty, category):
     # Suodatetaan kysymykset valitun vaikeusasteen mukaan
     selected_questions = [question for question in data if question["difficulty"] == difficulty and question["category"] == category]
     return selected_questions
-
-
 
 
 # Funktio, joka kysyy käyttäjältä satunnaisen kysymyksen ja tarkistaa vastauksen
