@@ -1,18 +1,7 @@
 from time import sleep
 from game_setup import game_setup
 import multiprocessing
-import mysql.connector
-
-# Setting up a connection to our database
-connection = mysql.connector.connect(
-    collation = "utf8mb4_general_ci",
-    host = '127.0.0.1',
-    port = 3306,
-    database = "flight_game",
-    user = "python",
-    password = "koulu123",
-    autocommit = True
-)
+from mysql_connection import mysql_connection
 
 
 # Here we define a function that adds a new airport to the criminal table in the database at intervals of X time
@@ -21,7 +10,7 @@ connection = mysql.connector.connect(
 #       2. time - seconds for the sleep function, which determines how long the criminal stays at the airport before flying to the next one
 def criminal_new_location():
     sql = "INSERT INTO criminal (location) SELECT ident FROM airport WHERE continent = 'EU' AND type = 'large_airport' AND ident NOT IN (SELECT location FROM criminal) ORDER BY RAND() LIMIT 1;"
-    cursor = connection.cursor()
+    cursor = mysql_connection.cursor()
     cursor.execute(sql)
     
 def criminal_timer(criminal_timer_state: bool, time: int):

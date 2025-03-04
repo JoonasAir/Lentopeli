@@ -1,15 +1,5 @@
-import mysql.connector
+from mysql_connection import mysql_connection
 
-# Setting up a connection to our database
-connection = mysql.connector.connect(
-    collation = "utf8mb4_general_ci",
-    host = '127.0.0.1',
-    port = 3306,
-    database = "flight_game",
-    user = "python",
-    password = "koulu123",
-    autocommit = True
-)
 
 def game_setup():
     # parameters for each difficulty
@@ -53,7 +43,7 @@ def game_setup():
 
     # Starting location
     sql = "SELECT ident FROM airport WHERE continent = 'EU' AND type = 'large_airport' AND ident NOT IN (SELECT location FROM criminal) ORDER BY RAND() LIMIT 1;"
-    cursor = connection.cursor(dictionary=True)
+    cursor = mysql_connection.cursor(dictionary=True)
     cursor.execute(sql)
     result = cursor.fetchone()
 

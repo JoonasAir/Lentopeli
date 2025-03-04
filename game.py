@@ -2,9 +2,7 @@ from criminal_headstart import criminal_headstart
 from game_setup import game_setup
 import multiprocessing
 from criminal_timer_multiprocessing import criminal_timer
-import mysql.connector
 from questions import ask_category, get_questions, ask_question
-from connection import connection
 
 
 if __name__ == "__main__": # Main block
