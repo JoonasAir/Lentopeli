@@ -19,5 +19,5 @@ if __name__ == "__main__":
             pass
     
 
-        user_input = int(input("\nChoose from following options:\n    1 - Open tutorial\n    2 - Start a new game\n    3 - Open leaderboard\n    4 - Practice quiz questions"))
+        user_input = int(input("\nMAIN MENU\n\nChoose from following options:\n    1 - Open tutorial\n    2 - Start a new game\n    3 - Open leaderboard\n    4 - Practice quiz questions\n    0 - Quit game\nInput: "))
         
