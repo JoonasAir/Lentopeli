@@ -5,24 +5,18 @@ from criminal_timer_multiprocessing import criminal_timer
 from questions import ask_category, get_questions, ask_question
 
 
-if __name__ == "__main__": # Main block
-
-# Start menu (new game, highscores, quiz practice, instructions, exit game)
-
-
-########## New game ########## 
-
+def new_game():
 #   screen_name, starting location and difficulty parameters returned in dictionary
     game_dict = game_setup() # keys of the dictionary: 'game_money', 'game_time', 'random_luck', 'criminal_headstart', 'criminal_time', 'screen_name', 'player_location', 'difficulty', 'quiz_category'
     criminal_headstart(game_dict["criminal_headstart"]) # clears criminal table and adds "criminal_headstart" amount of airports 
-    
+
 #   Choosing category of quiz questions
     game_dict["quiz_category"] = ask_category()
 #   Get quiz questions with right difficulty and category
     quiz_questions = get_questions(game_dict["difficulty"], game_dict["quiz_category"])
     print(game_dict["quiz_category"])
 
- 
+
 #   background story of the game (Y/N) = (player can read or skip the story)
 
 
@@ -67,9 +61,9 @@ if __name__ == "__main__": # Main block
 #   5. Buy a flight ticket
 #           (we can buy a flight ticket using the ICAO code)
 
- 
+
 #   7. Check remaining time and money
- 
+
 
 #  *8. Solve the clue --> quiz questions
 #           (this option is visible to the player if they have 
@@ -106,3 +100,6 @@ if __name__ == "__main__": # Main block
 #   3. Save game stats to the leaderboard table
 
 # Return to the start menu
+
+if __name__ == "__main__":
+    new_game()

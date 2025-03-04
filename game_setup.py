@@ -1,4 +1,6 @@
+import mysql.connector
 from mysql_connection import mysql_connection
+
 
 # game_setup() funktiossa käyttäjä valitsee pelin vaikeusasteen, pelinimen, sekä pelaajalle arvotaan aloituslentokenttä
 # tiedot palautetaan sanakirjana
@@ -48,11 +50,10 @@ def game_setup():
     screen_name = str(input("Enter your game name: ")) 
 
     # Starting location
-    sql = "SELECT ident FROM airport WHERE continent = 'EU' AND type = 'large_airport' AND ident NOT IN (SELECT location FROM criminal) ORDER BY RAND() LIMIT 1;"
+    sql = "SELECT ident FROM airport WHERE continent = 'EU' AND type = 'large_airport' ORDER BY RAND() LIMIT 1;"
     cursor = mysql_connection.cursor(dictionary=True)
     cursor.execute(sql)
     result = cursor.fetchone()
-
     # Get parameters for game from difficulty_settings dictionary
     # user will be asked for a difficulty until valid inputs is given
     while True:
