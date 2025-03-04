@@ -11,3 +11,5 @@ venv/
 *.tmp
 
 tempCodeRunnerFile.py
+
+connection.py

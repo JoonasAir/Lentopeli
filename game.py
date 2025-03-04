@@ -4,17 +4,8 @@ import multiprocessing
 from criminal_timer_multiprocessing import criminal_timer
 import mysql.connector
 from questions import ask_category, get_questions, ask_question
+from connection import connection
 
-
-connection = mysql.connector.connect(
-    collation = "utf8mb4_general_ci",
-    host = '127.0.0.1',
-    port = 3306,
-    database = "flight_game",
-    user = "python",
-    password = "koulu123",
-    autocommit = True
-)
 
 if __name__ == "__main__": # Main block
 
@@ -31,7 +22,7 @@ if __name__ == "__main__": # Main block
     game_dict["quiz_category"] = ask_category()
 #   Get quiz questions with right difficulty and category
     quiz_questions = get_questions(game_dict["difficulty"], game_dict["quiz_category"])
-
+    print(game_dict["quiz_category"])
 
  
 #   background story of the game (Y/N) = (player can read or skip the story)
@@ -50,7 +41,10 @@ if __name__ == "__main__": # Main block
     # Start the process
     ProcessCriminalTimer.start()
 
-
+    while True:
+        inp = input(": ")
+        if inp == "":
+            break
 # The player is presented with a menu at the airport, where they can choose what to do:
 
 #   1. Talk to the security chief
