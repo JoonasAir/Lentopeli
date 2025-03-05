@@ -52,7 +52,7 @@ def airport_menu_input(game_dict:dict):
 
 
 
-def airport_action(game_dict, user_input, random_action):
+def airport_action(game_dict, user_input, random_action, quiz_questions):
     cursor = mysql_connection.cursor()
     luck = bool(randint(0,100)/100 <= game_dict["random_luck"]) # check if we are lucky. Based on variable random_luck defined on game_setup()
     

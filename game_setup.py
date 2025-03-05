@@ -9,57 +9,66 @@ def game_setup():
     difficulty_settings = {
         'E': { # Easy
             'game_money': 5000,         # money at the beginning of the game
-            'game_time': 60*5,          # time at the beginning of the game
+            'game_time': 60*10,         # time at the beginning of the game
             'eco_points': 100,          # eco points at the beginning of the game
+            'flight_price':200,         # price of a flight ticket          
+            'random_luck': 0.10,        # the possibility of benefiting from random functions
             'player_location':str,      # player's current location (ICAO)
             'screen_name':str,          # player's screen name
-            'random_luck': 0.05,        # the possibility of benefiting from random functions
             'criminal_headstart': 2,    # the criminal's head start at the start of the game
             'criminal_time': 60,        # the time interval at which the criminal flies to the next location
             'difficulty': 'easy',       # difficulty for quiz questions
             'talk_to_chief': False,     # have we talked to security chief at current airport or not? True=yes, False=no
             'previous_quiz_answer':bool,# did we answer right or wrong on previous quiz question? True=right, False=wrong
-            'clue_solved': False,       # have we solved a clue at current airport? True=yes, False=no
+            'got_location': False,      # have we solved a clue at current airport or got the next location otherwise? True=yes, False=no
             'criminal_was_here':bool,   # security chief tells us if the criminal has been at the air port or not. True=has been, False=has not been
+            'criminal_caught':False,    # have we caught the criminal yet? True=yes, False=no
+            'win':bool                  # when conditions meet to end the game, this is turned to True if we won and False if we lost the game
         },
-        'N': { # Normal
-            'game_money': 3500,         # money at the beginning of the game
-            'game_time': 60*4,          # time at the beginning of the game
+        'M': { # Medium
+            'game_money': 4000,         # money at the beginning of the game
+            'game_time': 60*7,          # time at the beginning of the game
             'eco_points': 100,          # eco points at the beginning of the game
+            'flight_price':200,         # price of a flight ticket          
+            'random_luck': 0.05,        # the possibility of benefiting from random functions
             'player_location':str,      # player's current location (ICAO)
             'screen_name':str,          # player's screen name
-            'random_luck': 0.025,       # the possibility of benefiting from random functions
             'criminal_headstart': 3,    # the criminal's head start at the start of the game
             'criminal_time': 45,        # the time interval at which the criminal flies to the next location
-            'difficulty': 'medium',       # difficulty for quiz questions
+            'difficulty': 'medium',     # difficulty for quiz questions
             'talk_to_chief': False,     # have we talked to security chief at current airport or not? True=yes, False=no
             'previous_quiz_answer':bool,# did we answer right or wrong on previous quiz question? True=right, False=wrong
-            'clue_solved': False,       # have we solved a clue at current airport? True=yes, False=no
+            'got_location': False,      # have we solved a clue at current airport or got the next location otherwise? True=yes, False=no
             'criminal_was_here':bool,   # security chief tells us if the criminal has been at the air port or not. True=has been, False=has not been
+            'criminal_caught':False,    # have we caught the criminal yet? True=yes, False=no
+            'win':bool                  # when conditions meet to end the game, this is turned to True if we won and False if we lost the game
         },
         'H': { # Hard
-            'game_money': 2500,         # money at the beginning of the game
-            'game_time': 60*3,          # time at the beginning of the game
+            'game_money': 3000,         # money at the beginning of the game
+            'game_time': 60*5,          # time at the beginning of the game
             'eco_points': 100,          # eco points at the beginning of the game
+            'flight_price':200,         # price of a flight ticket          
+            'random_luck': 0.025,       # the possibility of benefiting from random functions
             'player_location':str,      # player's current location (ICAO)
             'screen_name':str,          # player's screen name
-            'random_luck': 0.01,        # the possibility of benefiting from random functions
             'criminal_headstart': 4,    # the criminal's head start at the start of the game
             'criminal_time': 30,        # the time interval at which the criminal flies to the next location
             'difficulty': 'hard',       # difficulty for quiz questions
             'talk_to_chief': False,     # have we talked to security chief at current airport or not? True=yes, False=no
             'previous_quiz_answer':bool,# did we answer right or wrong on previous quiz question? True=right, False=wrong
-            'clue_solved': False,       # have we solved a clue at current airport? True=yes, False=no
+            'got_location': False,      # have we solved a clue at current airport or got the next location otherwise? True=yes, False=no
             'criminal_was_here':bool,   # security chief tells us if the criminal has been at the air port or not. True=has been, False=has not been
-            'got_lucky': bool           # if we got lucky or not 
+            'criminal_caught':False,    # have we caught the criminal yet? True=yes, False=no
+            'win':bool                  # when conditions meet to end the game, this is turned to True if we won and False if we lost the game
         },
         'X': { # For testing purposes. Feel free to adjust during testing. This will be removed from the actual game.
             'game_money': 5000,         # money at the beginning of the game
             'game_time': 60*5,          # time at the beginning of the game
             'eco_points': 100,          # eco points at the beginning of the game
+            'flight_price':200,         # price of a flight ticket          
+            'random_luck': 0.50,        # the possibility of benefiting from random functions
             'player_location':str,      # player's current location (ICAO)
             'screen_name':str,          # player's screen name
-            'random_luck': 0.05,        # the possibility of benefiting from random functions
             'criminal_headstart': 4,    # the criminal's head start at the start of the game
             'criminal_time': 3,         # the time interval at which the criminal flies to the next location
             'difficulty': 'easy',       # difficulty for quiz questions
@@ -67,7 +76,8 @@ def game_setup():
             'previous_quiz_answer':bool,# did we answer right or wrong on previous quiz question? True=right, False=wrong
             'got_location': False,      # have we solved a clue at current airport or got the next location otherwise? True=yes, False=no
             'criminal_was_here':bool,   # security chief tells us if the criminal has been at the air port or not. True=has been, False=has not been
-            'criminal_caught':False     # have we caught the criminal yet? True=yes, False=no
+            'criminal_caught':False,    # have we caught the criminal yet? True=yes, False=no
+            'win':bool                  # when conditions meet to end the game, this is turned to True if we won and False if we lost the game
         }
     }
 
@@ -82,7 +92,7 @@ def game_setup():
     # Get parameters for game from difficulty_settings dictionary
     # user will be asked for a difficulty until valid inputs is given
     while True:
-        difficulty_input = str(input("Choose difficulty of the game: 'E' = Easy, 'N' = Normal, 'H' = Hard: "))
+        difficulty_input = str(input("Choose difficulty of the game: 'E' = Easy, 'M' = Medium, 'H' = Hard: "))
 
         if difficulty_input.upper() in difficulty_settings:
             game_dict = difficulty_settings[difficulty_input.upper()] # stores the parameters ​​of the difficulty selected by the user 
