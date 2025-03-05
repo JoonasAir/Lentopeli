@@ -49,20 +49,11 @@ def new_game():
         #game_dict["criminal_caught"] = criminal_caught()
 
 
-
-
-
-
-
-
-# The game ends when:
-#   1. You reach the same airport as the criminal
-
-#   2. The criminal manages to sabotage X number of airports
-
-#   3. Time runs out
-#   4. You fly off course or get deceived too many times
-
+        # The game ends when:
+        #   1. You reach the same airport as the criminal
+        #   2. The criminal manages to sabotage X number of airports
+        #   3. Time runs out
+        #   4. You fly off course or get deceived too many times
 
 
     # Ending the loop running in the background process
