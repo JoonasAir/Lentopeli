@@ -6,7 +6,7 @@ from questions import ask_category, get_questions, ask_question
 
 
 def new_game():
-    #TODO add 'Check remaining time' -option on every input
+    #TODO add 'Check remaining time' -option on every input of the game
     print("At any moment of the game give 't' as an input to get remaining time.")
 
 #   screen_name, starting location and difficulty parameters returned in dictionary
@@ -38,22 +38,31 @@ def new_game():
 
 
     
-    while not game_dict["criminal_caught"]:
+    while not game_dict["criminal_caught"] and game_dict["game_money"] >= game_dict["flight_price"]:
 
         # Player is presented with options what he can do at the airport
         game_dict, airport_input, airport_random_action = airport_menu_input(game_dict)
         # player's input on previous with other helper-variables is passed to airport_action where the action happens
         game_dict = airport_action(game_dict, airport_input, airport_random_action)
 
-        # check at the new airport if we caught the criminal
+        # TODO check at the new airport if we are at the same airport as the criminal is
         #game_dict["criminal_caught"] = criminal_caught()
 
 
-        # The game ends when:
-        #   1. You reach the same airport as the criminal
-        #   2. The criminal manages to sabotage X number of airports
-        #   3. Time runs out
-        #   4. You fly off course or get deceived too many times
+
+        #TODO if we gave right answer on the question = we are on right airpot now -> criminal-table: change visited to 1 on the first row with visited = 0
+        if game_dict['previous_quiz_answer']: # boolean telling us if we got last quiz wrong or right
+            pass #SQL here
+
+
+
+        # reset airport_menu-helper parameters to default value before entering airport-menu on the new airport
+        game_dict['talk_to_chief'] = False
+        game_dict['previous_quiz_answer'] = bool
+        game_dict['got_location'] = False
+        game_dict['criminal_was_here'] = bool
+        game_dict['criminal_caught'] = False # have we caught the criminal yet? True=yes, False=no
+
 
 
     # Ending the loop running in the background process
