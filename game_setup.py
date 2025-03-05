@@ -66,9 +66,8 @@ def game_setup():
             'difficulty': 'easy',       # difficulty for quiz questions
             'talk_to_chief': False,     # have we talked to security chief at current airport or not? True=yes, False=no
             'previous_quiz_answer':bool,# did we answer right or wrong on previous quiz question? True=right, False=wrong
-            'clue_solved': False,       # have we solved a clue at current airport? True=yes, False=no
+            'got_location': False,      # have we solved a clue at current airport or got the next location otherwise? True=yes, False=no
             'criminal_was_here':bool,   # security chief tells us if the criminal has been at the air port or not. True=has been, False=has not been
-            'got_lucky': bool           # if we got lucky or not 
         }
     }
 

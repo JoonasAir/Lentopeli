@@ -6,6 +6,7 @@ from questions import ask_category, get_questions, ask_question
 
 
 def new_game():
+    #TODO add 'Check remaining time' -option on every input
     print("At any moment of the game give 't' as an input to get remaining time.")
 
 #   screen_name, starting location and difficulty parameters returned in dictionary
@@ -40,8 +41,7 @@ def new_game():
         if inp == "":
             break
 
-# The player is presented with a menu at the airport, where they can choose what to do:
-    #aiport_menu()
+    # aiport_menu() # The player is presented with a menu at the airport, where they can choose what to do
 
 
 
