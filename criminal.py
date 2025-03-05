@@ -1,24 +1,37 @@
+#for functions
 from time import sleep
+from mysql_connection import mysql_connection
+#for testing
 from game_setup import game_setup
 import multiprocessing
-from mysql_connection import mysql_connection
 
-
-# tässä tiedostossa on määritetty kaksi funktiota: 
+# tässä tiedostossa on määritetty neljä funktiota: 
 #   1. criminal_new_location(), joka ei vaadi parametrejä. Funktio lisää criminal-tauluun uuden ICAO-koodin
+#
 #   2. criminal_timer(), joka on tarkoitettu ajettavaksi taustalla multiprocessing-kirjaston avulla. Funktio haluaa parametrit:
-#       1. criminal_timer_state = funktion sisäiselle loopille pelin alussa True ja pelin lopussa tämä arvo muutetaan -> False
-#       2. time = sekuntit jonka välein criminal-tauluun lisätään uusi ICAO-koodi criminal_new_location() -funktion avulla
+#       criminal_timer_state  =  funktion sisäiselle loopille pelin alussa True ja pelin lopussa tämä arvo muutetaan -> False
+#       time  =  sekuntit jonka välein criminal-tauluun lisätään uusi ICAO-koodi criminal_new_location() -funktion avulla
+#
+#   3. criminal_headstart(), joka tyhjentää criminal-taulun edellisen pelin jäljiltä ja lisää rikolliselle etumatkaksi määritellyn luvun verran ICAO-koodeja
+#      Funktio ottaa parametriksi: 
+#       game_setup() -funktiossa määritellyn criminal_headstart -muuttujan.
+#   
 #   Nämä funktiot eivät palauta mitään.
+#
+#   4. criminal_caught(), joka tarkistaa olemmeko rikollisen kanssa samalla lentoasemalla.
+#      Tämä funktio: 
+#           ottaa parametriksi pelaajan sijainnin (game_dict["player_location"])
+#           palauttaa boolean-arvon: 
+#               True  = olemme samalla kentällä
+#               False = emme ole samalla kentällä 
+#
 
-# Here we define a function that adds a new airport to the criminal table in the database at intervals of X time
-# Thwe function takes the following arguments:
-#       1. criminal_timer_state - a boolean variable for the function's while-loop, which allows us to stop the loop at the end of the game
-#       2. time - seconds for the sleep function, which determines how long the criminal stays at the airport before flying to the next one
+
 def criminal_new_location():
     sql = "INSERT INTO criminal (location) SELECT ident FROM airport WHERE continent = 'EU' AND type = 'large_airport' AND ident NOT IN (SELECT location FROM criminal) ORDER BY RAND() LIMIT 1;"
     cursor = mysql_connection.cursor()
     cursor.execute(sql)
+    
     
 def criminal_timer(criminal_timer_state: bool, time: int):
     while criminal_timer_state.value:
@@ -26,6 +39,20 @@ def criminal_timer(criminal_timer_state: bool, time: int):
         if criminal_timer_state.value:
             criminal_new_location()
 
+
+def criminal_headstart(headstart:int):
+    cursor = mysql_connection.cursor()
+    sql = "DELETE FROM criminal;" # Clears criminal table
+    cursor.execute(sql)
+    sql = "ALTER TABLE criminal AUTO_INCREMENT = 1;" # Resets auto increment
+    cursor.execute(sql)
+
+    for i in range(headstart): # adds X amount of locations to criminal table (amt. specified by difficulty) 
+        criminal_new_location()
+
+
+def criminal_caught(player_location):
+    pass
 
 
 if __name__ == "__main__": # Main block
@@ -42,6 +69,7 @@ if __name__ == "__main__": # Main block
     while state:
         state = input(f"\nA new location is added to criminal table every {game_dict["criminal_time"]} seconds. \nPress enter to quit.")
 
+    
 
 
 

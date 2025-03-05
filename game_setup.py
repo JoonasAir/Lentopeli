@@ -1,4 +1,3 @@
-import mysql.connector
 from mysql_connection import mysql_connection
 
 
@@ -68,6 +67,7 @@ def game_setup():
             'previous_quiz_answer':bool,# did we answer right or wrong on previous quiz question? True=right, False=wrong
             'got_location': False,      # have we solved a clue at current airport or got the next location otherwise? True=yes, False=no
             'criminal_was_here':bool,   # security chief tells us if the criminal has been at the air port or not. True=has been, False=has not been
+            'criminal_caught':False     # have we caught the criminal yet? True=yes, False=no
         }
     }
 

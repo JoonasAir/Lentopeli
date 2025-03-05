@@ -1,7 +1,7 @@
-from criminal_headstart import criminal_headstart
+from airport_menu import airport_action, airport_menu_input
 from game_setup import game_setup
 import multiprocessing
-from criminal_timer_multiprocessing import criminal_timer
+from criminal import criminal_timer, criminal_headstart
 from questions import ask_category, get_questions, ask_question
 
 
@@ -36,12 +36,22 @@ def new_game():
     # Start the process
     ProcessCriminalTimer.start()
 
-    while True:
-        inp = input(": ")
-        if inp == "":
-            break
 
-    # aiport_menu() # The player is presented with a menu at the airport, where they can choose what to do
+    
+    while not game_dict["criminal_caught"]:
+
+        # Player is presented with options what he can do at the airport
+        game_dict, airport_input, airport_random_action = airport_menu_input(game_dict)
+        # player's input on previous with other helper-variables is passed to airport_action where the action happens
+        game_dict = airport_action(game_dict, airport_input, airport_random_action)
+
+        # check at the new airport if we caught the criminal
+        #game_dict["criminal_caught"] = criminal_caught()
+
+
+
+
+
 
 
 
