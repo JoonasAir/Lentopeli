@@ -128,8 +128,17 @@ def ask_question(questions):
         print(f"{i}. {answer}")
 
     # Kysytään käyttäjältä valinta
-    user_answer = int(input("Select the right answer: "))
+    while True:
+        try:
+            user_answer = int(input("Select the right answer: "))
+            if 1 <= user_answer <= len(answers):
+                break
+            else:
+                print("Wrong input, try again!")
+        except ValueError:
+            print("Wrong input, try again!")
 
+    
     # Tarkistetaan, onko valittu vastaus oikea. Pitää laittaa -1 edellisessä for silmukassa lisättiin yksi numeroinnin takia
     if answers[user_answer - 1] == correct_answer:
         print("\nCorrect!")
@@ -163,7 +172,7 @@ def practice_quiz():
 
 # Käynnistetään peli
 if __name__ == "__main__": # testikoodi main blockin sisällä, jotta sitä ei ajeta heti importin yhteydessä
-    start_game()
+    practice_quiz()
 
 
 

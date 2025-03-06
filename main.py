@@ -1,4 +1,5 @@
 from game import new_game
+from questions import practice_quiz
 
 if __name__ == "__main__":
 
