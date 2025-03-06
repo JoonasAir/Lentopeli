@@ -10,13 +10,10 @@ from game_setup import game_setup
 # TÄLLÄ LOPETETAAN LASKURI
 # game_timer.stop_event.set()
 
-min = 0
-sec = 0
-
 stop_event = threading.Event()
 
 def game_timer(game_timeremaining, stop_event):
-    global min, sec, game_dict
+    global game_dict
     while game_timeremaining > 0:
         if stop_event.is_set():
             break
@@ -25,7 +22,7 @@ def game_timer(game_timeremaining, stop_event):
         #print(Fore.RED + timer, end = "\r")
         time.sleep(1)
         game_timeremaining -= 1
-
+    game_dict["time_left_bool"] = False
 
 if __name__ == "__main__": 
     game_dict = game_setup()
