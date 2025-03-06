@@ -117,7 +117,7 @@ def game_setup():
             game_dict = difficulty_settings[difficulty_input.upper()] # stores the parameters ​​of the difficulty selected by the user 
             break # break out from loop when valid input is given
         else:
-            print("You entered an invalid input.")
+            print("Invalid input. Try again.")
 
     # clears criminal table and adds "criminal_headstart" amount of airports 
     criminal_headstart(game_dict["criminal_headstart"]) 

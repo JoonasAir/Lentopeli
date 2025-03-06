@@ -25,6 +25,7 @@ def airport_menu_input(game_dict:dict):
         ("Go to get a meal",        "you got lucky",    "You went to grab a hamburger meal and now feel better. ", "You already went to Mc'Donalds. You're not hungry."),
         ("Go to relax in a lounge", "you got lucky",    "You went to lounge to rest for a moment. You're not tired anymore and are able to focus on hasing the criminal."),
         ]
+    
     random_index = randint(0, len(random_actions)-1)
     menu = "\nAIRPORT MENU\n\nChoose your action from following options:\n"
     menu += f"    1 - {airport_actions[0]}\n"               # Check remaining time and money
