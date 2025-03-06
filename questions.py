@@ -1,13 +1,13 @@
 # Voidaan käyttää json tiedostoa missä kysymykset
 import json
 import time
-import threading
+#import threading
 # Voidaan valita satunnaisia kysymyksiä sekä sekoitta vastausvaihtoehdot
 import random 
 # Voidaan muuttaa kysymysten HTML elementit oikeiksi merkeiksi
 import html 
-import game_timer
-from game_setup import game_setup
+#import game_timer
+#from game_setup import game_setup
 
 
 # Avataan kysymykset luettavassa muodossa muuttujaan data. Käytetään encoding koska tiedosto sisältää
@@ -140,10 +140,13 @@ def ask_question(questions):
 
 
 # Testataan koodin toimivuus kolmella kysymyksellä
-def start_game():
+def practice_quiz():
+
+    x = int(input("How many questions would you like to practice?: "))
     # Kysytään vaikeusaste käyttäjältä
     chosen_difficulty = ask_difficulty()
 
+    # Kysytään haluttu kategoria
     choosen_category = ask_category()
     
     # Hae kysymykset valitun vaikeusasteen mukaan
@@ -151,7 +154,7 @@ def start_game():
     
     # Pelaaja vastaa kolmeen kysymykseen
     score = 0
-    for _ in range(3):  # Voit muuttaa montako kysymystä haluat
+    for _ in range(x):  # Voit muuttaa montako kysymystä haluat
         if ask_question(questions):
             score += 1
 
