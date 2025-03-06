@@ -1,3 +1,4 @@
+from criminal import criminal_headstart
 from mysql_connection import mysql_connection
 
 
@@ -101,14 +102,6 @@ def game_setup():
         }
     }
 
-    # Screen_name input
-    screen_name = str(input("Enter your game name: ")) 
-
-    # Starting location
-    sql = "SELECT ident FROM airport WHERE continent = 'EU' AND type = 'large_airport' ORDER BY RAND() LIMIT 1;"
-    cursor = mysql_connection.cursor(dictionary=True)
-    cursor.execute(sql)
-    result = cursor.fetchone()
     # Get parameters for game from difficulty_settings dictionary
     # user will be asked for a difficulty until valid inputs is given
     while True:
@@ -120,11 +113,24 @@ def game_setup():
         else:
             print("You entered an invalid input.")
 
+    # clears criminal table and adds "criminal_headstart" amount of airports 
+    criminal_headstart(game_dict["criminal_headstart"]) 
+
+    # Screen_name input
+    screen_name = str(input("Enter your game name: ")) 
+
+    # Starting location
+    sql = "SELECT location FROM criminal WHERE id = 1;"
+    cursor = mysql_connection.cursor(dictionary=True)
+    cursor.execute(sql)
+    result = cursor.fetchone()
 
     # Add screen_name and starting location to dictionary that is returned after
     game_dict["screen_name"] = screen_name # adding player's name to dictionary
     game_dict["player_location"] = result["ident"]
-    
+
+
+
     return game_dict # return dictionary with parameters and screen name
 
 

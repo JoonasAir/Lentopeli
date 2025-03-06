@@ -47,7 +47,7 @@ def criminal_headstart(headstart:int):
     sql = "ALTER TABLE criminal AUTO_INCREMENT = 1;" # Resets auto increment
     cursor.execute(sql)
 
-    for i in range(headstart): # adds X amount of locations to criminal table (amt. specified by difficulty) 
+    for i in range(headstart+1): # adds X amount of locations to criminal table (amt. specified by difficulty) 
         criminal_new_location()
 
 
