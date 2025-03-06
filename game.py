@@ -51,6 +51,7 @@ def new_game(game_dict):
     ProcessCriminalTimer.start()
     
     game_timer_thread = threading.Thread(target = game_timer, args = (game_dict["game_time"], stop_event))
+    game_timer_thread.daemon = True
     game_timer_thread.start()
 
     # TODO timer
