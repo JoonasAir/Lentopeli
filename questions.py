@@ -37,8 +37,12 @@ def ask_difficulty():
             if 1 <= user_choice <= 3:
                 break
             print("Wrong input, try!")
+        except KeyboardInterrupt: 
+            break
         except: 
             print("Wrong input, try again!")
+        
+            
             
             
 
@@ -90,7 +94,9 @@ def ask_category():
             select_category = int(input("Enter the number corresponding to your choice: "))
             if 1 <= select_category <= 24:
                 break
-            print("Wrong input, try!")
+            print("Wrong input, try again!")
+        except KeyboardInterrupt: 
+            break
         except: 
             print("Wrong input, try again!")
 
