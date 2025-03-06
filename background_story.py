@@ -20,5 +20,5 @@ def background_story():
     else:
         pass
 
-  
-background_story()
+if __name__ == "__main__":
+    background_story()

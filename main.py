@@ -1,6 +1,6 @@
 from game import new_game
 from questions import practice_quiz
-from tutorial import tutorial
+#from tutorial import tutorial
 
 if __name__ == "__main__":
 
@@ -13,15 +13,19 @@ if __name__ == "__main__":
                 print("Invalid input, try again.")
         except ValueError:
             print("Invalid input, try again.")
+        except KeyboardInterrupt:
+            break
 
 
 
     while user_input != 0:
     
         if user_input == 1 : # Tutorial
-            tutorial()
+            pass
+            #tutorial()
     
         elif user_input == 2: # New game
+
             new_game()
     
         elif user_input == 3: # Leaderboard
@@ -40,4 +44,5 @@ if __name__ == "__main__":
                     print("Invalid input, try again.")
             except ValueError:
                 print("Invalid input, try again.")
-        
+            except KeyboardInterrupt:
+                break
