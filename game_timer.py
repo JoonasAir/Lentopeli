@@ -32,3 +32,6 @@ if __name__ == "__main__":
     game_timer_thread = threading.Thread(target = game_timer, args = (game_dict["game_time"], stop_event))
     game_timer_thread.start()
     print(game_dict["running_time"])
+    time.sleep(5)
+    print(game_dict["running_time"])
+    stop_event.set()

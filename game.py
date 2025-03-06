@@ -37,7 +37,7 @@ def new_game():
 
     # TODO timer
 
-    while not game_dict["criminal_caught"] and game_dict["game_money"] >= game_dict["flight_price"]:
+    while not game_dict["criminal_caught"] and game_dict["game_money"] >= game_dict["flight_price"] and game_dict["time_left_bool"]:
 
         # Player is at the airport_action() -function until location changes
         game_dict = airport_menu(game_dict)
