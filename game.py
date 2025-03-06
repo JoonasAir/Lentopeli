@@ -2,6 +2,7 @@ import threading
 import time
 from colorama import Fore, Style
 from airport_menu import airport_menu
+from background_story import background_story
 from criminal import criminal_timer
 from game_setup import game_setup
 import multiprocessing
@@ -23,10 +24,6 @@ def game_timer(game_timeremaining, stop_event):
 
 
 def new_game(game_dict):
-    #TODO add 'Check remaining time' -option on every input of the game
-    print("At any moment of the game give 't' as an input to get remaining time.")
-
-
     # Choosing category of quiz questions
     game_dict["quiz_category"] = ask_category()
     # Get quiz questions with right difficulty and category
@@ -35,7 +32,7 @@ def new_game(game_dict):
 
 
     # background story of the game (Y/N) = (player can read or skip the story)
-#   background_story()
+    background_story()
 
 
     #   Game starts
@@ -54,11 +51,10 @@ def new_game(game_dict):
     game_timer_thread.daemon = True
     game_timer_thread.start()
 
-    # TODO timer
 
     while not game_dict["criminal_caught"] and game_dict["game_money"] >= game_dict["flight_price"] and game_dict["time_left_bool"]:
 
-        # Player is at the airport_action() -function until location changes
+        # Player is at the airport_action() -function until the location changes
         game_dict = airport_menu(game_dict)
 
         if game_dict["first_airport"]:
@@ -70,8 +66,7 @@ def new_game(game_dict):
         #game_dict["criminal_caught"] = criminal_caught()
 
 
-
-        #TODO if we gave right answer on the question = we are on right airpot now -> criminal-table: change visited to 1 on the first row with visited = 0
+        # TODO if we gave right answer on the question = we are on right airpot now -> criminal-table: change visited to 1 on the first row with visited = 0
         if game_dict['previous_quiz_answer']: # boolean telling us if we got last quiz wrong or right
             pass #SQL here
 
