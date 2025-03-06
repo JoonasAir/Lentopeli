@@ -1,4 +1,5 @@
 from random import randint
+from time import sleep
 from mysql_connection import mysql_connection
 from colorama import Fore, Style
 from quiz_icao import quiz_icao
@@ -11,6 +12,7 @@ from security import security
 
 
 def airport_menu_input(game_dict:dict):
+    print(game_dict["running_time"])
     airport_actions = [
         "Check remaining money",
         "Talk to airport's security chief", 

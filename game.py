@@ -1,16 +1,31 @@
+import threading
+import time
+from colorama import Fore, Style
 from airport_menu import airport_menu
 from criminal import criminal_timer
 from game_setup import game_setup
 import multiprocessing
 from questions import ask_category, get_questions
 
+stop_event = threading.Event()
 
-def new_game():
+def game_timer(game_timeremaining, stop_event):
+    global game_dict
+    while game_timeremaining > 0:
+        if stop_event.is_set():
+            break
+        min, sec = divmod(game_timeremaining, 60)
+        game_dict["running_time"] = Fore.RED + f"Time remaining: {min:02d}:{sec:02d}" + Style.RESET_ALL
+        #print(Fore.RED + timer, end = "\r")
+        time.sleep(1)
+        game_timeremaining -= 1
+    game_dict["time_left_bool"] = False
+
+
+def new_game(game_dict):
     #TODO add 'Check remaining time' -option on every input of the game
     print("At any moment of the game give 't' as an input to get remaining time.")
 
-    # screen_name, starting location, and many other parameters are returned as a dictionary. Also criminal's headstart is added to database 
-    game_dict = game_setup() # check the keys from game_setup.py's difficulty_settings -dictionary
 
     # Choosing category of quiz questions
     game_dict["quiz_category"] = ask_category()
@@ -34,6 +49,9 @@ def new_game():
     ProcessCriminalTimer = multiprocessing.Process(target=criminal_timer, args=(criminal_timer_state, game_dict['criminal_time']))
     # Start the process
     ProcessCriminalTimer.start()
+    
+    game_timer_thread = threading.Thread(target = game_timer, args = (game_dict["game_time"], stop_event))
+    game_timer_thread.start()
 
     # TODO timer
 
@@ -77,6 +95,8 @@ def new_game():
     ProcessCriminalTimer.terminate()
     # Ensure the background process has ended before moving on
     ProcessCriminalTimer.join()
+    stop_event.set()
+
 
 
 # When the game ends:
@@ -93,5 +113,7 @@ def new_game():
 
 
 
-if __name__ == "__main__":
-    new_game()
+if __name__ == "__main__": 
+    # screen_name, starting location, and many other parameters are returned as a dictionary. Also criminal's headstart is added to database 
+    game_dict = game_setup() # check the keys from game_setup.py's difficulty_settings -dictionary
+    new_game(game_dict)

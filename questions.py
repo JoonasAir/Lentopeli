@@ -16,11 +16,6 @@ with open("questions.json", "r", encoding="utf-8") as f:
     data = json.load(f)
 
 
-game_timer_thread = threading.Thread(target = game_timer.game_timer, args = (game_dict["game_time"], game_timer.stop_event))
-
-game_timer_thread.start()
-
-
 
 
 # Määritetään vaikeusaste
@@ -131,7 +126,6 @@ def ask_question(questions):
     print(f"\nQuestion: {question_text}\nOptions:\n")
     for i, answer in enumerate(answers, 1):
         print(f"{i}. {answer}")
-    print(game_timer.timer)
 
     # Kysytään käyttäjältä valinta
     user_answer = int(input("Select the right answer: "))
@@ -163,8 +157,6 @@ def start_game():
 
     # Peli päättyy
     print(f"Your score: {score}/3")
-    game_timer.stop_event.set()
-    #game_timer_thread.join()
 
 # Käynnistetään peli
 if __name__ == "__main__": # testikoodi main blockin sisällä, jotta sitä ei ajeta heti importin yhteydessä
