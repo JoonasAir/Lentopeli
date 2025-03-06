@@ -1,4 +1,3 @@
-#for functions
 from time import sleep
 from mysql_connection import mysql_connection
 
