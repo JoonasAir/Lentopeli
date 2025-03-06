@@ -4,14 +4,15 @@ from colorama import Style
 from airport_menu import airport_menu
 from background_story import background_story
 from criminal import criminal_timer
-from game_setup import game_setup, colors
+from game_setup import colors
 import multiprocessing
 from questions import ask_category, get_questions
 
+
 stop_event = threading.Event()
 
-def game_timer(game_timeremaining, stop_event):
-    global game_dict
+def game_timer(game_timeremaining, stop_event, game_dict):
+    #global game_dict
     while game_timeremaining > 0:
         if stop_event.is_set():
             break
@@ -27,7 +28,7 @@ def new_game(game_dict):
     game_dict["quiz_category"] = ask_category()
     # Get quiz questions with right difficulty and category
     game_dict["quiz_questions"] = get_questions(game_dict["difficulty"], game_dict["quiz_category"])
-    game_dict
+
 
 
     # background story of the game (Y/N) = (player can read or skip the story)
@@ -46,7 +47,7 @@ def new_game(game_dict):
     # Start the process
     ProcessCriminalTimer.start()
     
-    game_timer_thread = threading.Thread(target = game_timer, args = (game_dict["game_time"], stop_event))
+    game_timer_thread = threading.Thread(target = game_timer, args = (game_dict["game_time"], stop_event, game_dict))
     game_timer_thread.daemon = True
     game_timer_thread.start()
 
@@ -114,6 +115,7 @@ def new_game(game_dict):
 
 
 if __name__ == "__main__": 
+    from game_setup import game_setup    
     # screen_name, starting location, and many other parameters are returned as a dictionary. Also criminal's headstart is added to database 
     game_dict = game_setup() # check the keys from game_setup.py's difficulty_settings -dictionary
     new_game(game_dict)

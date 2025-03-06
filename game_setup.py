@@ -6,7 +6,8 @@ colors = {
     "input":Fore.CYAN,
     "warning":Fore.RED,
     "time":Fore.LIGHTBLUE_EX,
-    "location":Fore.LIGHTYELLOW_EX,
+    "location":Fore.LIGHTGREEN_EX,
+    "menu":Fore.LIGHTMAGENTA_EX,
     "output":Fore.LIGHTYELLOW_EX
     }
 
