@@ -99,7 +99,7 @@ def game_setup():
             'criminal_caught':False,    # have we caught the criminal yet? True=yes, False=no
             'win':bool,                 # when conditions meet to end the game, this is turned to True if we won and False if we lost the game
             'first_airport':True,        # are we at our first airport?
-            'running_time':(0,0)
+            'running_time':""
         }
     }
 
