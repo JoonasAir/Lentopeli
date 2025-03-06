@@ -1,6 +1,6 @@
 import threading
 import time
-from colorama import Fore, Style
+from colorama import Style
 from airport_menu import airport_menu
 from background_story import background_story
 from criminal import criminal_timer
@@ -17,7 +17,6 @@ def game_timer(game_timeremaining, stop_event):
             break
         min, sec = divmod(game_timeremaining, 60)
         game_dict["time_left_str"] = colors["time"] + f"Time remaining: {min:02d}:{sec:02d}" + Style.RESET_ALL
-        #print(Fore.RED + timer, end = "\r")
         time.sleep(1)
         game_timeremaining -= 1
     game_dict["time_left_bool"] = False
@@ -28,7 +27,7 @@ def new_game(game_dict):
     game_dict["quiz_category"] = ask_category()
     # Get quiz questions with right difficulty and category
     game_dict["quiz_questions"] = get_questions(game_dict["difficulty"], game_dict["quiz_category"])
-
+    game_dict
 
 
     # background story of the game (Y/N) = (player can read or skip the story)
