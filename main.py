@@ -7,8 +7,12 @@ if __name__ == "__main__":
     while True:
         try:
             user_input = int(input("\nMAIN MENU\n\nChoose from following options:\n    1 - Open tutorial\n    2 - Start a new game\n    3 - Open leaderboard\n    4 - Practice quiz questions\n    0 - Quit game\nInput: "))
+            if user_input in range(5):
+                break
+            else:
+                print("Invalid input, try again.")
         except ValueError:
-            print("")
+            print("Invalid input, try again.")
 
 
 
@@ -27,5 +31,13 @@ if __name__ == "__main__":
             practice_quiz()
     
 
-        user_input = int(input("\nMAIN MENU\n\nChoose from following options:\n    1 - Open tutorial\n    2 - Start a new game\n    3 - Open leaderboard\n    4 - Practice quiz questions\n    0 - Quit game\nInput: "))
+        while True:
+            try:
+                user_input = int(input("\nMAIN MENU\n\nChoose from following options:\n    1 - Open tutorial\n    2 - Start a new game\n    3 - Open leaderboard\n    4 - Practice quiz questions\n    0 - Quit game\nInput: "))
+                if user_input in range(5):
+                    break
+                else:
+                    print("Invalid input, try again.")
+            except ValueError:
+                print("Invalid input, try again.")
         
