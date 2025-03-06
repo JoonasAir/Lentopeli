@@ -174,7 +174,7 @@ def practice_quiz():
             score += 1
 
     # Peli päättyy
-    print(f"Your score: {score}/3")
+    print(f"Your score: {score}/{x}")
 
 # Käynnistetään peli
 if __name__ == "__main__": # testikoodi main blockin sisällä, jotta sitä ei ajeta heti importin yhteydessä
