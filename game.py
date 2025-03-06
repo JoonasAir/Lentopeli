@@ -13,10 +13,14 @@ def new_game():
     game_dict = game_setup() # keys of the dictionary: 'game_money', 'game_time', 'random_luck', 'criminal_headstart', 'criminal_time', 'screen_name', 'player_location', 'difficulty', 'quiz_category'
     criminal_headstart(game_dict["criminal_headstart"]) # clears criminal table and adds "criminal_headstart" amount of airports 
 
+
     # Choosing category of quiz questions
     game_dict["quiz_category"] = ask_category()
     # Get quiz questions with right difficulty and category
-    quiz_questions = get_questions(game_dict["difficulty"], game_dict["quiz_category"])
+    game_dict["quiz_questions"] = get_questions(game_dict["difficulty"], game_dict["quiz_category"])
+    print(type(game_dict["quiz_questions"]))
+    print(type(game_dict["quiz_questions"][0]))
+    print(game_dict["quiz_questions"][0])
 
 
 
@@ -36,14 +40,14 @@ def new_game():
     # Start the process
     ProcessCriminalTimer.start()
 
+    # TODO timer
 
-    
     while not game_dict["criminal_caught"] and game_dict["game_money"] >= game_dict["flight_price"]:
 
         # Player is presented with options what he can do at the airport
         game_dict, airport_input, airport_random_action = airport_menu_input(game_dict)
         # player's input on previous with other helper-variables is passed to airport_action where the action happens
-        game_dict = airport_action(game_dict, airport_input, airport_random_action, quiz_questions)
+        game_dict = airport_action(game_dict, airport_input, airport_random_action, game_dict["quiz_questions"])
 
 
 
@@ -60,10 +64,10 @@ def new_game():
 
         # reset airport_menu-helper parameters to default value before entering airport-menu on the new airport
         game_dict['talk_to_chief'] = False
-        game_dict['previous_quiz_answer'] = bool
-        game_dict['got_location'] = False
+        game_dict['criminal_caught'] = False
+        game_dict['next_location'] = ""
+        game_dict["clue_solved"] = bool
         game_dict['criminal_was_here'] = bool
-        game_dict['criminal_caught'] = False # have we caught the criminal yet? True=yes, False=no
 
 
 

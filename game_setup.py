@@ -72,9 +72,13 @@ def game_setup():
             'criminal_headstart': 4,    # the criminal's head start at the start of the game
             'criminal_time': 3,         # the time interval at which the criminal flies to the next location
             'difficulty': 'easy',       # difficulty for quiz questions
+            'quiz_questions':list,      # questions of player's difficulty and category
+            'previous_question':dict,   # previously asked question in case of player have to solve it again
+            'clue_solved':bool,         # have we solved a clue at current airport?
+            'tried_luck':False,          # have we tried our luck at this airport yet?
             'talk_to_chief': False,     # have we talked to security chief at current airport or not? True=yes, False=no
             'previous_quiz_answer':bool,# did we answer right or wrong on previous quiz question? True=right, False=wrong
-            'got_location': False,      # have we solved a clue at current airport or got the next location otherwise? True=yes, False=no
+            'next_location': "",        # have we solved a clue at current airport or got the next location otherwise? True=yes, False=no
             'criminal_was_here':bool,   # security chief tells us if the criminal has been at the air port or not. True=has been, False=has not been
             'criminal_caught':False,    # have we caught the criminal yet? True=yes, False=no
             'win':bool                  # when conditions meet to end the game, this is turned to True if we won and False if we lost the game
