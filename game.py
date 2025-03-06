@@ -1,8 +1,8 @@
-from airport_menu import airport_action, airport_menu_input
+from airport_menu import airport_menu
 from game_setup import game_setup
 import multiprocessing
 from criminal import criminal_timer, criminal_headstart
-from questions import ask_category, get_questions, ask_question
+from questions import ask_category, get_questions
 
 
 def new_game():
@@ -18,9 +18,6 @@ def new_game():
     game_dict["quiz_category"] = ask_category()
     # Get quiz questions with right difficulty and category
     game_dict["quiz_questions"] = get_questions(game_dict["difficulty"], game_dict["quiz_category"])
-    print(type(game_dict["quiz_questions"]))
-    print(type(game_dict["quiz_questions"][0]))
-    print(game_dict["quiz_questions"][0])
 
 
 
@@ -44,11 +41,12 @@ def new_game():
 
     while not game_dict["criminal_caught"] and game_dict["game_money"] >= game_dict["flight_price"]:
 
-        # Player is presented with options what he can do at the airport
-        game_dict, airport_input, airport_random_action = airport_menu_input(game_dict)
-        # player's input on previous with other helper-variables is passed to airport_action where the action happens
-        game_dict = airport_action(game_dict, airport_input, airport_random_action, game_dict["quiz_questions"])
+        # Player is at the airport_action() -function until location changes
+        game_dict = airport_menu(game_dict)
 
+        if game_dict["first_airport"]:
+            game_dict["first_airport"] = False
+        
 
 
         # TODO check at the new airport if we are at the same airport as the criminal is (write function criminal_caught function that retuns True if we are and False if we aren't)
@@ -65,6 +63,7 @@ def new_game():
         # reset airport_menu-helper parameters to default value before entering airport-menu on the new airport
         game_dict['talk_to_chief'] = False
         game_dict['criminal_caught'] = False
+        game_dict['tried_luck'] = False
         game_dict['next_location'] = ""
         game_dict["clue_solved"] = bool
         game_dict['criminal_was_here'] = bool

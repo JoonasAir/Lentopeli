@@ -2,7 +2,8 @@ from random import randint
 from game_setup import game_setup
 from mysql_connection import mysql_connection
 from colorama import Fore, Style
-
+from questions import ask_category, ask_question, get_questions
+from quiz_icao import quiz_icao
 from security import security
 
 
@@ -52,7 +53,7 @@ def airport_menu_input(game_dict:dict):
 
 
 
-def airport_action(game_dict):
+def airport_menu(game_dict):
 
     cursor = mysql_connection.cursor()
     luck = bool(randint(0,1000000)/1000000 <= game_dict["random_luck"]) # check if we are lucky. Based on variable random_luck defined on game_setup()
@@ -103,13 +104,13 @@ def airport_action(game_dict):
 
 
         # Solve the clue
-        elif user_input == 4 and game_dict["talk_to_chief"] and game_dict["criminal_was_here"]: # If input = 4 AND we have talked to the chief AND he told that the criminal have been here
-            print(Fore.RED + f"\nSolve the clue" + Style.RESET_ALL)
-
+        elif user_input == 4 and game_dict["talk_to_chief"] and game_dict['criminal_was_here'] and game_dict["clue_solved"] != True and game_dict["next_location"] == "": # visible IF we've talked to security chief AND the criminal has been at the airport AND we haven't solved the clue yet AND we don't know next location
+            question_bool = ask_question(game_dict["quiz_questions"])
+            game_dict["got_location"] = quiz_icao(question_bool)
 
 
         # Try to solve the previous clue again
-        elif user_input == 4 and game_dict["talk_to_chief"] and not game_dict["criminal_was_here"]: # If input = 4 AND we talked to chief AND he told that the criminal haven't been here
+        elif user_input == 4 and game_dict["talk_to_chief"] and not game_dict["criminal_was_here"] and game_dict["clue_solved"] != True and game_dict["next_location"] == "": # visible IF we've talked to security chief AND the criminal has NOT been at the airport AND we haven't solved the clue yet AND we don't know next location
             print(Fore.RED + f"\nTry to solve the previous clue again" + Style.RESET_ALL)
 
 
@@ -121,6 +122,10 @@ def airport_action(game_dict):
 
 if __name__ == "__main__":
     # define game_dict
-    game_dict = game_setup()
+    while True:
+        #setup game parameters
+        game_dict = game_setup()
+        game_dict["quiz_category"] = ask_category()
+        game_dict["quiz_questions"] = get_questions(game_dict["difficulty"], game_dict["quiz_category"])
 
-    airport_action(game_dict)
+        game_dict = airport_menu(game_dict)
