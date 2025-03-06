@@ -1,8 +1,10 @@
-from colorama import Fore, Style
+from colorama import Style
 from mysql_connection import mysql_connection
+from game_setup import colors
 
 
 def security(game_dict, luck):
+
     cursor = mysql_connection.cursor()
 
 
@@ -11,14 +13,15 @@ def security(game_dict, luck):
         sql = f"SELECT location FROM criminal WHERE Location = '{game_dict["player_location"]} ';" # Check if our location is found in criminal-table
         cursor.execute(sql)
         result = str(cursor.fetchone())
-        print(result)
+
         if game_dict["player_location"] == result: # If our location equals to the last of the visited locations in criminal-table
-            print(Fore.RED + f"\nSecurity chief's monitows were down due to the criminal's attack.\nStill he had a clue about criminal for you. Try to solve it\n" + Style.RESET_ALL)
+            print(colors["output"] + f"\nSecurity chief's monitows were down due to the criminal's attack.\nStill he had a clue about criminal for you. Try to solve it\n" + Style.RESET_ALL)
             game_dict["criminal_was_here"] = True
 
         else:
-            print(Fore.RED + f"\nSecurity chief told you the criminal haven't been at the airport. Try to solve last clue again.\n" + Style.RESET_ALL)
+            print(colors["output"] + f"\nSecurity chief told you the criminal haven't been at the airport. Try to solve last clue again.\n" + Style.RESET_ALL)
             game_dict["criminal_was_here"] = False
+
 
     elif luck and game_dict["criminal_was_here"]: # If criminal have been here and we got lucky
         game_dict["got_location"] = True
@@ -26,15 +29,15 @@ def security(game_dict, luck):
         cursor.execute(sql)
         result = cursor.fetchone()
         result = result[0][0]
-        print(Fore.RED + f"\n{result}" + Style.RESET_ALL)
-        print(Fore.RED + f"\nThe chief had just found the country where the criminal headed from here!" + Style.RESET_ALL)
-        print(Fore.RED + f"\nThe fight ICAO-code is: {result}" + Style.RESET_ALL)
+        print(colors["output"] + f"\n{result}" + Style.RESET_ALL)
+        print(colors["output"] + f"\nThe chief had just found the country where the criminal headed from here!" + Style.RESET_ALL)
+        print(colors["output"] + f"\nThe fight ICAO-code is: {result}" + Style.RESET_ALL)
 
     elif game_dict["criminal_was_here"]:
         pass
 
     else:
-        print(Fore.RED + f"\nThe chief had nothing new to tell you. He was still on a mission to recover his monitors from the attack of the criminal." + Style.RESET_ALL)
+        print(colors["output"] + f"\nThe chief had nothing new to tell you. He was still on a mission to recover his monitors from the attack of the criminal." + Style.RESET_ALL)
 
 
     return game_dict

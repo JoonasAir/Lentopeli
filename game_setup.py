@@ -1,5 +1,14 @@
+from colorama import Fore
 from criminal import criminal_headstart
 from mysql_connection import mysql_connection
+
+colors = {
+    "input":Fore.CYAN,
+    "warning":Fore.RED,
+    "time":Fore.LIGHTBLUE_EX,
+    "location":Fore.YELLOW,
+    "output":Fore.LIGHTYELLOW_EX
+    }
 
 
 # game_setup() funktiossa käyttäjä valitsee pelin vaikeusasteen, pelinimen, sekä pelaajalle arvotaan aloituslentokenttä
@@ -98,9 +107,11 @@ def game_setup():
             'criminal_was_here':bool,   # security chief tells us if the criminal has been at the air port or not. True=has been, False=has not been
             'criminal_caught':False,    # have we caught the criminal yet? True=yes, False=no
             'win':bool,                 # when conditions meet to end the game, this is turned to True if we won and False if we lost the game
-            'first_airport':True,        # are we at our first airport?
-            'running_time':"",
-            'time_left_bool':True
+            'first_airport':True,       # are we at our first airport?
+            'time_left_str':"",         # time left at the game: Formatted string telling minutes and seconds
+            'time_left_bool':True,      # time left at the game: True/False
+            'first_iteration':True,     # is this first iteration of the loop at current airport? 
+            'random_index_airport':0    # random index that defines random action we can do at current airport
         }
     }
 

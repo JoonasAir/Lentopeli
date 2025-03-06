@@ -4,7 +4,7 @@ from colorama import Fore, Style
 from airport_menu import airport_menu
 from background_story import background_story
 from criminal import criminal_timer
-from game_setup import game_setup
+from game_setup import game_setup, colors
 import multiprocessing
 from questions import ask_category, get_questions
 
@@ -16,7 +16,7 @@ def game_timer(game_timeremaining, stop_event):
         if stop_event.is_set():
             break
         min, sec = divmod(game_timeremaining, 60)
-        game_dict["running_time"] = Fore.RED + f"Time remaining: {min:02d}:{sec:02d}" + Style.RESET_ALL
+        game_dict["time_left_str"] = colors["time"] + f"Time remaining: {min:02d}:{sec:02d}" + Style.RESET_ALL
         #print(Fore.RED + timer, end = "\r")
         time.sleep(1)
         game_timeremaining -= 1
@@ -54,6 +54,10 @@ def new_game(game_dict):
 
     while not game_dict["criminal_caught"] and game_dict["game_money"] >= game_dict["flight_price"] and game_dict["time_left_bool"]:
 
+        #TODO print country and airpot
+        print(colors["location"] + f"You're at: {game_dict["player_location"]}" + Style.RESET_ALL)
+        
+        
         # Player is at the airport_action() -function until the location changes
         game_dict = airport_menu(game_dict)
 
@@ -76,6 +80,7 @@ def new_game(game_dict):
         game_dict['talk_to_chief'] = False
         game_dict['criminal_caught'] = False
         game_dict['tried_luck'] = False
+        game_dict['first_iteration'] = True
         game_dict['next_location'] = ""
         game_dict["clue_solved"] = bool
         game_dict['criminal_was_here'] = bool
