@@ -1,7 +1,7 @@
 from airport_menu import airport_menu
+from criminal import criminal_timer
 from game_setup import game_setup
 import multiprocessing
-from criminal import criminal_timer, criminal_headstart
 from questions import ask_category, get_questions
 
 
@@ -9,10 +9,8 @@ def new_game():
     #TODO add 'Check remaining time' -option on every input of the game
     print("At any moment of the game give 't' as an input to get remaining time.")
 
-    # screen_name, starting location and difficulty parameters returned in dictionary
-    game_dict = game_setup() # keys of the dictionary: 'game_money', 'game_time', 'random_luck', 'criminal_headstart', 'criminal_time', 'screen_name', 'player_location', 'difficulty', 'quiz_category'
-    criminal_headstart(game_dict["criminal_headstart"]) # clears criminal table and adds "criminal_headstart" amount of airports 
-
+    # screen_name, starting location, and many other parameters are returned as a dictionary. Also criminal's headstart is added to database 
+    game_dict = game_setup() # check the keys from game_setup.py's difficulty_settings -dictionary
 
     # Choosing category of quiz questions
     game_dict["quiz_category"] = ask_category()

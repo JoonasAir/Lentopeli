@@ -1,8 +1,6 @@
 from random import randint
-from game_setup import game_setup
 from mysql_connection import mysql_connection
 from colorama import Fore, Style
-from questions import ask_category, ask_question, get_questions
 from quiz_icao import quiz_icao
 from security import security
 
@@ -121,6 +119,9 @@ def airport_menu(game_dict):
     
 
 if __name__ == "__main__":
+    from questions import ask_category, ask_question, get_questions
+    from game_setup import game_setup
+
     # define game_dict
     while True:
         #setup game parameters

@@ -1,9 +1,6 @@
 #for functions
 from time import sleep
 from mysql_connection import mysql_connection
-#for testing
-from game_setup import game_setup
-import multiprocessing
 
 # tässä tiedostossa on määritetty neljä funktiota: 
 #   1. criminal_new_location(), joka ei vaadi parametrejä. Funktio lisää criminal-tauluun uuden ICAO-koodin
@@ -56,6 +53,9 @@ def criminal_caught(player_location):
 
 
 if __name__ == "__main__": # Main block
+    from game_setup import game_setup
+    import multiprocessing
+
     game_dict = game_setup() # Setting up game parameters (screen_name, difficulty)
 
     manager = multiprocessing.Manager() # Manager allows multiple processeses to modify a variable

@@ -98,9 +98,14 @@ def game_setup():
             'criminal_was_here':bool,   # security chief tells us if the criminal has been at the air port or not. True=has been, False=has not been
             'criminal_caught':False,    # have we caught the criminal yet? True=yes, False=no
             'win':bool,                 # when conditions meet to end the game, this is turned to True if we won and False if we lost the game
-            'first_airport':True        # are we at our first airport?
+            'first_airport':True,        # are we at our first airport?
+            'running_time':(0,0)
         }
     }
+
+
+    # Screen_name input
+    screen_name = str(input("Enter your game name: ")) 
 
     # Get parameters for game from difficulty_settings dictionary
     # user will be asked for a difficulty until valid inputs is given
@@ -116,18 +121,16 @@ def game_setup():
     # clears criminal table and adds "criminal_headstart" amount of airports 
     criminal_headstart(game_dict["criminal_headstart"]) 
 
-    # Screen_name input
-    screen_name = str(input("Enter your game name: ")) 
-
     # Starting location
     sql = "SELECT location FROM criminal WHERE id = 1;"
     cursor = mysql_connection.cursor(dictionary=True)
     cursor.execute(sql)
     result = cursor.fetchone()
 
-    # Add screen_name and starting location to dictionary that is returned after
-    game_dict["screen_name"] = screen_name # adding player's name to dictionary
-    game_dict["player_location"] = result["ident"]
+    # add screen_name and location to dict
+    game_dict["player_location"] = result["location"]
+    game_dict["screen_name"] = screen_name
+
 
 
 
