@@ -4,7 +4,7 @@ from mysql_connection import mysql_connection
 from colorama import Style
 from quiz_icao import quiz_icao
 from security import security
-from game_setup import colors
+from settings import colors
 
 
 # you're in X country at X airport

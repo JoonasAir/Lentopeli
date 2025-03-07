@@ -1,3 +1,3 @@
 
 def change_location():
-    pass
+    print("Buy a ticket to the next location and take the flight")

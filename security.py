@@ -1,6 +1,6 @@
 from colorama import Style
 from mysql_connection import mysql_connection
-from game_setup import colors
+from settings import colors
 
 
 def security(game_dict, luck):

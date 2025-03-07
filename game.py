@@ -4,7 +4,7 @@ from colorama import Style
 from airport_menu import airport_menu
 from background_story import background_story
 from criminal import criminal_timer
-from game_setup import colors
+from settings import colors
 import multiprocessing
 from questions import ask_category, get_questions
 
