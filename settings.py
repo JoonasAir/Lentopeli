@@ -4,9 +4,9 @@ default_colors = {
     "input":Fore.CYAN,
     "warning":Fore.RED,
     "time":Fore.LIGHTBLUE_EX,
-    "location":Fore.LIGHTGREEN_EX,
+    "location":Fore.LIGHTYELLOW_EX,
     "menu":Fore.LIGHTMAGENTA_EX,
-    "output":Fore.LIGHTYELLOW_EX
+    "output":Fore.GREEN
 }
 colors = default_colors.copy()
 
@@ -87,7 +87,7 @@ common_settings = {
 
 
 
-def settings(difficulty_settings):
+def settings(difficulty_settings, colors):
 
     while True:
         print(colors["menu"] + "\nS E T T I N G S\n\n"+ Style.RESET_ALL)

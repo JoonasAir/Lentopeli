@@ -49,7 +49,7 @@ if __name__ == "__main__":
     
 
         elif user_input == 5: # Settings
-            settings(difficulty_settings)
+            settings(difficulty_settings, colors)
 
         
         while True: # infinite loop that breaks when valid input is given

@@ -55,7 +55,7 @@ def new_game(game_dict):
     while not game_dict["criminal_caught"] and game_dict["game_money"] >= game_dict["flight_price"] and game_dict["time_left_bool"]:
 
         #TODO print country and airpot
-        print(colors["location"] + f"You're at: {game_dict["player_location"]}" + Style.RESET_ALL)
+        print(colors["location"] + f"\n\nYou're at: {game_dict["player_location"]}" + Style.RESET_ALL)
         
         
         # Player is at the airport_action() -function until the location changes
