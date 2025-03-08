@@ -1,6 +1,8 @@
 # Voidaan käyttää json tiedostoa missä kysymykset
 import json
 import time
+from settings import colors
+from colorama import Style
 #import threading
 # Voidaan valita satunnaisia kysymyksiä sekä sekoitta vastausvaihtoehdot
 import random 
@@ -12,6 +14,12 @@ import html
 
 # Avataan kysymykset luettavassa muodossa muuttujaan data. Käytetään encoding koska tiedosto sisältää
 #muitakin kuin ASCII-merkkejä
+menu_color = colors["menu"]
+output_color = colors["output"]
+input_color = colors["input"]
+warning_color = colors["warning"]
+reset_color = Style.RESET_ALL
+
 with open("questions.json", "r", encoding="utf-8") as f:
     data = json.load(f)
 
@@ -20,10 +28,11 @@ with open("questions.json", "r", encoding="utf-8") as f:
 
 # Määritetään vaikeusaste
 def ask_difficulty():
-    print("Select difficulty level:")
-    print("1. Easy")
-    print("2. Medium")
-    print("3. Hard\n")
+
+    print(f"{menu_color}Select difficulty level:{reset_color}")
+    print(f"{output_color}1. Easy{reset_color}")
+    print(f"{output_color}2. Medium{reset_color}")
+    print(f"{output_color}3. Hard{reset_color}\n")
     
     # Määritellään vaikeusasteet
     difficulty_levels = {1: "easy", 2: "medium", 3: "hard"}
@@ -33,14 +42,14 @@ def ask_difficulty():
     # Tarkistetaan, että käyttäjän valinta on oikein ja palautetaan valittu vaikeusaste
     while True:
         try:
-            user_choice = int(input("Enter the number corresponding to your choice: "))
+            user_choice = int(input(f"{input_color}Enter the number corresponding to your choice: " + reset_color))
             if 1 <= user_choice <= 3:
                 break
-            print("Wrong input, try!")
+            print(f"{output_color}Wrong input, try!{reset_color}")
         except KeyboardInterrupt: 
             break
         except: 
-            print("Wrong input, try again!")
+            print(f"{output_color}Wrong input, try again!{reset_color}")
         
             
             
@@ -83,22 +92,22 @@ def ask_category():
     ]
 
     # Tulostetaan ja numeroidaan kaikki listassa olevat kategoriat
-    print("\nAvailable categories for questions: ")
+    print(f"{output_color}\nAvailable categories for questions: " + reset_color)
     for i, category in enumerate(categories, 1):
-        print(f"{i}. {category}")
+        print(f"{menu_color}{i}. {category}{reset_color}")
 
 
     # Kysytään kategoriaa niin kauan kunnes annettu vastaus on joku numeron 1 ja 22 väliltä
     while True:
         try:
-            select_category = int(input("Enter the number corresponding to your choice: "))
+            select_category = int(input(f"{input_color}Enter the number corresponding to your choice: " + reset_color))
             if 1 <= select_category <= 24:
                 break
-            print("Wrong input, try again!")
+            print(f"{output_color}Wrong input, try again!{reset_color}")
         except KeyboardInterrupt: 
             break
         except: 
-            print("Wrong input, try again!")
+            print(f"{output_color}Wrong input, try again!{reset_color}")
 
     
     # Palautetaan valittu kategoria, miinustetaan siitä 1 koska listan tulostuksessa lisättiin numeroinnin takia 1
@@ -129,35 +138,35 @@ def ask_question(questions):
     random.shuffle(answers)
 
     # Tulostetaan kysymys ja vaihtoehdot. Enumerate numeroi jokaisen listan alkoin, alkaen numerosta 1.
-    print(f"\nQuestion: {question_text}\nOptions:\n")
+    print(f"{output_color}\nQuestion: {question_text}\nOptions:\n{reset_color}")
     for i, answer in enumerate(answers, 1):
-        print(f"{i}. {answer}")
+        print(f"{output_color}{i}. {answer}{reset_color}")
 
     # Kysytään käyttäjältä valinta
     while True:
         try:
-            user_answer = int(input("Select the right answer: "))
+            user_answer = int(input(f"{output_color}Select the right answer: " + reset_color))
             if 1 <= user_answer <= len(answers):
                 break
             else:
-                print("Wrong input, try again!")
+                print(f"{output_color}Wrong input, try again!{reset_color}")
         except ValueError:
-            print("Wrong input, try again!")
+            print(f"{output_color}Wrong input, try again!{reset_color}")
 
     
     # Tarkistetaan, onko valittu vastaus oikea. Pitää laittaa -1 edellisessä for silmukassa lisättiin yksi numeroinnin takia
     if answers[user_answer - 1] == correct_answer:
-        print("\nCorrect!")
+        print(f"{output_color}\nCorrect!{reset_color}")
         return True  # Oikea vastaus
     else:
-        print(f"\nWrong! The correct answer was: {correct_answer}")
+        print(f"{output_color}\nWrong! The correct answer was: {correct_answer}{reset_color}")
         return False  # Väärä vastaus
 
 
 # Testataan koodin toimivuus kolmella kysymyksellä
 def practice_quiz():
 
-    x = int(input("How many questions would you like to practice?: "))
+    x = int(input(f"{input_color}How many questions would you like to practice?: {reset_color}"))
     # Kysytään vaikeusaste käyttäjältä
     chosen_difficulty = ask_difficulty()
 
@@ -169,12 +178,12 @@ def practice_quiz():
     
     # Pelaaja vastaa kolmeen kysymykseen
     score = 0
-    for _ in range(x):  # Voit muuttaa montako kysymystä haluat
+    for _ in range(x):
         if ask_question(questions):
             score += 1
 
     # Peli päättyy
-    print(f"Your score: {score}/{x}")
+    print(f"{warning_color}Your score: {score}/{x}! {reset_color}")
 
 # Käynnistetään peli
 if __name__ == "__main__": # testikoodi main blockin sisällä, jotta sitä ei ajeta heti importin yhteydessä
