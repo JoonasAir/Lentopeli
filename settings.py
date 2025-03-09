@@ -6,8 +6,7 @@ default_colors = {
     "time":Fore.LIGHTBLUE_EX,
     "location":Fore.LIGHTYELLOW_EX,
     "menu":Fore.LIGHTMAGENTA_EX,
-    "output":Fore.GREEN,
-    "reset_color":Style.RESET_ALL
+    "output":Fore.GREEN
 }
 colors = default_colors.copy()
 

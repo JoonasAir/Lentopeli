@@ -1,9 +1,5 @@
 from time import sleep
-<<<<<<< HEAD
-from config import mysql_connection
-=======
-from db.config import mysql_connection
->>>>>>> 23d876f1ffd08933d76517dedd4cc7982dd746ba
+from mysql_connection import mysql_connection
 
 # tässä tiedostossa on määritetty neljä funktiota: 
 #   1. criminal_new_location(), joka ei vaadi parametrejä. Funktio lisää criminal-tauluun uuden ICAO-koodin
@@ -56,7 +52,7 @@ def criminal_caught(player_location):
 
 
 if __name__ == "__main__": # Main block
-    from src.utils.game_setup import game_setup
+    from game_setup import game_setup
     import multiprocessing
 
     game_dict = game_setup() # Setting up game parameters (screen_name, difficulty)

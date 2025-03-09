@@ -1,17 +1,7 @@
 from colorama import Fore, Style
-<<<<<<< HEAD:game_setup.py
 from criminal import criminal_headstart
-<<<<<<< HEAD
-from config import mysql_connection
-=======
-from db.config import mysql_connection
->>>>>>> 23d876f1ffd08933d76517dedd4cc7982dd746ba
+from mysql_connection import mysql_connection
 from settings import colors
-=======
-from src.utils.criminal import criminal_headstart
-from db.config import mysql_connection
-from src.config import colors
->>>>>>> 10a43b33d146b00ec35a7075def8caad9320c851:src/utils/game_setup.py
 
 
 

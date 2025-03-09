@@ -1,9 +1,8 @@
 # Voidaan käyttää json tiedostoa missä kysymykset
 import json
 import time
-from src.config import colors
+from settings import colors
 from colorama import Style
-from db.config import mysql_connection
 #import threading
 # Voidaan valita satunnaisia kysymyksiä sekä sekoitta vastausvaihtoehdot
 import random 
@@ -23,34 +22,6 @@ reset_color = Style.RESET_ALL
 
 with open("questions.json", "r", encoding="utf-8") as f:
     data = json.load(f)
-
-
-# takes following parameters:
-#   1. boolean (from ask_question() -function)
-#       True    ->    return ICAO for the next location in the criminal-table the player has not visited yet 
-#       False   ->    return random ICAO (not player's current location and not found in criminal-table)
-#   2. Player's current location (ICAO-code)
-
-
-def quiz_icao(answer:bool, player_location):
-    cursor = mysql_connection.cursor()
-
-    if answer == True:      # return right ICAO-code
-        sql = "SELECT location FROM criminal WHERE visited = 0 LIMIT 1;"
-        cursor.execute(sql)
-        result = cursor.fetchone()
-        return result[0]
-
-    elif answer == False:   # return wrong ICAO-code
-        sql = f"SELECT ident FROM airport WHERE continent = 'EU' AND type = 'large_airport' AND ident NOT IN (SELECT location FROM criminal) AND ident != '{player_location}' ORDER BY RAND() LIMIT 1;"
-        cursor.execute(sql)
-        result = cursor.fetchone()
-        return result[0]
-
-
-if __name__ == "__main__": # Test code
-    print(quiz_icao(True, "EFHK"))
-    print(quiz_icao(False, "EFHK"))
 
 
 
@@ -153,7 +124,7 @@ def get_questions(difficulty, category):
 
 
 # Funktio, joka kysyy käyttäjältä satunnaisen kysymyksen ja tarkistaa vastauksen
-def ask_question(questions, player_location):
+def ask_question(questions):
     # Valitaan satunnainen kysymys
     question = random.choice(questions)
 
@@ -186,10 +157,10 @@ def ask_question(questions, player_location):
     # Tarkistetaan, onko valittu vastaus oikea. Pitää laittaa -1 edellisessä for silmukassa lisättiin yksi numeroinnin takia
     if answers[user_answer - 1] == correct_answer:
         print(f"{output_color}\nCorrect!{reset_color}")
-        return quiz_icao(True, player_location)  # Oikea vastaus
+        return True  # Oikea vastaus
     else:
         print(f"{output_color}\nWrong! The correct answer was: {correct_answer}{reset_color}")
-        return quiz_icao(False, player_location)  # Väärä vastaus
+        return False  # Väärä vastaus
 
 
 # Testataan koodin toimivuus kolmella kysymyksellä

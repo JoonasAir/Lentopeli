@@ -1,5 +1,5 @@
 from colorama import Style
-from src.config import colors
+from settings import colors
 
 
 def tutorial():
