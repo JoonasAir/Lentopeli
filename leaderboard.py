@@ -1,12 +1,12 @@
-from colorama import Style
+#from colorama import Style
 from settings import colors
-import mysql.connector
-from mysql_connection import mysql_connection
+from db.config import mysql_connection
+from db.queries import queries
 from prettytable import PrettyTable
 
 def leaderboard():
     
-    sql = "SELECT screen_name, points FROM leaderboard ORDER BY points DESC;"
+    sql = queries.leaderboard_query
     kursori = mysql_connection.cursor()
     kursori.execute(sql)
     tulos = kursori.fetchall()
@@ -22,6 +22,9 @@ def leaderboard():
     
     result = table
 
-    print(colors["output"] + f"{result}" + Style.RESET_ALL)
+    print(colors["output"] + f"{result}" + colors["reset_color"])
 
-    input(colors["input"] + "\nPress enter to return to the main menu." + Style.RESET_ALL)
+    input(colors["input"] + "\nPress enter to return to the main menu." + colors["reset_color"])
+
+
+leaderboard()

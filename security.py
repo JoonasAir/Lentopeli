@@ -1,5 +1,5 @@
 from colorama import Style
-from mysql_connection import mysql_connection
+from db.config import mysql_connection
 from settings import colors
 
 
