@@ -14,4 +14,4 @@ venv/
 
 tempCodeRunnerFile.py
 
-mysql_connection.py
+config.py

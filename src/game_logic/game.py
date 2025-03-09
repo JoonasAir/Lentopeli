@@ -1,12 +1,12 @@
 import threading
 import time
 from colorama import Style
-from airport_menu import airport_menu
-from background_story import background_story
-from criminal import criminal_timer
-from settings import colors
+from game_logic.airport_menu import airport_menu
+from src.utils.background_story import background_story
+from src.utils.criminal import criminal_timer
+from src.config import colors
 import multiprocessing
-from questions import ask_category, get_questions
+from src.utils.questions import ask_category, get_questions
 
 
 stop_event = threading.Event()
@@ -32,7 +32,7 @@ def new_game(game_dict):
 
 
     # background story of the game (Y/N) = (player can read or skip the story)
-    background_story()
+    background_story(game_dict)
 
 
     #   Game starts
@@ -115,7 +115,7 @@ def new_game(game_dict):
 
 
 if __name__ == "__main__": 
-    from game_setup import game_setup    
+    from src.utils.game_setup import game_setup    
     # screen_name, starting location, and many other parameters are returned as a dictionary. Also criminal's headstart is added to database 
     game_dict = game_setup() # check the keys from game_setup.py's difficulty_settings -dictionary
     new_game(game_dict)

@@ -1,14 +1,13 @@
 from colorama import Style
-from game import new_game
-from game_setup import game_setup
-from leaderboard import leaderboard
-from questions import practice_quiz
-from settings import settings, difficulty_settings, common_settings, colors
-from tutorial import tutorial
+from game_logic.game import new_game
+from src.utils.game_setup import game_setup
+from src.utils.leaderboard import leaderboard
+from src.utils.questions import practice_quiz
+from src.config import settings, difficulty_settings, common_settings, colors
+from src.utils.tutorial import tutorial
 
 
-
-if __name__ == "__main__":
+def main_menu():
 
     
     while True: # infinite loop that breaks when valid input is given
