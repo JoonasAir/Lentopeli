@@ -13,7 +13,7 @@ stop_event = threading.Event()
 
 def game_timer(game_timeremaining, stop_event, game_dict):
     #global game_dict
-    while game_timeremaining > 0:
+    while game_timeremaining >= 0:
         if stop_event.is_set():
             break
         min, sec = divmod(game_timeremaining, 60)
@@ -100,7 +100,7 @@ def new_game(game_dict):
 
 
 
-# When the game ends:
+# TODO When the game ends:
 #   1. Scores are calculated
 #   2. The game statistics are printed (screen name, how many games played with this screen name, difficulty level, score, elapsed time, money at the start, money spent, number of flights, number of off-course flights)
 #   3. Save game stats to the leaderboard table
