@@ -32,7 +32,7 @@ def new_game(game_dict):
 
 
     # background story of the game (Y/N) = (player can read or skip the story)
-    background_story(game_dict["screen_name"])
+    background_story(game_dict)
 
 
     #   Game starts

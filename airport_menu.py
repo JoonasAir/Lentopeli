@@ -2,7 +2,7 @@ from random import randint
 from change_location import change_location
 from mysql_connection import mysql_connection
 from colorama import Style
-from quiz_icao import quiz_icao
+from questions import quiz_icao
 from security import security
 from settings import colors
 
@@ -134,9 +134,9 @@ def airport_menu_input(game_dict:dict):
 def airport_menu(game_dict):
 
     cursor = mysql_connection.cursor()
-    luck = bool(randint(0,1000000)/1000000 <= game_dict["random_luck"]) # check if we are lucky. Based on variable random_luck defined on game_setup()
 
     while True: # break out from loop when we fly to next location
+        luck = bool(randint(0,1000000)/1000000 <= game_dict["random_luck"]) # check if we are lucky. Based on variable random_luck defined on game_setup()
         print("\n")
 
         game_dict, user_input, random_action = airport_menu_input(game_dict) # ask what user wants to do at the airport

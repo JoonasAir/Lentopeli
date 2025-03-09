@@ -2,13 +2,11 @@
 import json
 from settings import colors
 from colorama import Style
-#import threading
+from mysql_connection import mysql_connection
 # Voidaan valita satunnaisia kysymyksiä sekä sekoitta vastausvaihtoehdot
 import random 
 # Voidaan muuttaa kysymysten HTML elementit oikeiksi merkeiksi
 import html 
-#import game_timer
-#from game_setup import game_setup
 
 
 # Avataan kysymykset luettavassa muodossa muuttujaan data. Käytetään encoding koska tiedosto sisältää
@@ -22,7 +20,27 @@ reset_color = Style.RESET_ALL
 with open("questions.json", "r", encoding="utf-8") as f:
     data = json.load(f)
 
+# takes following parameters:
+#   1. boolean (from ask_question() -function)
+#       True    ->    return ICAO for the next location in the criminal-table the player has not visited yet 
+#       False   ->    return random ICAO (not player's current location and not found in criminal-table)
+#   2. Player's current location (ICAO-code)
 
+
+def quiz_icao(answer:bool, player_location):
+    cursor = mysql_connection.cursor()
+
+    if answer == True:      # return right ICAO-code
+        sql = "SELECT location FROM criminal WHERE visited = 0 LIMIT 1;"
+        cursor.execute(sql)
+        result = cursor.fetchone()
+        return result[0]
+
+    elif answer == False:   # return wrong ICAO-code
+        sql = f"SELECT ident FROM airport WHERE continent = 'EU' AND type = 'large_airport' AND ident NOT IN (SELECT location FROM criminal) AND ident != '{player_location}' ORDER BY RAND() LIMIT 1;"
+        cursor.execute(sql)
+        result = cursor.fetchone()
+        return result[0]
 
 
 # Määritetään vaikeusaste
