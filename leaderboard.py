@@ -1,6 +1,5 @@
 from colorama import Style
 from settings import colors
-import mysql.connector
 from mysql_connection import mysql_connection
 from prettytable import PrettyTable
 

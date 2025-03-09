@@ -1,6 +1,5 @@
 # Voidaan käyttää json tiedostoa missä kysymykset
 import json
-import time
 from settings import colors
 from colorama import Style
 #import threading
