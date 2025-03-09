@@ -1,4 +1,4 @@
-from mysql_connection import mysql_connection
+from config import mysql_connection
 
 # takes following parameters:
 #   1. boolean (from ask_question() -function)

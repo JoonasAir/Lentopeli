@@ -1,7 +1,7 @@
 from colorama import Style
 from settings import colors
 import mysql.connector
-from mysql_connection import mysql_connection
+from config import mysql_connection
 from prettytable import PrettyTable
 
 def leaderboard():
@@ -26,6 +26,3 @@ def leaderboard():
 
     input(colors["input"] + "\nPress enter to return to the main menu." + Style.RESET_ALL)
 
-
-
-leaderboard()

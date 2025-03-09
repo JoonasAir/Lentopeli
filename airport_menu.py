@@ -1,6 +1,6 @@
 from random import randint
 from change_location import change_location
-from mysql_connection import mysql_connection
+from config import mysql_connection
 from colorama import Style
 from quiz_icao import quiz_icao
 from security import security

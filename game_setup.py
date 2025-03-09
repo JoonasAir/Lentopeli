@@ -1,6 +1,6 @@
 from colorama import Fore, Style
 from criminal import criminal_headstart
-from mysql_connection import mysql_connection
+from config import mysql_connection
 from settings import colors
 
 
