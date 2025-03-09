@@ -25,7 +25,3 @@ def leaderboard():
     print(colors["output"] + f"{result}" + Style.RESET_ALL)
 
     input(colors["input"] + "\nPress enter to return to the main menu." + Style.RESET_ALL)
-
-
-
-leaderboard()
