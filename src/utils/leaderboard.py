@@ -1,9 +1,13 @@
 #from colorama import Style
+<<<<<<< HEAD:leaderboard.py
 from settings import colors
 <<<<<<< HEAD
 import mysql.connector
 from config import mysql_connection
 =======
+=======
+from src.config import colors
+>>>>>>> 10a43b33d146b00ec35a7075def8caad9320c851:src/utils/leaderboard.py
 from db.config import mysql_connection
 from db.queries import queries
 >>>>>>> 23d876f1ffd08933d76517dedd4cc7982dd746ba
