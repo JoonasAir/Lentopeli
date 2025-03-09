@@ -1,7 +1,7 @@
 from colorama import Fore, Style
-from criminal import criminal_headstart
+from src.utils.criminal import criminal_headstart
 from db.config import mysql_connection
-from settings import colors
+from src.config import colors
 
 
 

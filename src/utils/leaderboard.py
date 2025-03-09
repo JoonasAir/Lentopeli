@@ -1,5 +1,5 @@
 #from colorama import Style
-from settings import colors
+from src.config import colors
 from db.config import mysql_connection
 from db.queries import queries
 from prettytable import PrettyTable

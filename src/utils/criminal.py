@@ -52,7 +52,7 @@ def criminal_caught(player_location):
 
 
 if __name__ == "__main__": # Main block
-    from game_setup import game_setup
+    from src.utils.game_setup import game_setup
     import multiprocessing
 
     game_dict = game_setup() # Setting up game parameters (screen_name, difficulty)

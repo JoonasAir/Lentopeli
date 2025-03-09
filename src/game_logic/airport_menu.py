@@ -1,10 +1,14 @@
 from random import randint
-from change_location import change_location
+from utils.change_location import change_location
 from db.config import mysql_connection
-from colorama import Style
-from quiz_icao import quiz_icao
-from security import security
-from settings import colors
+from colorama import Style 
+from src.utils.security import security
+from src.config import colors
+
+#import sys
+#import os
+#sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', 'db')))
+
 
 
 # you're in X country at X airport
@@ -180,8 +184,8 @@ def airport_menu(game_dict):
 
 
         elif user_input == "Solve the clue":
-            question_bool = ask_question(game_dict["quiz_questions"])
-            game_dict["got_location"] = quiz_icao(question_bool)
+            game_dict["player_location"] = ask_question(game_dict["quiz_questions"], game_dict["player_location"])
+        
 
 
         elif user_input == "Try to solve the previous clue again": 
@@ -195,8 +199,8 @@ def airport_menu(game_dict):
     
 
 if __name__ == "__main__":
-    from questions import ask_category, ask_question, get_questions
-    from game_setup import game_setup
+    from src.utils.questions import ask_category, ask_question, get_questions
+    from src.utils.game_setup import game_setup
 
     # define game_dict
     while True:

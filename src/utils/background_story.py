@@ -1,11 +1,11 @@
 # background story of the game (Y/N) = (player can read or skip the story)
 import textwrap
 import shutil
-import game_setup
+import src.utils.game_setup as game_setup
 
 
 from colorama import Style
-from settings import colors
+from src.config import colors
 
 def background_story(game_dict):
 
