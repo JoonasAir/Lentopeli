@@ -1,0 +1,1 @@
+leaderboard_query = "SELECT screen_name, points FROM leaderboard ORDER BY points DESC;"

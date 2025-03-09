@@ -1,6 +1,10 @@
 from random import randint
 from change_location import change_location
+<<<<<<< HEAD
 from config import mysql_connection
+=======
+from db.config import mysql_connection
+>>>>>>> 23d876f1ffd08933d76517dedd4cc7982dd746ba
 from colorama import Style
 from quiz_icao import quiz_icao
 from security import security

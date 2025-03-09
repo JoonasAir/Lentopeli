@@ -1,5 +1,9 @@
 from time import sleep
+<<<<<<< HEAD
 from config import mysql_connection
+=======
+from db.config import mysql_connection
+>>>>>>> 23d876f1ffd08933d76517dedd4cc7982dd746ba
 
 # tässä tiedostossa on määritetty neljä funktiota: 
 #   1. criminal_new_location(), joka ei vaadi parametrejä. Funktio lisää criminal-tauluun uuden ICAO-koodin
