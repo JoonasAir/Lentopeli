@@ -27,5 +27,5 @@ def leaderboard():
     input(colors["input"] + "\nPress enter to return to the main menu." + Style.RESET_ALL)
 
 
-
-leaderboard()
+if __name__ == "__main__":
+    leaderboard()
