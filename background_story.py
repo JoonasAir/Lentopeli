@@ -2,14 +2,14 @@
 import textwrap
 import shutil
 import game_setup
-from settings import common_settings
+
 
 from colorama import Style
 from settings import colors
 
-def background_story():
+def background_story(game_dict):
 
-    screen_name = common_settings["screen_name"]
+    screen_name = game_dict["screen_name"]
 
     longtext = f"""You are an elite Interpol agent, Agent {screen_name}, tasked with capturing a notorious cybercriminal known only by his alias, Shadow. Shadow is a brilliant hacker and mastermind who has been orchestrating a series of devastating cyber-attacks around the world, including infiltrating the very airports that are supposed to be our last line of defense. His latest exploit has crippled major financial systems, causing widespread chaos. But what's worse—he’s also infiltrating the global aviation infrastructure. Shadow has embedded himself within critical airport systems, tampering with flight schedules, security measures, and communication networks. This dangerous game of cat and mouse has escalated to a new level. Not only is Shadow on the run, but he is actively sabotaging the airports that serve as critical hubs for international travel. As an elite agent, your mission is clear: Track down Shadow and stop him before he plunges the world into an even deeper crisis. But with every move you make, Shadow makes another—hiding in plain sight at airports, using his control over the systems to cause mayhem. He is manipulating security checkpoints, redirecting flights, and even triggering false alarms to create diversions, all while staying just a few steps ahead of you. You must race against time, navigating airports where things are never what they seem. The deeper you go, the more you'll realize that Shadow is not just hiding—he’s actively manipulating the environment around you. Can you catch him before the entire global airport network collapses?"""
 
@@ -33,5 +33,6 @@ def background_story():
 
 
 if __name__ == "__main__":
-    background_story()
+    game_dict = {"screen_name": "jorma"}
+    background_story(game_dict)
     
