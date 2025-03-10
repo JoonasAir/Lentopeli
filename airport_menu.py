@@ -2,12 +2,9 @@ from random import randint
 from player import change_location, print_location
 from mysql_connection import mysql_connection
 from questions import quiz_icao
-from security import security
+from security import talk_to_security
 from styles import styles
 
-
-# you're in X country at X airport
-# t - time
 
 
 
@@ -103,7 +100,7 @@ def airport_menu_input(game_dict:dict):
         option_list.append(airport_actions[3])
 
     # Buy a flight ticket
-    elif game_dict["next_location"] != "": # visible IF we got the location (from quiz or with luck)
+    elif game_dict["next_location"] != "": # visible IF we got the location (from quiz or with luck_bool)
         menu += f"    {option_num} - {airport_actions[4]}\n"
         option_num += 1
         option_list.append(airport_actions[4])
@@ -130,12 +127,12 @@ def airport_menu_input(game_dict:dict):
 
 
 
-def airport_menu(game_dict):
+def airport_menu(game_dict:dict):
 
     cursor = mysql_connection.cursor()
 
     while True: # break out from loop when we fly to next location
-        luck = bool(randint(0,1000000)/1000000 <= game_dict["random_luck"]) # check if we are lucky. Based on variable random_luck defined on game_setup()
+        luck_bool = bool(randint(0,1000000)/1000000 <= game_dict["random_luck_bool"]) # check if we are luck_booly. Based on variable random_luck_bool defined on game_setup()
         print("\n")
 
         game_dict, user_input, random_action = airport_menu_input(game_dict) # ask what user wants to do at the airport
@@ -146,12 +143,12 @@ def airport_menu(game_dict):
 
 
         elif user_input == random_action[0]:
-            if game_dict["tried_luck"]:
+            if game_dict["tried_luck_bool"]:
                 print(styles["output"] + f"{random_action[3]}" + styles["reset"])
             else:
                 print(styles["output"] + f"You chose to {random_action[0].lower()}.\n" + styles["reset"])
-                game_dict["tried_luck"] = True
-                if luck:
+                game_dict["tried_luck_bool"] = True
+                if luck_bool:
                     game_dict["got_location"] = True
                     sql = "SELECT location FROM criminal WHERE visited = 0 LIMIT 1;"
                     cursor.execute(sql)
@@ -166,14 +163,14 @@ def airport_menu(game_dict):
 
 
         elif user_input == "Talk to airport's security chief": 
-            game_dict = security(game_dict, luck)
+            game_dict = talk_to_security(game_dict, luck_bool)
             
 
 
 
         elif user_input == "Buy a flight ticket": 
             print(styles["output"] + f"\nHere you buy a flight ticket" + styles["reset"])
-            game_dict = change_location(game_dict)
+            change_location(game_dict)
             
             #TODO change player's location
             
@@ -183,8 +180,8 @@ def airport_menu(game_dict):
 
 
         elif user_input == "Solve the clue":
-            question_bool = ask_question(game_dict["quiz_questions"])
-            game_dict["got_location"] = quiz_icao(question_bool)
+            ask_question_bool = ask_question(game_dict["quiz_questions"])
+            quiz_icao(ask_question_bool, game_dict)
 
 
         elif user_input == "Try to solve the previous clue again": 

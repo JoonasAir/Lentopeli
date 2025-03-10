@@ -1,7 +1,7 @@
 from mysql_connection import mysql_connection
 from styles import styles
 
-def security(game_dict, luck):
+def talk_to_security(game_dict:dict, luck_bool:bool):
 
     cursor = mysql_connection.cursor()
 
@@ -21,7 +21,7 @@ def security(game_dict, luck):
             game_dict["criminal_was_here"] = False
 
 
-    elif luck and game_dict["criminal_was_here"]: # If criminal have been here and we got lucky
+    elif luck_bool and game_dict["criminal_was_here"]: # If criminal have been here and we got luck_booly
         game_dict["got_location"] = True
         sql = "SELECT location FROM criminal WHERE visited = 0 LIMIT 1;"
         cursor.execute(sql)

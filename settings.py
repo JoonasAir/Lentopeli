@@ -5,7 +5,7 @@ from styles import styles
 
 
 
-def settings(game_parameters, styles):
+def settings(game_parameters:dict, styles:dict):
 
     while True:
         print(styles["menu"] + "\nS E T T I N G S\n\n"+ styles["reset"])

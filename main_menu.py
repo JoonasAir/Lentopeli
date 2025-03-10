@@ -10,7 +10,6 @@ from styles import styles
 
 
 def main_menu():
-    styles
 
     while True: # infinite loop that breaks when valid input is given
         try:

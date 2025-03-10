@@ -9,30 +9,31 @@ import multiprocessing
 from questions import ask_category, get_questions
 
 
-stop_event = threading.Event()
+stop_timer = threading.Event()
 
-def game_timer(game_timeremaining, stop_event, game_dict):
+def game_timer(game_dict:dict, stop_timer:threading.Event):
     #global game_dict
-    while game_timeremaining >= 0:
-        if stop_event.is_set():
+    while game_dict["game_time"] >= 0:
+        if stop_timer.is_set():
             break
-        min, sec = divmod(game_timeremaining, 60)
+        min, sec = divmod(game_dict["game_time"], 60)
         game_dict["time_left_str"] = styles["time"] + f"Time remaining: {min:02d}:{sec:02d}" + styles["reset"]
         time.sleep(1)
-        game_timeremaining -= 1
+        game_dict["game_time"] -= 1
     game_dict["time_left_bool"] = False
 
 
-def new_game(game_dict):
+def new_game(game_dict:dict):
     # Choosing category of quiz questions
     game_dict["quiz_category"] = ask_category()
     # Get quiz questions with right difficulty and category
     game_dict["quiz_questions"] = get_questions(game_dict["difficulty"], game_dict["quiz_category"])
 
-
+    print(type(game_dict["quiz_questions"]))
 
     # background story of the game (Y/N) = (player can read or skip the story)
-    background_story(game_dict)
+    background_story(game_dict["screen_name"])
+
 
 
     #   Game starts
@@ -47,7 +48,7 @@ def new_game(game_dict):
     # Start the process
     ProcessCriminalTimer.start()
     
-    game_timer_thread = threading.Thread(target = game_timer, args = (game_dict["game_time"], stop_event, game_dict))
+    game_timer_thread = threading.Thread(target = game_timer, args = (game_dict, stop_timer))
     game_timer_thread.daemon = True
     game_timer_thread.start()
 
@@ -96,7 +97,7 @@ def new_game(game_dict):
     ProcessCriminalTimer.terminate()
     # Ensure the background process has ended before moving on
     ProcessCriminalTimer.join()
-    stop_event.set()
+    stop_timer.set()
 
 
 

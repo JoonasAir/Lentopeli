@@ -47,8 +47,9 @@ def criminal_headstart(headstart:int):
         criminal_new_location()
 
 
-def criminal_caught(player_location):
-    pass
+def criminal_caught(player_location:str):
+    pass        # TODO check at the new airport if we are at the same airport as the criminal is (write function criminal_caught function that retuns True if we are and False if we aren't)
+
 
 
 if __name__ == "__main__": # Main block

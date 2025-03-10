@@ -7,7 +7,6 @@ from styles import styles
 def change_location(game_dict):
     game_dict["player_location"] = game_dict["next_location"]
     game_dict["next_location"] = ""
-    return game_dict
 
 def print_location(icao):
     cursor = mysql_connection.cursor(dictionary=True)

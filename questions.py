@@ -19,27 +19,6 @@ reset_color = styles["reset"]
 with open("questions.json", "r", encoding="utf-8") as f:
     data = json.load(f)
 
-# takes following parameters:
-#   1. boolean (from ask_question() -function)
-#       True    ->    return ICAO for the next location in the criminal-table the player has not visited yet 
-#       False   ->    return random ICAO (not player's current location and not found in criminal-table)
-#   2. Player's current location (ICAO-code)
-
-
-def quiz_icao(answer:bool, player_location):
-    cursor = mysql_connection.cursor()
-
-    if answer == True:      # return right ICAO-code
-        sql = "SELECT location FROM criminal WHERE visited = 0 LIMIT 1;"
-        cursor.execute(sql)
-        result = cursor.fetchone()
-        return result[0]
-
-    elif answer == False:   # return wrong ICAO-code
-        sql = f"SELECT ident FROM airport WHERE continent = 'EU' AND type = 'large_airport' AND ident NOT IN (SELECT location FROM criminal) AND ident != '{player_location}' ORDER BY RAND() LIMIT 1;"
-        cursor.execute(sql)
-        result = cursor.fetchone()
-        return result[0]
 
 
 # Määritetään vaikeusaste
@@ -133,14 +112,14 @@ def ask_category():
         
 
 # Funktio, joka kysyy satunnaisen kysymyksen valitun vaikeusasteen mukaan
-def get_questions(difficulty, category):
+def get_questions(difficulty:str, category:str):
     # Suodatetaan kysymykset valitun vaikeusasteen mukaan
     selected_questions = [question for question in data if question["difficulty"] == difficulty and question["category"] == category]
     return selected_questions
 
 
 # Funktio, joka kysyy käyttäjältä satunnaisen kysymyksen ja tarkistaa vastauksen
-def ask_question(questions):
+def ask_question(questions:list):
     # Valitaan satunnainen kysymys
     question = random.choice(questions)
 
@@ -177,6 +156,32 @@ def ask_question(questions):
     else:
         print(f"{output_color}\nWrong! The correct answer was: {correct_answer}{reset_color}")
         return False  # Väärä vastaus
+
+
+# takes following parameters:
+#   1. boolean (from ask_question() -function)
+#       True    ->    return ICAO for the next location in the criminal-table the player has not visited yet 
+#       False   ->    return random ICAO (not player's current location and not found in criminal-table)
+#   2. Player's current location (ICAO-code)
+
+
+def quiz_icao(ask_question_bool:bool, game_dict:dict):
+    player_location = game_dict["player_location"]
+    cursor = mysql_connection.cursor()
+
+    if ask_question_bool == True:# we'll get right ICAO-code
+        sql = "SELECT location FROM criminal WHERE visited = 0 LIMIT 1;"
+        cursor.execute(sql)
+        result = cursor.fetchone()
+        game_dict["next_location"] = result[0]
+
+    elif ask_question_bool == False:# we'll get wrong ICAO-code
+        sql = f"SELECT ident FROM airport WHERE continent = 'EU' AND type = 'large_airport' AND ident NOT IN (SELECT location FROM criminal) AND ident != '{player_location}' ORDER BY RAND() LIMIT 1;"
+        cursor.execute(sql)
+        result = cursor.fetchone()
+        game_dict["next_location"] = result[0]
+
+
 
 
 # Testataan koodin toimivuus kolmella kysymyksellä
