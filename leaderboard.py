@@ -1,5 +1,4 @@
-from colorama import Style
-from settings import colors
+from styles import styles
 from mysql_connection import mysql_connection
 from prettytable import PrettyTable
 
@@ -21,9 +20,9 @@ def leaderboard():
     
     result = table
 
-    print(colors["output"] + f"{result}" + Style.RESET_ALL)
+    print(styles["output"] + f"{result}" + styles["reset"])
 
-    input(colors["input"] + "\nPress enter to return to the main menu." + Style.RESET_ALL)
+    input(styles["input"] + "\nPress enter to return to the main menu." + styles["reset"])
 
 
 if __name__ == "__main__":

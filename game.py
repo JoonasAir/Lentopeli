@@ -1,10 +1,9 @@
 import threading
 import time
-from colorama import Style
 from airport_menu import airport_menu
 from background_story import background_story
 from criminal import criminal_timer
-from settings import colors
+from styles import styles
 import multiprocessing
 from questions import ask_category, get_questions
 
@@ -17,7 +16,7 @@ def game_timer(game_timeremaining, stop_event, game_dict):
         if stop_event.is_set():
             break
         min, sec = divmod(game_timeremaining, 60)
-        game_dict["time_left_str"] = colors["time"] + f"Time remaining: {min:02d}:{sec:02d}" + Style.RESET_ALL
+        game_dict["time_left_str"] = styles["time"] + f"Time remaining: {min:02d}:{sec:02d}" + styles["reset"]
         time.sleep(1)
         game_timeremaining -= 1
     game_dict["time_left_bool"] = False
@@ -55,7 +54,7 @@ def new_game(game_dict):
     while not game_dict["criminal_caught"] and game_dict["game_money"] >= game_dict["flight_price"] and game_dict["time_left_bool"]:
 
         #TODO print country and airpot
-        print(colors["location"] + f"\n\nYou're at: {game_dict["player_location"]}" + Style.RESET_ALL)
+        print(styles["location"] + f"\n\nYou're at: {game_dict["player_location"]}" + styles["reset"])
         
         
         # Player is at the airport_action() -function until the location changes

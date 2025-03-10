@@ -1,7 +1,6 @@
 # Voidaan käyttää json tiedostoa missä kysymykset
 import json
-from settings import colors
-from colorama import Style
+from styles import styles
 from mysql_connection import mysql_connection
 # Voidaan valita satunnaisia kysymyksiä sekä sekoitta vastausvaihtoehdot
 import random 
@@ -11,11 +10,11 @@ import html
 
 # Avataan kysymykset luettavassa muodossa muuttujaan data. Käytetään encoding koska tiedosto sisältää
 #muitakin kuin ASCII-merkkejä
-menu_color = colors["menu"]
-output_color = colors["output"]
-input_color = colors["input"]
-warning_color = colors["warning"]
-reset_color = Style.RESET_ALL
+menu_color = styles["menu"]
+output_color = styles["output"]
+input_color = styles["input"]
+warning_color = styles["warning"]
+reset_color = styles["reset"]
 
 with open("questions.json", "r", encoding="utf-8") as f:
     data = json.load(f)

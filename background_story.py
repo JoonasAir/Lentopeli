@@ -1,11 +1,7 @@
 # background story of the game (Y/N) = (player can read or skip the story)
 import textwrap
 import shutil
-import game_setup
-
-
-from colorama import Style
-from settings import colors
+from styles import styles
 
 def background_story(game_dict):
 
@@ -20,11 +16,11 @@ def background_story(game_dict):
     formatted_text = wrapped_text.replace("\n", "\n\n")
     final_text = formatted_text.replace(".", ". ")
 
-    ask = input(colors["input"] + "\n\nWould you like to read background story for the game? (Y)es (N)o:" + Style.RESET_ALL)
+    ask = input(styles["input"] + "\n\nWould you like to read background story for the game? (Y)es (N)o:" + styles["reset"])
 
     if ask.upper() == "Y":
-        print(colors["output"] + f"\n\n{final_text}" + Style.RESET_ALL)
-        input(colors["input"] + "\n\nPress enter to begin the game." + Style.RESET_ALL)
+        print(styles["output"] + f"\n\n{final_text}" + styles["reset"])
+        input(styles["input"] + "\n\nPress enter to begin the game." + styles["reset"])
     else:
         pass
 

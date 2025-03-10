@@ -1,7 +1,6 @@
-from colorama import Fore, Style
 from criminal import criminal_headstart
 from mysql_connection import mysql_connection
-from settings import colors
+from styles import styles
 
 
 
@@ -11,18 +10,18 @@ from settings import colors
 def game_setup(difficulty_settings):
     
     # Screen_name input
-    screen_name = str(input(colors["input"] + "Enter your game name: " + Style.RESET_ALL)) 
+    screen_name = str(input(styles["input"] + "Enter your game name: " + styles["reset"])) 
 
     # Get parameters for game from difficulty_settings dictionary
     # user will be asked for a difficulty until valid inputs is given  
     while True:
-        difficulty_input = str(input(colors["input"] + "\nChoose difficulty of the game:\n    'E' = Easy\n    'M' = Medium\n    'H' = Hard\n    'C' = Custom\nInput: " + Style.RESET_ALL))
+        difficulty_input = str(input(styles["input"] + "\nChoose difficulty of the game:\n    'E' = Easy\n    'M' = Medium\n    'H' = Hard\n    'C' = Custom\nInput: " + styles["reset"]))
 
         if difficulty_input.upper() in difficulty_settings:
             game_dict = difficulty_settings[difficulty_input.upper()] # stores the parameters ​​of the difficulty selected by the user 
             break # break out from loop when valid input is given
         else:
-            print(colors["warning"] + "\nInvalid input. Try again.\n" + Style.RESET_ALL)
+            print(styles["warning"] + "\nInvalid input. Try again.\n" + styles["reset"])
 
     # clears criminal table and adds "criminal_headstart" amount of airports 
     criminal_headstart(game_dict["criminal_headstart"]) 

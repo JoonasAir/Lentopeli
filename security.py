@@ -1,7 +1,5 @@
-from colorama import Style
 from mysql_connection import mysql_connection
-from settings import colors
-
+from styles import styles
 
 def security(game_dict, luck):
 
@@ -15,11 +13,11 @@ def security(game_dict, luck):
         result = str(cursor.fetchone())
 
         if game_dict["player_location"] == result: # If our location equals to the last of the visited locations in criminal-table
-            print(colors["output"] + f"\nSecurity chief's monitows were down due to the criminal's attack.\nStill he had a clue about criminal for you. Try to solve it\n" + Style.RESET_ALL)
+            print(styles["output"] + f"\nSecurity chief's monitows were down due to the criminal's attack.\nStill he had a clue about criminal for you. Try to solve it\n" + styles["reset"])
             game_dict["criminal_was_here"] = True
 
         else:
-            print(colors["output"] + f"\nSecurity chief told you the criminal haven't been at the airport. Try to solve last clue again.\n" + Style.RESET_ALL)
+            print(styles["output"] + f"\nSecurity chief told you the criminal haven't been at the airport. Try to solve last clue again.\n" + styles["reset"])
             game_dict["criminal_was_here"] = False
 
 
@@ -29,15 +27,15 @@ def security(game_dict, luck):
         cursor.execute(sql)
         result = cursor.fetchone()
         result = result[0][0]
-        print(colors["output"] + f"\n{result}" + Style.RESET_ALL)
-        print(colors["output"] + f"\nThe chief had just found the country where the criminal headed from here!" + Style.RESET_ALL)
-        print(colors["output"] + f"\nThe fight ICAO-code is: {result}" + Style.RESET_ALL)
+        print(styles["output"] + f"\n{result}" + styles["reset"])
+        print(styles["output"] + f"\nThe chief had just found the country where the criminal headed from here!" + styles["reset"])
+        print(styles["output"] + f"\nThe fight ICAO-code is: {result}" + styles["reset"])
 
     elif game_dict["criminal_was_here"]:
         pass
 
     else:
-        print(colors["output"] + f"\nThe chief had nothing new to tell you. He was still on a mission to recover his monitors from the attack of the criminal." + Style.RESET_ALL)
+        print(styles["output"] + f"\nThe chief had nothing new to tell you. He was still on a mission to recover his monitors from the attack of the criminal." + styles["reset"])
 
 
     return game_dict

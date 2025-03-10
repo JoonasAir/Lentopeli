@@ -1,10 +1,9 @@
 from random import randint
 from change_location import change_location
 from mysql_connection import mysql_connection
-from colorama import Style
 from questions import quiz_icao
 from security import security
-from settings import colors
+from styles import styles
 
 
 # you're in X country at X airport
@@ -111,13 +110,13 @@ def airport_menu_input(game_dict:dict):
     
     while True:
         try:
-            user_input_int = int(input(colors["input"] + menu + "Input: "+ Style.RESET_ALL))
+            user_input_int = int(input(styles["input"] + menu + "Input: "+ styles["reset"]))
             if user_input_int in range(1, len(option_list)+1):
                 break
             else:
-                print(colors["warning"] + "Invalid input, try again." + Style.RESET_ALL)
+                print(styles["warning"] + "Invalid input, try again." + styles["reset"])
         except ValueError:
-            print(colors["warning"] + "Invalid input, try again." + Style.RESET_ALL)
+            print(styles["warning"] + "Invalid input, try again." + styles["reset"])
         except KeyboardInterrupt:
             break
 
@@ -143,14 +142,14 @@ def airport_menu(game_dict):
         print("\n\n")
 
         if user_input == "Check remaining money" : 
-            print(colors["output"] + f"You have {game_dict['game_money']}€ left to spend." + Style.RESET_ALL)
+            print(styles["output"] + f"You have {game_dict['game_money']}€ left to spend." + styles["reset"])
 
 
         elif user_input == random_action[0]:
             if game_dict["tried_luck"]:
-                print(colors["output"] + f"{random_action[3]}" + Style.RESET_ALL)
+                print(styles["output"] + f"{random_action[3]}" + styles["reset"])
             else:
-                print(colors["output"] + f"You chose to {random_action[0].lower()}.\n" + Style.RESET_ALL)
+                print(styles["output"] + f"You chose to {random_action[0].lower()}.\n" + styles["reset"])
                 game_dict["tried_luck"] = True
                 if luck:
                     game_dict["got_location"] = True
@@ -158,12 +157,12 @@ def airport_menu(game_dict):
                     cursor.execute(sql)
                     result = cursor.fetchone()[0]
                     game_dict["next_location"] = result
-                    print(colors["output"] + f"{random_action[1]}\n" + Style.RESET_ALL)
+                    print(styles["output"] + f"{random_action[1]}\n" + styles["reset"])
 
-                    print(colors["output"] + f"The next airport's ICAO-code is: {result}\n" + Style.RESET_ALL)
+                    print(styles["output"] + f"The next airport's ICAO-code is: {result}\n" + styles["reset"])
 
                 else:
-                    print(colors["output"] + f"{random_action[2]}\n" + Style.RESET_ALL)
+                    print(styles["output"] + f"{random_action[2]}\n" + styles["reset"])
 
 
         elif user_input == "Talk to airport's security chief": 
@@ -173,7 +172,7 @@ def airport_menu(game_dict):
 
 
         elif user_input == "Buy a flight ticket": 
-            print(colors["output"] + f"\nHere you buy a flight ticket" + Style.RESET_ALL)
+            print(styles["output"] + f"\nHere you buy a flight ticket" + styles["reset"])
             change_location()
 
             break # endless loop ends here
@@ -185,7 +184,7 @@ def airport_menu(game_dict):
 
 
         elif user_input == "Try to solve the previous clue again": 
-            print(colors["output"] + f"\nHere you try to solve the previous clue again" + Style.RESET_ALL)
+            print(styles["output"] + f"\nHere you try to solve the previous clue again" + styles["reset"])
 
 
 
