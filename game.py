@@ -3,6 +3,7 @@ import time
 from airport_menu import airport_menu
 from background_story import background_story
 from criminal import criminal_timer
+from player import print_location
 from styles import styles
 import multiprocessing
 from questions import ask_category, get_questions
@@ -53,12 +54,12 @@ def new_game(game_dict):
 
     while not game_dict["criminal_caught"] and game_dict["game_money"] >= game_dict["flight_price"] and game_dict["time_left_bool"]:
 
-        #TODO print country and airpot
-        print(styles["location"] + f"\n\nYou're at: {game_dict["player_location"]}" + styles["reset"])
         
         
-        # Player is at the airport_action() -function until the location changes
+        # Player is at the airport_menu() -function until a flight ticket is bought
         game_dict = airport_menu(game_dict)
+
+        print_location(game_dict["player_location"])
 
         if game_dict["first_airport"]:
             game_dict["first_airport"] = False

@@ -1,6 +1,7 @@
 from colorama import Fore, Style
+from copy import deepcopy
 
-default_styles = {
+styles_DEFAULT = {
     "input":Fore.CYAN,
     "warning":Fore.RED,
     "time":Fore.LIGHTBLUE_EX,
@@ -9,4 +10,4 @@ default_styles = {
     "output":Fore.GREEN,
     "reset":Style.RESET_ALL
 }
-styles = default_styles.copy()
+styles = deepcopy(styles_DEFAULT) # copy styles_DEFAULT to new dictionary with deepcopy. Otherwise those would exist in same location in memory and basically be the same dictionary with two names. We need this original for user to be able to reset default settings

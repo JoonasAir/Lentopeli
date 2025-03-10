@@ -1,5 +1,5 @@
 from random import randint
-from change_location import change_location
+from player import change_location, print_location
 from mysql_connection import mysql_connection
 from questions import quiz_icao
 from security import security
@@ -173,7 +173,11 @@ def airport_menu(game_dict):
 
         elif user_input == "Buy a flight ticket": 
             print(styles["output"] + f"\nHere you buy a flight ticket" + styles["reset"])
-            change_location()
+            game_dict = change_location(game_dict)
+            
+            #TODO change player's location
+            
+            
 
             break # endless loop ends here
 

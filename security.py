@@ -10,7 +10,7 @@ def security(game_dict, luck):
         game_dict["talk_to_chief"] = True # change state to True = we have talked to security at this airport
         sql = f"SELECT location FROM criminal WHERE Location = '{game_dict["player_location"]} ';" # Check if our location is found in criminal-table
         cursor.execute(sql)
-        result = str(cursor.fetchone())
+        result = cursor.fetchone()
 
         if game_dict["player_location"] == result: # If our location equals to the last of the visited locations in criminal-table
             print(styles["output"] + f"\nSecurity chief's monitows were down due to the criminal's attack.\nStill he had a clue about criminal for you. Try to solve it\n" + styles["reset"])

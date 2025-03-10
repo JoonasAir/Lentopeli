@@ -3,15 +3,15 @@ from game_setup import game_setup
 from leaderboard import leaderboard
 from questions import practice_quiz
 from settings import settings
-from game_parameters import difficulty_parameters, common_parameters
-from styles import styles
+from game_parameters import game_parameters
 from tutorial import tutorial
+from styles import styles
 
 
 
 def main_menu():
+    styles
 
-    
     while True: # infinite loop that breaks when valid input is given
         try:
             user_input = int(input(styles["menu"] + "\nM A I N   M E N U\n\n"+ styles["input"] +  "Choose from following options:\n    1 - Open tutorial\n    2 - Start a new game\n    3 - Open leaderboard\n    4 - Practice quiz questions\n    5 - Settings\n    0 - Quit game\nInput: " + styles["reset"]))
@@ -22,11 +22,6 @@ def main_menu():
         except ValueError:
             print(styles["warning"] + "Invalid input, try again." + styles["reset"])
 
-    # join "common settings" -dict to each difficulty's own dict (dictionaries defined in settings.py)
-    for difficulty in difficulty_parameters:
-        difficulty_parameters[difficulty].update(common_parameters)
-
-
 
     while user_input != 0:
     
@@ -36,7 +31,7 @@ def main_menu():
     
         elif user_input == 2: # New game
             print(styles["menu"] + "\nN E W   G A M E\n\n"+ styles["reset"])
-            game_dict = game_setup(difficulty_parameters)
+            game_dict = game_setup(game_parameters)
             new_game(game_dict)
     
         elif user_input == 3: # Leaderboard
@@ -50,7 +45,8 @@ def main_menu():
     
 
         elif user_input == 5: # Settings
-            settings(difficulty_parameters, styles)
+
+            settings(game_parameters["C"], styles)
 
         
         while True: # infinite loop that breaks when valid input is given
