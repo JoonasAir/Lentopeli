@@ -50,7 +50,8 @@ DIFFICULTY_game_parameters = {
 
 # Helper parameters for the game. These are combined with difficulty parameters to be one dictionary "game_dict"
 COMMON_game_parameters = {
-        'player_location':str,      # player's current location (ICAO)
+        'player_location':str,      # player's current location 
+        (ICAO)
         'screen_name':str,          # player's screen name
         'quiz_questions':list,      # questions of player's difficulty and category
         'previous_question':dict,   # previously asked question in case of player have to solve it again
