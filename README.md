@@ -2,7 +2,7 @@
 
 
 ## Install needed third-party-packages
-### Run following command on *root* directory of the game
+### Run following command in terminal, at *root* directory of the game
 ```
 pip install -r requirements.txt
 ```
