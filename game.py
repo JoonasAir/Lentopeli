@@ -58,8 +58,8 @@ def new_game(game_dict:dict):
 
     while True:
 
-        if stop_game(game_dict):
-            break
+        # if stop_game(game_dict):
+        #     break
         
         
         # Player is at the airport_menu() -function until a flight ticket is bought
