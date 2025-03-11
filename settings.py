@@ -1,8 +1,6 @@
 from copy import deepcopy
-
-from colorama import Style
-from styles import styles, styles_DEFAULT, colors
 from game_parameters import game_parameters_DEFAULT
+from styles import styles, styles_DEFAULT, colors
 
 
 def settings(game_parameters:dict, styles:dict):
@@ -133,36 +131,22 @@ def settings(game_parameters:dict, styles:dict):
             while True:
 
                 print(styles["menu"] + "\nS E T T I N G S   -   A P P E A R A N C E\n\n"+ styles["reset"])
+                color_list = [("warning", "change appearance of warning prints"), 
+                               ("input", "change appearance of input prints"), 
+                               ("output", "change appearance of output prints"), 
+                               ("menu", "change appearance of menu headers ('S E T T I N G S' etc.)"), 
+                               ("location", "change appearance of in-game location prints ('You're in aiport/country X')"), 
+                               ("time", "change appearance of in-game time prints (You have min:sec time left)")
+                               ]
 
-                option_number = 0
-                option_list = []
+                option_number = 1
                 menu = styles["input"] + "Select from following options:\n" + styles["reset"]
-            
-                option_number += 1
-                option_list.append("warning")
-                menu += styles["warning"] + f"    {option_number} - change appearance of warning prints\n" + styles["reset"]
 
-                option_number += 1
-                option_list.append("input")
-                menu += styles["input"] + f"    {option_number} - change appearance of input prints\n" + styles["reset"]
+                for index in range(len(color_list)):
+                    menu += styles[color_list[index][0]] + f"    {option_number} - {color_list[index][1]}\n" + styles["reset"]
+                    option_number += 1
 
-                option_number += 1
-                option_list.append("output")
-                menu += styles["output"] + f"    {option_number} - change appearance of output prints\n" + styles["reset"]
 
-                option_number += 1
-                option_list.append("menu")
-                menu += styles["menu"] + f"    {option_number} - change appearance of menu headers ('S E T T I N G S' etc.)\n" + styles["reset"]
-                
-                option_number += 1
-                option_list.append("location")
-                menu += styles["location"] + f"    {option_number} - change appearance of in-game location prints ('You're in aiport/country X')\n" + styles["reset"]
-
-                option_number += 1
-                option_list.append("time")
-                menu += styles["time"] + f"    {option_number} - change appearance of in-game time prints (You have min:sec time left)\n" + styles["reset"]
-                
-                option_number += 1
                 menu += styles["input"] + f"\n    {option_number} - RESET DEFAULT\n"
                 menu += f"    0 - Back to settings menu\n"
                 menu += "Input: " + styles["reset"]
@@ -178,8 +162,8 @@ def settings(game_parameters:dict, styles:dict):
                         print(styles["warning"] + "Invalid input. Try again." + styles["reset"])
 
                 try:
-                    error = option_list[user_input-1]
-                    if user_input in range(1, len(option_list)):
+                    error = color_list[user_input-1]
+                    if user_input-1 in range((color_list)):
                         option_num = 1
                         option_ls = []
                         for color in colors:
@@ -189,13 +173,13 @@ def settings(game_parameters:dict, styles:dict):
 
                         user_color = int(input(styles["input"] + "Choose a color from earlier options: "))
 
-                        styles[option_list[user_input-1]] = colors[option_ls[user_color-1]]
+                        styles[color_list[user_input-1]] = colors[option_ls[user_color-1]]
 
                 except KeyboardInterrupt or ValueError or IndexError: # Crtl+C or string input
                     pass
 
             
-                if user_input == len(option_list)+1: # RESET APPEARANCE SETTINGS TO DEFAULT
+                if user_input == len(color_list)+1: # RESET APPEARANCE SETTINGS TO DEFAULT
 
                     user_confirm = str(input(styles['warning'] + "\nDo you want to reset the appearance settings to default? This cannot be undone.\n'Y' = Yes, 'N' = No: " + styles["reset"])).strip().upper()
                     while user_confirm not in ("N", "Y"):
@@ -213,54 +197,6 @@ def settings(game_parameters:dict, styles:dict):
                     break
 
                     
-
-
-                # if user_input == 1: # warning prints
-                #     user_input = int(input(styles['input'] + ": " + styles["reset"]))
-                #     # "warning":Fore.RED
-
-                #     print(styles['warning'] + "NOT WORKING YET!" + styles["reset"])
-
-
-
-                # if user_input == 2: # input prints
-                #     user_input = int(input(styles['input'] + "Select color for input prints: " + styles["reset"]))
-                #     # "input":Fore.CYAN
-
-                #     print(styles['warning'] + "NOT WORKING YET!" + styles["reset"])
-
-
-
-                # if user_input == 3: # output prints
-                #     user_input = int(input(styles['input'] + ": " + styles["reset"]))
-                #     # "output":Fore.LIGHTYELLOW_EX
-
-                #     print(styles['warning'] + "NOT WORKING YET!" + styles["reset"])
-
-
-
-                # if user_input == 4: # menu location prints ('S E T T I N G S' etc.)
-                #     user_input = int(input(styles['input'] + ": " + styles["reset"]))
-                #     # "menu":Fore.LIGHTMAGENTA_EX
-
-                #     print(styles['warning'] + "NOT WORKING YET!" + styles["reset"])
-
-
-
-                # if user_input == 5: # in-game location prints ('You're in aiport/country X')
-                #     user_input = int(input(styles['input'] + ": " + styles["reset"]))
-                #     # "location":Fore.LIGHTGREEN_EX
-
-                #     print(styles['warning'] + "NOT WORKING YET!" + styles["reset"])
-
-
-
-                # if user_input == 6: # in-game time prints (You have min:sec time left)
-                #     user_input = int(input(styles['input'] + ": " + styles["reset"]))
-                #     # "time":Fore.LIGHTBLUE_EX
-
-                #     print(styles['warning'] + "NOT WORKING YET!" + styles["reset"])
-
 
 
 
