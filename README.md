@@ -12,15 +12,18 @@ CREATE TABLE leaderboard (ID INT AUTO_INCREMENT PRIMARY KEY, screen_name VARCHAR
 ```
 
 
-
-```# Commands for granting needed privileges for your database-user with your root-user:  
+## Grant privileges
+```
+# Commands for granting needed privileges for your database-user with your root-user:  
 
 GRANT SELECT, INSERT, UPDATE ON `flight_game`.* TO `YOUR_USERNAME`@`localhost`; # Replace YOUR_USERNAME with your MariaDB-username.
 GRANT DELETE, ALTER ON `flight_game`.`criminal` TO `YOUR_USERNAME`@`localhost`; # Replace YOUR_USERNAME with your MariaDB-username.
-FLUSH PRIVILEGES;```
+FLUSH PRIVILEGES;
+```
 
-
-```# The file 'mysql_connection.py' is not pushed to github since the file is found in '.gitignore' file. 
+## create connection-file
+```
+# The file 'mysql_connection.py' is not pushed to github since the file is found in '.gitignore' file. 
 # Create file 'mysql_connection.py' and copy following code into it. 
 
 import mysql.connector
@@ -33,4 +36,5 @@ mysql_connection = mysql.connector.connect(
     user = "YOUR_USERNAME", # Replace YOUR_USERNAME with your MariaDB-username.
     password = "YOUR_PASSWORD", # Replace YOUR_PASSWORD with your MariaDB-password.
     autocommit = True
-)```
+)
+```
