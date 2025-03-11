@@ -8,11 +8,11 @@ def talk_to_security(game_dict:dict, luck_bool:bool):
 
     if game_dict["talk_to_chief"] == False: # If we haven't talked to the security chief yet at current airport
         game_dict["talk_to_chief"] = True # change state to True = we have talked to security at this airport
-        sql = f"SELECT location FROM criminal WHERE Location = '{game_dict["player_location"]} ';" # Check if our location is found in criminal-table
+        sql = f"SELECT location FROM criminal WHERE Location = '{game_dict["player_location"]}';" # Check if our location is found in criminal-table
         cursor.execute(sql)
         result = cursor.fetchone()
 
-        if game_dict["player_location"] == result: # If our location equals to the last of the visited locations in criminal-table
+        if game_dict["player_location"] in result: # If our location equals to the last of the visited locations in criminal-table
             print(styles["output"] + f"\nSecurity chief's monitows were down due to the criminal's attack.\nStill he had a clue about criminal for you. Try to solve it\n" + styles["reset"])
             game_dict["criminal_was_here"] = True
 
@@ -39,3 +39,17 @@ def talk_to_security(game_dict:dict, luck_bool:bool):
 
 
     return game_dict
+
+
+if __name__ == "__main__":
+    from questions import ask_category, ask_question, get_questions
+    from game_setup import game_setup
+    from game_parameters import game_parameters
+    from random import randint
+
+    game_dict = game_setup(game_parameters)
+    luck_bool = bool(randint(0,1000000)/1000000 <= game_dict["random_luck"])
+    # game_dict["quiz_category"] = ask_category()
+    # game_dict["quiz_questions"] = get_questions(game_dict["difficulty"], game_dict["quiz_category"])
+
+    game_dict = talk_to_security(game_dict, luck_bool)

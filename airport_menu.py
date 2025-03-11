@@ -201,6 +201,7 @@ if __name__ == "__main__":
     from game_parameters import game_parameters
 
     game_dict = game_setup(game_parameters)
+    luck_bool = bool(randint(0,1000000)/1000000 <= game_dict["random_luck"])
     game_dict["quiz_category"] = ask_category()
     game_dict["quiz_questions"] = get_questions(game_dict["difficulty"], game_dict["quiz_category"])
     game_dict = airport_menu(game_dict)
