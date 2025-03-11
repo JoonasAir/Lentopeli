@@ -175,7 +175,7 @@ def settings(game_parameters:dict, styles:dict):
 
                         styles[color_list[user_input-1]] = colors[option_ls[user_color-1]]
 
-                except KeyboardInterrupt or ValueError or IndexError: # Crtl+C or string input
+                except KeyboardInterrupt or ValueError or IndexError: # Crtl+C or string input or invalid index (wrong input)
                     pass
 
             
