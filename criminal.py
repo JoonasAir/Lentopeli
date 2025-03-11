@@ -48,6 +48,17 @@ def criminal_headstart(headstart:int):
 
 
 def criminal_caught(player_location:str):
+
+    cursor = mysql_connection.cursor()
+    sql1 = "SELECT location FROM criminal WHERE id = (SELECT MAX(id) FROM criminal);"
+    cursor.execute(sql1)
+    criminal_location = cursor.fetchone()
+
+    if criminal_location == player_location:
+        return True
+    else:
+        return False
+  
     pass        # TODO check at the new airport if we are at the same airport as the criminal is (write function criminal_caught function that retuns True if we are and False if we aren't)
 
 
