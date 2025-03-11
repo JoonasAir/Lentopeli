@@ -132,7 +132,7 @@ def airport_menu(game_dict:dict):
     cursor = mysql_connection.cursor()
 
     while True: # break out from loop when we fly to next location
-        luck_bool = bool(randint(0,1000000)/1000000 <= game_dict["random_luck_bool"]) # check if we are luck_booly. Based on variable random_luck_bool defined on game_setup()
+        luck_bool = bool(randint(0,1000000)/1000000 <= game_dict["random_luck"]) # check if we are luck_booly. Based on variable random_luck defined on game_setup()
         print("\n")
 
         game_dict, user_input, random_action = airport_menu_input(game_dict) # ask what user wants to do at the airport
