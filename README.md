@@ -2,41 +2,56 @@
 
 
 ## Install needed third-party-packages
-### Run following command on root directory of the game
+### Run following command on *root* directory of the game
 ```
 pip install -r requirements.txt
 ```
 
-## Database
-### Commands for modifying existing flight_game database:
+## Prepare database for the game (**root** account needed)
+### Copy/paste following commands in your **flight_game** -database
 
+#### Delete **goal_reached** table
 ```
 DROP TABLE goal_reached;
 ```
+
+#### Delete **game** table
 ```
 DROP TABLE game;
 ```
+
+#### Delete **goal** table
 ```
 DROP TABLE goal;
 ```
+
+#### Create **criminal** table
 ```
 CREATE TABLE criminal (ID INT AUTO_INCREMENT PRIMARY KEY, Location VARCHAR(255), Visited INT DEFAULT 0);
 ```
+
+#### Create **leaderboard** table
 ```
 CREATE TABLE leaderboard (ID INT AUTO_INCREMENT PRIMARY KEY, screen_name VARCHAR(255), points INT);
 ```
 
 
-### Grant needed privileges for your MariaDB-user
+#### Grant privileges (Replace **YOUR_USERNAME** with your actual MariaDB-username.)
 ```
 GRANT SELECT, INSERT, UPDATE ON "flight_game".* TO "YOUR_USERNAME"@"localhost"; # Replace YOUR_USERNAME with your MariaDB-username.
 ```
+
+#### Grant privileges (Replace **YOUR_USERNAME** with your actual MariaDB-username.)
 ```
 GRANT DELETE, ALTER ON "flight_game"."criminal" TO "YOUR_USERNAME"@"localhost"; # Replace YOUR_USERNAME with your MariaDB-username.
 ```
+
+#### Flush privileges
+
 ```
 FLUSH PRIVILEGES;
 ```
+
 
 ## Connection
 
