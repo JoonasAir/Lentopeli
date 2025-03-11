@@ -1,5 +1,6 @@
 import threading
 import time
+from tkinter import N
 from airport_menu import airport_menu
 from background_story import background_story
 from criminal import criminal_timer
@@ -23,13 +24,20 @@ def game_timer(game_dict:dict, stop_timer:threading.Event):
     game_dict["time_left_bool"] = False
 
 
+    game_timer_thread = threading.Thread(target = game_timer, args = (game_dict, stop_timer))
+    game_timer_thread.daemon = True
+    game_timer_thread.start()
+#   pelin koodi
+    stop_timer.set()
+
+
+
 def new_game(game_dict:dict):
     # Choosing category of quiz questions
     game_dict["quiz_category"] = ask_category()
     # Get quiz questions with right difficulty and category
     game_dict["quiz_questions"] = get_questions(game_dict["difficulty"], game_dict["quiz_category"])
 
-    print(type(game_dict["quiz_questions"]))
 
     # background story of the game (Y/N) = (player can read or skip the story)
     background_story(game_dict["screen_name"])
@@ -116,4 +124,7 @@ def new_game(game_dict:dict):
 
 
 if __name__ == "__main__": 
-    pass
+    from game_setup import game_setup
+    from game_parameters import game_parameters
+    game_dict = game_setup(game_parameters)
+    new_game(game_dict)
