@@ -23,13 +23,7 @@ def game_timer(game_dict:dict, stop_timer:threading.Event):
         time.sleep(1)
         game_dict["game_time"] -= 1
     game_dict["time_left_bool"] = False
-
-
-    game_timer_thread = threading.Thread(target = game_timer, args = (game_dict, stop_timer))
-    game_timer_thread.daemon = True
-    game_timer_thread.start()
 #   pelin koodi
-    stop_timer.set()
 
 
 
@@ -116,8 +110,32 @@ def new_game(game_dict:dict):
 
 # TODO When the game ends:
 #   1. Scores are calculated
+
+def point_calculator(game_dict):
+    mode = 0
+    time = game_dict["game_time"]
+    if game_dict["difficulty"] == "easy":
+        mode = 1
+    if game_dict["difficulty"] == "medium":
+        mode = 1.5
+    elif game_dict["difficulty"] == "hard":
+        mode = 2.5
+
+    score = time * mode
+    print(score)
+    
+    return score
+
+
 #   2. The game statistics are printed (screen name, how many games played with this screen name, difficulty level, score, elapsed time, money at the start, money spent, number of flights, number of off-course flights)
+
 #   3. Save game stats to the leaderboard table
+def leaderboard_update():
+    screen_name = game_dict["screen_name"]
+    points = point_calculator()
+    cursor = mysql_connection.cursor()
+    sql = f"INSERT into leaderboard (screen_name, points) values({screen_name} ,{points})"
+    cursor.execute(sql)
 
 # Return to the main menu
 
