@@ -33,3 +33,7 @@ mysql_connection = mysql.connector.connect(
     autocommit = True
 )
  
+
+colorama~=0.4.6
+prettytable~=3.15.1
+mysql-connector-python~=9.2.0
