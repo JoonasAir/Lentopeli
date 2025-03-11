@@ -3,7 +3,9 @@
 
 ## Install needed third-party-packages
 ### Run following command on root directory of the game
-```pip install -r requirements.txt```
+```
+pip install -r requirements.txt
+```
 
 ## Database
 ### Commands for modifying existing flight_game database:
