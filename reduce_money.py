@@ -17,4 +17,9 @@ def reduce_money(game_dict):
     return game_dict
 
 if __name__ == "__main__":
-    pass
+    from game_setup import game_setup
+    from game_parameters import game_parameters
+    game_dict = game_setup(game_parameters)
+
+    reduce_money(game_dict)
+    reduce_money(game_dict)
