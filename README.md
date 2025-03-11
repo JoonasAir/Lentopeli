@@ -1,31 +1,30 @@
-# CatchTheCriminal Europe Edition
-
-## Modify the database with following commands
-```
-# Commands for modifying flight_game database for our game:
-
-DROP TABLE goal_reached;
-DROP TABLE game;
-DROP TABLE goal;
-CREATE TABLE criminal (ID INT AUTO_INCREMENT PRIMARY KEY, Location VARCHAR(255), Visited INT DEFAULT 0);
-CREATE TABLE leaderboard (ID INT AUTO_INCREMENT PRIMARY KEY, screen_name VARCHAR(255), points INT);
-```
+# CatchTheCriminal - ## Europe Edition
 
 
-## Grant privileges
-```
-# Commands for granting needed privileges for your database-user with your root-user:  
+## Install needed third-party-packages
+### Run following command on root directory of the game
+`pip install -r requirements.txt`
 
-GRANT SELECT, INSERT, UPDATE ON `flight_game`.* TO `YOUR_USERNAME`@`localhost`; # Replace YOUR_USERNAME with your MariaDB-username.
-GRANT DELETE, ALTER ON `flight_game`.`criminal` TO `YOUR_USERNAME`@`localhost`; # Replace YOUR_USERNAME with your MariaDB-username.
-FLUSH PRIVILEGES;
-```
+## Database
+### Commands for modifying existing flight_game database:
 
-## create connection-file
-```
+`DROP TABLE goal_reached;`
+`DROP TABLE game;`
+`DROP TABLE goal;`
+`CREATE TABLE criminal (ID INT AUTO_INCREMENT PRIMARY KEY, Location VARCHAR(255), Visited INT DEFAULT 0);`
+`CREATE TABLE leaderboard (ID INT AUTO_INCREMENT PRIMARY KEY, screen_name VARCHAR(255), points INT);`
+
+
+### Grant needed privileges for your MariaDB-user
+`GRANT SELECT, INSERT, UPDATE ON "flight_game".* TO "YOUR_USERNAME"@"localhost"; # Replace YOUR_USERNAME with your MariaDB-username.`
+`GRANT DELETE, ALTER ON "flight_game"."criminal" TO "YOUR_USERNAME"@"localhost"; # Replace YOUR_USERNAME with your MariaDB-username.`
+`FLUSH PRIVILEGES;`
+
+## Connection
+
 # The file 'mysql_connection.py' is not pushed to github since the file is found in '.gitignore' file. 
 # Create file 'mysql_connection.py' and copy following code into it. 
-
+```
 import mysql.connector
 
 mysql_connection = mysql.connector.connect(
