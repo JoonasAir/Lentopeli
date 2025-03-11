@@ -1,7 +1,7 @@
 from random import randint
 from player import change_location, print_location
 from mysql_connection import mysql_connection
-from questions import quiz_icao
+from questions import quiz_icao, ask_question
 from security import talk_to_security
 from styles import styles
 from reduce_money import reduce_money
@@ -196,7 +196,7 @@ def airport_menu(game_dict:dict):
     
 
 if __name__ == "__main__":
-    from questions import ask_category, ask_question, get_questions
+    from questions import ask_category, get_questions
     from game_setup import game_setup
     from game_parameters import game_parameters
 
