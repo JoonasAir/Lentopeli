@@ -116,7 +116,4 @@ def new_game(game_dict:dict):
 
 
 if __name__ == "__main__": 
-    from game_setup import game_setup    
-    # screen_name, starting location, and many other parameters are returned as a dictionary. Also criminal's headstart is added to database 
-    game_dict = game_setup() # check the keys from game_setup.py's difficulty_settings -dictionary
-    new_game(game_dict)
+    pass

@@ -163,7 +163,7 @@ def settings(game_parameters:dict, styles:dict):
 
                 try:
                     error = color_list[user_input-1]
-                    if user_input-1 in range((color_list)):
+                    if user_input-1 in range(len(color_list)):
                         option_num = 1
                         option_ls = []
                         for color in colors:
@@ -206,8 +206,4 @@ def settings(game_parameters:dict, styles:dict):
     return game_parameters, styles
 
 if __name__ == "__main__":
-    import game_parameters
-
-    print(game_parameters.game_parameters["C"], styles)
-    settings(game_parameters.game_parameters["C"], styles)
-    print(game_parameters.game_parameters["C"], styles)
+    pass
