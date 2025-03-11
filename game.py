@@ -78,7 +78,7 @@ def new_game(game_dict:dict):
     
         # criminal_caught(game_dict["player_location"])
         # TODO check at the new airport if we are at the same airport as the criminal is (write function criminal_caught function that retuns True if we are and False if we aren't)
-        #game_dict["criminal_caught"] = criminal_caught()
+        game_dict["criminal_caught"] = criminal_caught(game_dict["player_location"])
 
 
         # TODO if we gave right answer on the question = we are on right airpot now -> criminal-table: change visited to 1 on the first row with visited = 0
