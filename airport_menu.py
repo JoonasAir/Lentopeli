@@ -198,12 +198,9 @@ def airport_menu(game_dict:dict):
 if __name__ == "__main__":
     from questions import ask_category, ask_question, get_questions
     from game_setup import game_setup
+    from game_parameters import game_parameters
 
-    # define game_dict
-    while True:
-        #setup game parameters
-        game_dict = game_setup()
-        game_dict["quiz_category"] = ask_category()
-        game_dict["quiz_questions"] = get_questions(game_dict["difficulty"], game_dict["quiz_category"])
-
-        game_dict = airport_menu(game_dict)
+    game_dict = game_setup(game_parameters)
+    game_dict["quiz_category"] = ask_category()
+    game_dict["quiz_questions"] = get_questions(game_dict["difficulty"], game_dict["quiz_category"])
+    game_dict = airport_menu(game_dict)
