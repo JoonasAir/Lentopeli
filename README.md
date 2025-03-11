@@ -7,7 +7,7 @@
 pip install -r requirements.txt
 ```
 
-## Prepare database for the game (**root** account needed)
+## Prepare database for the game (with **root** account)
 ### Copy/paste following commands in your **flight_game** -database
 
 #### Delete **goal_reached** table
@@ -55,8 +55,8 @@ FLUSH PRIVILEGES;
 
 ## Connection
 
-# The file 'mysql_connection.py' is not pushed to github since the file is found in '.gitignore' file. 
-# Create file 'mysql_connection.py' and copy following code into it. 
+### Create file 'mysql_connection.py' and copy following code into it. 
+Replace **YOUR_USERNAME** and **YOUR_PASSWORD** with your actual MariaDB username and password.
 ```
 import mysql.connector
 
