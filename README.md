@@ -1,10 +1,15 @@
-```# Commands for modifying flight_game database for our game:
+# CatchTheCriminal Europe Edition
+
+## Modify the database with following commands
+```
+# Commands for modifying flight_game database for our game:
 
 DROP TABLE goal_reached;
 DROP TABLE game;
 DROP TABLE goal;
 CREATE TABLE criminal (ID INT AUTO_INCREMENT PRIMARY KEY, Location VARCHAR(255), Visited INT DEFAULT 0);
-CREATE TABLE leaderboard (ID INT AUTO_INCREMENT PRIMARY KEY, screen_name VARCHAR(255), points INT);```
+CREATE TABLE leaderboard (ID INT AUTO_INCREMENT PRIMARY KEY, screen_name VARCHAR(255), points INT);
+```
 
 
 
