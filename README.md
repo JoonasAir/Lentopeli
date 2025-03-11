@@ -10,17 +10,33 @@ pip install -r requirements.txt
 ## Database
 ### Commands for modifying existing flight_game database:
 
-```DROP TABLE goal_reached;```
-```DROP TABLE game;```
-```DROP TABLE goal;```
-```CREATE TABLE criminal (ID INT AUTO_INCREMENT PRIMARY KEY, Location VARCHAR(255), Visited INT DEFAULT 0);```
-```CREATE TABLE leaderboard (ID INT AUTO_INCREMENT PRIMARY KEY, screen_name VARCHAR(255), points INT);```
+```
+DROP TABLE goal_reached;
+```
+```
+DROP TABLE game;
+```
+```
+DROP TABLE goal;
+```
+```
+CREATE TABLE criminal (ID INT AUTO_INCREMENT PRIMARY KEY, Location VARCHAR(255), Visited INT DEFAULT 0);
+```
+```
+CREATE TABLE leaderboard (ID INT AUTO_INCREMENT PRIMARY KEY, screen_name VARCHAR(255), points INT);
+```
 
 
 ### Grant needed privileges for your MariaDB-user
-```GRANT SELECT, INSERT, UPDATE ON "flight_game".* TO "YOUR_USERNAME"@"localhost"; # Replace YOUR_USERNAME with your MariaDB-username.```
-```GRANT DELETE, ALTER ON "flight_game"."criminal" TO "YOUR_USERNAME"@"localhost"; # Replace YOUR_USERNAME with your MariaDB-username.```
-```FLUSH PRIVILEGES;```
+```
+GRANT SELECT, INSERT, UPDATE ON "flight_game".* TO "YOUR_USERNAME"@"localhost"; # Replace YOUR_USERNAME with your MariaDB-username.
+```
+```
+GRANT DELETE, ALTER ON "flight_game"."criminal" TO "YOUR_USERNAME"@"localhost"; # Replace YOUR_USERNAME with your MariaDB-username.
+```
+```
+FLUSH PRIVILEGES;
+```
 
 ## Connection
 
