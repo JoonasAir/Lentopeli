@@ -4,6 +4,7 @@ from mysql_connection import mysql_connection
 from questions import quiz_icao
 from security import talk_to_security
 from styles import styles
+from reduce_money import reduce_money
 
 
 
@@ -171,9 +172,9 @@ def airport_menu(game_dict:dict):
         elif user_input == "Buy a flight ticket": 
             print(styles["output"] + f"\nHere you buy a flight ticket" + styles["reset"])
             change_location(game_dict)
+            reduce_money(game_dict)
             
-            #TODO change player's location
-            
+
             
 
             break # endless loop ends here
