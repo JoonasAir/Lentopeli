@@ -62,8 +62,10 @@ def new_game(game_dict:dict):
     game_timer_thread.start()
 
 
-    while not game_dict["criminal_caught"] and game_dict["game_money"] >= game_dict["flight_price"] and game_dict["time_left_bool"]:
+    while True:
 
+        if stop_game(game_dict):
+            break
         
         
         # Player is at the airport_menu() -function until a flight ticket is bought
