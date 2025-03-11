@@ -6,6 +6,7 @@ from airport_menu import airport_menu
 from background_story import background_story
 from criminal import criminal_timer, criminal_caught
 from player import print_location
+from stop_game import stop_game
 from styles import styles
 import multiprocessing
 from questions import ask_category, get_questions
@@ -58,8 +59,8 @@ def new_game(game_dict:dict):
 
     while True:
 
-        # if stop_game(game_dict):
-        #     break
+        if stop_game(game_dict):
+            break
         
         
         # Player is at the airport_menu() -function until a flight ticket is bought
