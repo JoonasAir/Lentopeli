@@ -1,5 +1,6 @@
 import threading
 import time
+from mysql_connection import mysql_connection
 from tkinter import N
 from airport_menu import airport_menu
 from background_story import background_story
@@ -82,8 +83,9 @@ def new_game(game_dict:dict):
 
         # TODO if we gave right answer on the question = we are on right airpot now -> criminal-table: change visited to 1 on the first row with visited = 0
         if game_dict['previous_quiz_answer']: # boolean telling us if we got last quiz wrong or right
-            pass #SQL here
-
+            cursor = mysql_connection.cursor()
+            sql = "UPDATE criminal SET visited = 1 WHERE visited = 0 LIMIT 1"
+            cursor.execute(sql)
 
 
         # reset airport_menu-helper parameters to default value before entering airport-menu on the new airport

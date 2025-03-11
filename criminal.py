@@ -58,8 +58,7 @@ def criminal_caught(player_location:str):
         return True
     else:
         return False
-  
-    pass        # TODO check at the new airport if we are at the same airport as the criminal is (write function criminal_caught function that retuns True if we are and False if we aren't)
+          # TODO check at the new airport if we are at the same airport as the criminal is (write function criminal_caught function that retuns True if we are and False if we aren't)
 
 
 
