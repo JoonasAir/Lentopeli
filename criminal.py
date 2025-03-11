@@ -77,7 +77,7 @@ if __name__ == "__main__": # Main block
 
     state = True
     while state:
-        state = input(f"\nA new location is added to criminal table every {game_dict["criminal_time"]} seconds. \nPress enter to quit.")
+        state = input(f"\nA new location is added to criminal table every {game_dict['criminal_time']} seconds. \nPress enter to quit.")
 
     
 
