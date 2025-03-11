@@ -37,11 +37,11 @@ DIFFICULTY_game_parameters = {
     'C': { # Custom (played can modify these from main menu -> settings -> custom difficulty's settings)
         'game_money': 5000,         # money at the beginning of the game
         'flight_price':200,         # price of a flight ticket          
-        'game_time': 10,          # time at the beginning of the game
+        'game_time': 100,          # time at the beginning of the game
         'criminal_headstart': 4,    # the criminal's head start at the start of the game
         'criminal_time': 3,         # the time interval at which the criminal flies to the next location
         'difficulty': 'easy',       # difficulty for quiz questions
-        'random_luck': 0.50,        # the possibility of benefiting from random functions
+        'random_luck': 1,        # the possibility of benefiting from random functions
         'eco_points': 100,          # eco points at the beginning of the game
 
     }

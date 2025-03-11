@@ -153,11 +153,12 @@ def airport_menu(game_dict:dict):
                     game_dict["got_location"] = True
                     sql = "SELECT location FROM criminal WHERE visited = 0 LIMIT 1;"
                     cursor.execute(sql)
-                    result = cursor.fetchone()[0]
-                    game_dict["next_location"] = result
-                    print(styles["output"] + f"{random_action[1]}\n" + styles["reset"])
+                    result = cursor.fetchone()
+                    if type(result) == tuple:
+                        game_dict["next_location"] = result[0]
+                        print(styles["output"] + f"{random_action[1]}\n" + styles["reset"])
 
-                    print(styles["output"] + f"The next airport's ICAO-code is: {result}\n" + styles["reset"])
+                        print(styles["output"] + f"The next airport's ICAO-code is: {result}\n" + styles["reset"])
 
                 else:
                     print(styles["output"] + f"{random_action[2]}\n" + styles["reset"])

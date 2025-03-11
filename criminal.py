@@ -54,10 +54,11 @@ def criminal_caught(player_location:str):
     cursor.execute(sql1)
     criminal_location = cursor.fetchone()
 
-    if criminal_location == player_location:
-        return True
-    else:
-        return False
+    if len(criminal_location) > 0:
+        if criminal_location[0] == player_location:
+            return True
+        else:
+            return False
           # TODO check at the new airport if we are at the same airport as the criminal is (write function criminal_caught function that retuns True if we are and False if we aren't)
 
 
