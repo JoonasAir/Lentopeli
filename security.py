@@ -9,7 +9,7 @@ def talk_to_security(game_dict:dict, luck_bool:bool):
 
     if game_dict["talk_to_chief"] == False: # If we haven't talked to the security chief yet at current airport
         game_dict["talk_to_chief"] = True # change state to True = we have talked to security at this airport
-        sql = f"SELECT location FROM criminal WHERE Location = '{game_dict["player_location"]}';" # Check if our location is found in criminal-table
+        sql = f"SELECT location FROM criminal WHERE Location = '{game_dict['player_location']}';" # Check if our location is found in criminal-table
         cursor.execute(sql)
         result = cursor.fetchone()
         if type(result) == tuple: # If result is tupole, our location is found on criminal's table
