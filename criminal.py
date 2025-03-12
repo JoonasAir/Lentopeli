@@ -29,11 +29,10 @@ def criminal_new_location():
     cursor.execute(sql)
     
     
-def criminal_timer(criminal_timer_state: bool, time: int):
-    while criminal_timer_state.value:
+def criminal_timer(time: int):
+    while True:
         sleep(time)
-        if criminal_timer_state.value:
-            criminal_new_location()
+        criminal_new_location()
 
 
 def criminal_headstart(headstart:int):

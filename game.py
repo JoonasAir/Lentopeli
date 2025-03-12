@@ -1,5 +1,5 @@
 import threading
-import time
+from time import sleep
 from mysql_connection import mysql_connection
 from tkinter import N
 from airport_menu import airport_menu
@@ -8,24 +8,23 @@ from criminal import criminal_timer, criminal_caught
 from player import print_location
 from stop_game import stop_game
 from styles import styles
-import multiprocessing
+from multiprocessing import Process
 from questions import ask_category, get_questions
 
 
 stop_timer = threading.Event()
 
 def game_timer(game_dict:dict, stop_timer:threading.Event):
-    #global game_dict
-    while game_dict["game_time"] >= 0:
+    game_time = game_dict["game_time"]
+    while game_time >= 0:
         if stop_timer.is_set():
             break
-        min, sec = divmod(game_dict["game_time"], 60)
+        min, sec = divmod(game_time, 60)
         game_dict["time_left_str"] = styles["time"] + f"Time remaining: {min:02d}:{sec:02d}" + styles["reset"]
-        time.sleep(1)
-        game_dict["game_time"] -= 1
+        sleep(1)
+        game_time -= 1
     game_dict["time_left_str"] = styles["warning"] + f"Time is running up, you have time to take only one more flight!" + styles["reset"]
     game_dict["time_left_bool"] = False
-#   pelin koodi
 
 
 
@@ -43,13 +42,8 @@ def play_game(game_dict:dict):
 
     #   Game starts
 
-    # Defining and starting a background process for criminal_timer function
-    # Using Manager to share state between processes (when we change criminal_timer_state to False in the main program, the loop in the background process will close)
-    manager = multiprocessing.Manager()
-    # Boolean value for the function loop. We have to use manager because we need this variable in both processes
-    criminal_timer_state = manager.Value('b', True)
-    # Define the process
-    ProcessCriminalTimer = multiprocessing.Process(target=criminal_timer, args=(criminal_timer_state, game_dict['criminal_time']))
+    # Defining a background process that runs criminal_timer -function
+    ProcessCriminalTimer = Process(target=criminal_timer, args=(game_dict['criminal_time'],))
     # Start the process
     ProcessCriminalTimer.start()
     
@@ -98,13 +92,12 @@ def play_game(game_dict:dict):
 
 
 
-    # Ending the loop running in the background process
-    criminal_timer_state.value = False
-    # Force the termination of the background process, as the process loop contains a sleep function 
-    # (otherwise the player would have to wait until the criminal flies to the next airport)
+    # Terminate the criminal_timer -background process
     ProcessCriminalTimer.terminate()
-    # Ensure the background process has ended before moving on
+    # Ensures that the main program waits for the terminated process to clean up properly before continuing
     ProcessCriminalTimer.join()
+
+    # end threading
     stop_timer.set()
 
 
@@ -112,8 +105,6 @@ def play_game(game_dict:dict):
 
 
 
-# TODO When the game ends:
-#   1. Scores are calculated
 
 def point_calculator(game_dict:dict):
     mode = 0
@@ -131,9 +122,6 @@ def point_calculator(game_dict:dict):
     return score
 
 
-#   2. The game statistics are printed (screen name, how many games played with this screen name, difficulty level, score, elapsed time, money at the start, money spent, number of flights, number of off-course flights)
-
-#   3. Save game stats to the leaderboard table
 def leaderboard_update(game_dict:dict):
     screen_name = game_dict["screen_name"]
     points = point_calculator(game_dict)
@@ -141,13 +129,8 @@ def leaderboard_update(game_dict:dict):
     sql = f"INSERT into leaderboard (screen_name, points) values('{screen_name}' ,{points});"
     cursor.execute(sql)
 
+
 # Return to the main menu
-
-
-
-
-
-
 
 
 if __name__ == "__main__": 
