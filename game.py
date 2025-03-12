@@ -115,7 +115,7 @@ def play_game(game_dict:dict):
 # TODO When the game ends:
 #   1. Scores are calculated
 
-def point_calculator(game_dict):
+def point_calculator(game_dict:dict):
     mode = 0
     time = game_dict["game_time"]
     if game_dict["difficulty"] == "easy":
@@ -134,9 +134,9 @@ def point_calculator(game_dict):
 #   2. The game statistics are printed (screen name, how many games played with this screen name, difficulty level, score, elapsed time, money at the start, money spent, number of flights, number of off-course flights)
 
 #   3. Save game stats to the leaderboard table
-def leaderboard_update():
+def leaderboard_update(game_dict:dict):
     screen_name = game_dict["screen_name"]
-    points = point_calculator()
+    points = point_calculator(game_dict)
     cursor = mysql_connection.cursor()
     sql = f"INSERT into leaderboard (screen_name, points) values({screen_name} ,{points})"
     cursor.execute(sql)

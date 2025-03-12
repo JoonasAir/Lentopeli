@@ -9,12 +9,12 @@ def change_location(game_dict):
     sql = "SELECT ident FROM airport WHERE name LIKE '%airport'"
     cursor.execute(sql)
     database = cursor.fetchall()
-    game_dict["player_location"] = input(styles["input"] + "Give ICAO-code for the airport where you want to travel next: " + styles["reset"])
+    game_dict["player_location"] = input(styles["input"] + "Give ICAO-code for the airport where you want to travel next: " + styles["reset"]).upper()
     ICA = []
     for row in database:
         ICA.append(row[0])
     while game_dict["player_location"] not in ICA:
-        game_dict["player_location"] = input(styles["input"] + "ICAO-code not found! Try again: " + styles["reset"])
+        game_dict["player_location"] = input(styles["input"] + "ICAO-code not found! Try again: " + styles["reset"]).upper()
 
 
 def print_location(icao):
