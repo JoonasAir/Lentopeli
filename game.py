@@ -40,7 +40,6 @@ def play_game(game_dict:dict):
 
 
 
-    #   Game starts
 
     # Defining a background process that runs criminal_timer -function
     ProcessCriminalTimer = Process(target=criminal_timer, args=(game_dict['criminal_time'],))
