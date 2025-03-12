@@ -1,7 +1,7 @@
 from random import randint
 from player import change_location, print_location
 from mysql_connection import mysql_connection
-from questions import quiz_icao, ask_question
+from questions import quiz_icao, ask_question, ask_again
 from security import talk_to_security
 from styles import styles
 from reduce_money import reduce_money
@@ -171,23 +171,20 @@ def airport_menu(game_dict:dict):
 
 
         elif user_input == "Buy a flight ticket": 
-            print(styles["output"] + f"\nHere you buy a flight ticket" + styles["reset"])
             change_location(game_dict)
             reduce_money(game_dict)
             
-
-            
-
-            break # endless loop ends here
+            break # airport loop ends here
 
 
         elif user_input == "Solve the clue":
-            ask_question_bool = ask_question(game_dict["quiz_questions"])
+            ask_question_bool, game_dict['previous_question'] = ask_question(game_dict["quiz_questions"])
             quiz_icao(ask_question_bool, game_dict)
 
 
         elif user_input == "Try to solve the previous clue again": 
-            print(styles["output"] + f"\nHere you try to solve the previous clue again" + styles["reset"])
+            ask_question_bool = ask_again(game_dict["previous_question"])
+            quiz_icao(ask_question_bool, game_dict)
 
 
 

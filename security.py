@@ -13,9 +13,8 @@ def talk_to_security(game_dict:dict, luck_bool:bool):
         cursor.execute(sql)
         result = cursor.fetchone()
         if type(result) == tuple: # If result is tupole, our location is found on criminal's table
-            if game_dict["player_location"] in result: 
-                print(styles["output"] + f"\nSecurity chief's monitows were down due to the criminal's attack.\nStill he had a clue about criminal for you. Try to solve it\n" + styles["reset"])
-                game_dict["criminal_was_here"] = True
+            print(styles["output"] + f"\nSecurity chief's monitows were down due to the criminal's attack.\nStill he had a clue about criminal for you. Try to solve it\n" + styles["reset"])
+            game_dict["criminal_was_here"] = True
 
         else:
             print(styles["output"] + f"\nSecurity chief told you the criminal haven't been at the airport. Try to solve last clue again.\n" + styles["reset"])
