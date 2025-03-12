@@ -29,7 +29,7 @@ def game_timer(game_dict:dict, stop_timer:threading.Event):
 
 
 
-def new_game(game_dict:dict):
+def play_game(game_dict:dict):
     # Choosing category of quiz questions
     game_dict["quiz_category"] = ask_category()
     # Get quiz questions with right difficulty and category
@@ -92,7 +92,8 @@ def new_game(game_dict:dict):
         game_dict["criminal_caught"] = criminal_caught()
 
 
-
+    if game_dict["win_game"]: # If we won the game
+        leaderboard_update(game_dict)
 
 
 
@@ -105,6 +106,9 @@ def new_game(game_dict:dict):
     # Ensure the background process has ended before moving on
     ProcessCriminalTimer.join()
     stop_timer.set()
+
+
+
 
 
 
@@ -150,4 +154,4 @@ if __name__ == "__main__":
     from game_setup import game_setup
     from game_parameters import game_parameters
     game_dict = game_setup(game_parameters)
-    new_game(game_dict)
+    play_game(game_dict)

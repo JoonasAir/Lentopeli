@@ -1,4 +1,4 @@
-from game import new_game
+from game import play_game
 from game_setup import game_setup
 from leaderboard import leaderboard
 from questions import practice_quiz
@@ -31,7 +31,7 @@ def main_menu():
         elif user_input == 2: # New game
             print(styles["menu"] + "\nN E W   G A M E\n\n"+ styles["reset"])
             game_dict = game_setup(game_parameters)
-            new_game(game_dict)
+            play_game(game_dict)
     
         elif user_input == 3: # Leaderboard
             print(styles["menu"] + "\nL E A D E R B O A R D\n\n"+ styles["reset"])
