@@ -136,6 +136,7 @@ def ask_question(questions:list):
     print(f"{output_color}\nQuestion: {question_text}\nOptions:\n{reset_color}")
     for i, answer in enumerate(answers, 1):
         print(f"{output_color}{i}. {answer}{reset_color}")
+        
 
     # Kysytään käyttäjältä valinta
     while True:
@@ -152,10 +153,10 @@ def ask_question(questions:list):
     # Tarkistetaan, onko valittu vastaus oikea. Pitää laittaa -1 edellisessä for silmukassa lisättiin yksi numeroinnin takia
     if answers[user_answer - 1] == correct_answer:
         #print(f"{output_color}\nCorrect!{reset_color}")
-        return True  # Oikea vastaus
+        return True, answers # Oikea vastaus
     else:
         #print(f"{output_color}\nWrong! The correct answer was: {correct_answer}{reset_color}")
-        return False  # Väärä vastaus
+        return False, answers  # Väärä vastaus
 
 
 # takes following parameters:
