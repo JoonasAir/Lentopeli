@@ -134,7 +134,7 @@ def point_calculator(game_dict):
 #   2. The game statistics are printed (screen name, how many games played with this screen name, difficulty level, score, elapsed time, money at the start, money spent, number of flights, number of off-course flights)
 
 #   3. Save game stats to the leaderboard table
-def leaderboard_update():
+def leaderboard_update(game_dict):
     screen_name = game_dict["screen_name"]
     points = point_calculator()
     cursor = mysql_connection.cursor()
