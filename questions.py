@@ -151,10 +151,10 @@ def ask_question(questions:list):
     
     # Tarkistetaan, onko valittu vastaus oikea. Pitää laittaa -1 edellisessä for silmukassa lisättiin yksi numeroinnin takia
     if answers[user_answer - 1] == correct_answer:
-        print(f"{output_color}\nCorrect!{reset_color}")
+        #print(f"{output_color}\nCorrect!{reset_color}")
         return True  # Oikea vastaus
     else:
-        print(f"{output_color}\nWrong! The correct answer was: {correct_answer}{reset_color}")
+        #print(f"{output_color}\nWrong! The correct answer was: {correct_answer}{reset_color}")
         return False  # Väärä vastaus
 
 
