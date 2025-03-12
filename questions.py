@@ -131,6 +131,7 @@ def ask_question(questions:list):
     # Yhdistetään vastaukset ja sekoitetaan ne, oikea vastaus pitää lisätä listaan että sen voi yhdistää väärien vastauksien listaan
     answers = incorrect_answers + [correct_answer]
     random.shuffle(answers)
+    previous_question = [answers, correct_answer, question_text]
 
     # Tulostetaan kysymys ja vaihtoehdot. Enumerate numeroi jokaisen listan alkoin, alkaen numerosta 1.
     print(f"{output_color}\nQuestion: {question_text}\nOptions:\n{reset_color}")
@@ -153,10 +154,31 @@ def ask_question(questions:list):
     # Tarkistetaan, onko valittu vastaus oikea. Pitää laittaa -1 edellisessä for silmukassa lisättiin yksi numeroinnin takia
     if answers[user_answer - 1] == correct_answer:
         #print(f"{output_color}\nCorrect!{reset_color}")
-        return True, answers # Oikea vastaus
+        return True, previous_question# Oikea vastaus
     else:
         #print(f"{output_color}\nWrong! The correct answer was: {correct_answer}{reset_color}")
-        return False, answers  # Väärä vastaus
+        return False, previous_question  # Väärä vastaus
+    
+def ask_again(previous_question):
+    answers, correct_answer, question_text = previous_question
+    while True:
+        try:
+            user_answer = int(input(f"{output_color}Select the right answer: " + reset_color))
+            if 1 <= user_answer <= len(answers):
+                break
+            else:
+                print(f"{output_color}Wrong input, try again!{reset_color}")
+        except ValueError:
+            print(f"{output_color}Wrong input, try again!{reset_color}")
+    
+    if answers[user_answer - 1] == correct_answer:
+        #print(f"{output_color}\nCorrect!{reset_color}")
+        return True # Oikea vastaus
+    else:
+        #print(f"{output_color}\nWrong! The correct answer was: {correct_answer}{reset_color}")
+        return False  # Väärä vastaus
+
+
 
 
 # takes following parameters:
@@ -181,6 +203,7 @@ def quiz_icao(ask_question_bool:bool, game_dict:dict):
         cursor.execute(sql)
         result = cursor.fetchone()
         game_dict["next_location"] = result[0]
+
 
 
 
