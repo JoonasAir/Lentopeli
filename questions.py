@@ -204,8 +204,6 @@ def quiz_icao(ask_question_bool:bool, game_dict:dict):
         result = cursor.fetchone()
         if type(result) == tuple: # if the sql query returns a value
             game_dict["next_location"] = result[0]
-        else: # if there is no locations left to visit
-            game_dict["criminal_caught"] = True
 
     elif ask_question_bool == False:# we'll get wrong ICAO-code
         sql = f"SELECT ident FROM airport WHERE continent = 'EU' AND type = 'large_airport' AND ident NOT IN (SELECT location FROM criminal) AND ident != '{player_location}' ORDER BY RAND() LIMIT 1;"

@@ -47,18 +47,17 @@ def criminal_headstart(headstart:int):
         criminal_new_location()
 
 
-def criminal_caught(player_location:str): # check at the new airport if we are at the same airport as the criminal is (write function criminal_caught function that retuns True if we are and False if we aren't)
+def criminal_caught(): # check at the new airport if we are at the same airport as the criminal is (write function criminal_caught function that retuns True if we are and False if we aren't)
 
     cursor = mysql_connection.cursor()
-    sql1 = "SELECT location FROM criminal WHERE id = (SELECT MAX(id) FROM criminal);"
+    sql1 = "SELECT location FROM criminal WHERE visited = 0 LIMIT 1;"
     cursor.execute(sql1)
     criminal_location = cursor.fetchone()
 
     if type(criminal_location) == tuple:
-        if criminal_location[0] == player_location:
-            return True
-    else:
         return False
+    else:
+        return True
 
 
 
