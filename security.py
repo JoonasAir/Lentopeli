@@ -20,7 +20,7 @@ def talk_to_security(game_dict:dict, luck_bool:bool):
             print(styles["output"] + f"\nSecurity chief told you the criminal haven't been at the airport. Try to solve last clue again.\n" + styles["reset"])
             game_dict["criminal_was_here"] = False
 
-    elif luck_bool and game_dict["criminal_was_here"] and not game_dict["tried_luck"]: # If criminal have been here and we got luck_booly
+    elif luck_bool and game_dict["criminal_was_here"] and not game_dict["tried_luck"]: # If criminal have been here AND we got lucky AND we haven't tried our luck yet at the current airport
         game_dict["tried_luck"] = True
         game_dict["got_location"] = True
         sql = "SELECT location FROM criminal WHERE visited = 0 LIMIT 1;"
