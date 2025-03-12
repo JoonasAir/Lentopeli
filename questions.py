@@ -161,6 +161,12 @@ def ask_question(questions:list):
     
 def ask_again(previous_question):
     answers, correct_answer, question_text = previous_question
+
+    print(f"{output_color}\nQuestion: {question_text}\nOptions:\n{reset_color}")
+    for i, answer in enumerate(answers, 1):
+        print(f"{output_color}{i}. {answer}{reset_color}")
+
+
     while True:
         try:
             user_answer = int(input(f"{output_color}Select the right answer: " + reset_color))
