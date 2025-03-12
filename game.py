@@ -84,7 +84,7 @@ def new_game(game_dict:dict):
         if game_dict['previous_quiz_answer']: # boolean telling us if we got last quiz wrong or right
             cursor = mysql_connection.cursor()
             # sql = "UPDATE criminal SET visited = 1 WHERE visited = 0 LIMIT 1;"
-            sql = f"UPDATE criminal SET visited = 1 WHERE id = (SELECT id FROM criminal WHERE visited = 0 LIMIT 1) AND location = '{game_dict["player_location"]}';"
+            sql = f"UPDATE criminal SET visited = 1 WHERE id = (SELECT id FROM criminal WHERE visited = 0 LIMIT 1) AND location = '{game_dict['player_location']}';"
             cursor.execute(sql)
 
 
