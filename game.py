@@ -71,12 +71,7 @@ def new_game(game_dict:dict):
 
         if game_dict["first_airport"]:
             game_dict["first_airport"] = False
-        
-
     
-        # check at the new airport if we are at the same airport as the criminal is (write function criminal_caught function that retuns True if we are and False if we aren't)
-        game_dict["criminal_caught"] = criminal_caught()
-
 
         # if we gave right answer on the question = we are on right airpot now -> criminal-table: change visited to 1 on the first row with visited = 0
         if game_dict['previous_quiz_answer']: # boolean telling us if we got last quiz wrong or right
@@ -85,6 +80,9 @@ def new_game(game_dict:dict):
             sql = f"UPDATE criminal SET visited = 1 WHERE id = (SELECT id FROM criminal WHERE visited = 0 LIMIT 1) AND location = '{game_dict["player_location"]}';"
             cursor.execute(sql)
 
+
+        # check at the new airport if we are at the same airport as the criminal is (write function criminal_caught function that retuns True if we are and False if we aren't)
+        game_dict["criminal_caught"] = criminal_caught()
 
 
         # reset airport_menu-helper parameters to default value before entering airport-menu on the new airport

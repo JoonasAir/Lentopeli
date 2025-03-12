@@ -62,8 +62,6 @@ def criminal_caught(): # check at the new airport if we are at the same airport 
 
 
 if __name__ == "__main__": # Main block
-    print(criminal_caught())
-
     from game_setup import game_setup
     import multiprocessing
 
