@@ -1,5 +1,3 @@
-from game import leaderboard_update
-
 
 def stop_game(game_dict:dict):
 
