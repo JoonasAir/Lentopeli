@@ -71,7 +71,7 @@ def ask_category():
     "Entertainment: Comics",
     "Entertainment: Anime & Manga",
     "Entertainment: Cartoon & Animation",
-    "Science & Nature",
+    "Science &amp; Nature",
     "Science: Computers",
     "Science: Mathematics",
     "Science: Gadgets",
@@ -216,7 +216,7 @@ def quiz_icao(ask_question_bool:bool, game_dict:dict):
             print(styles["output"] + f"The next location is: {result[0]}" + styles["reset"])
 
 
-
+# TODO korjaa oikein ja väärin pisteytys, random järjestys kysymyksille!
 
 # Testataan koodin toimivuus kolmella kysymyksellä
 def practice_quiz():
