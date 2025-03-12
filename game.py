@@ -59,11 +59,18 @@ def new_game(game_dict:dict):
 
 
     while True:
-
+        # check if the game should end or not
         if stop_game(game_dict):
             break
         
-        
+        # reset airport_menu-helper parameters to default value before entering airport-menu on the new airport
+        game_dict['talk_to_chief'] = False
+        game_dict['tried_luck'] = False
+        game_dict['first_iteration'] = True
+        game_dict['next_location_bool'] = False
+        game_dict["clue_solved"] = bool
+        game_dict['criminal_was_here'] = bool
+
         # Player is at the airport_menu() -function until a flight ticket is bought
         game_dict = airport_menu(game_dict)
 
@@ -85,13 +92,6 @@ def new_game(game_dict:dict):
         game_dict["criminal_caught"] = criminal_caught()
 
 
-        # reset airport_menu-helper parameters to default value before entering airport-menu on the new airport
-        game_dict['talk_to_chief'] = False
-        game_dict['tried_luck'] = False
-        game_dict['first_iteration'] = True
-        game_dict['next_location'] = ""
-        game_dict["clue_solved"] = bool
-        game_dict['criminal_was_here'] = bool
 
 
 

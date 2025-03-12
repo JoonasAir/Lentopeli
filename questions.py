@@ -203,14 +203,17 @@ def quiz_icao(ask_question_bool:bool, game_dict:dict):
         cursor.execute(sql)
         result = cursor.fetchone()
         if type(result) == tuple: # if the sql query returns a value
-            game_dict["next_location"] = result[0]
+            game_dict["next_location_bool"] = True
+            print(styles["output"] + f"The next location is: {result[0]}" + styles["reset"])
+
 
     elif ask_question_bool == False:# we'll get wrong ICAO-code
         sql = f"SELECT ident FROM airport WHERE continent = 'EU' AND type = 'large_airport' AND ident NOT IN (SELECT location FROM criminal) AND ident != '{player_location}' ORDER BY RAND() LIMIT 1;"
         cursor.execute(sql)
         result = cursor.fetchone()
-        game_dict["next_location"] = result[0]
-
+        if type(result) == tuple: # if the sql query returns a value
+            game_dict["next_location_bool"] = True
+            print(styles["output"] + f"The next location is: {result[0]}" + styles["reset"])
 
 
 

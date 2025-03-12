@@ -89,19 +89,19 @@ def airport_menu_input(game_dict:dict):
     option_num += 1
 
     # Solve the clue
-    if game_dict["talk_to_chief"] and game_dict['criminal_was_here'] and game_dict["clue_solved"] != True and game_dict["next_location"] == "": # visible IF we've talked to security chief AND the criminal has been at the airport AND we haven't solved the clue yet AND we don't know next location
+    if game_dict["talk_to_chief"] and game_dict['criminal_was_here'] and game_dict["clue_solved"] != True and not game_dict["next_location_bool"]: # visible IF we've talked to security chief AND the criminal has been at the airport AND we haven't solved the clue yet AND we don't know next location
         menu += f"    {option_num} - {airport_actions[2]}\n"
         option_num += 1
         option_list.append(airport_actions[2])
 
     # Try to solve the previous clue again
-    if game_dict["talk_to_chief"] and not game_dict["criminal_was_here"] and game_dict["clue_solved"] != True and game_dict["next_location"] == "": # visible IF we've talked to security chief AND the criminal has NOT been at the airport AND we haven't solved the clue yet AND we don't know next location
+    if game_dict["talk_to_chief"] and not game_dict["criminal_was_here"] and game_dict["clue_solved"] != True and not game_dict["next_location_bool"]: # visible IF we've talked to security chief AND the criminal has NOT been at the airport AND we haven't solved the clue yet AND we don't know next location
         menu += f"    {option_num} - {airport_actions[3]}\n"           
         option_num += 1
         option_list.append(airport_actions[3])
 
     # Buy a flight ticket
-    elif game_dict["next_location"] != "": # visible IF we got the location (from quiz or with luck_bool)
+    elif game_dict["next_location_bool"]: # visible IF we got the location (from quiz or with luck_bool)
         menu += f"    {option_num} - {airport_actions[4]}\n"
         option_num += 1
         option_list.append(airport_actions[4])
@@ -155,8 +155,9 @@ def airport_menu(game_dict:dict):
                     cursor.execute(sql)
                     result = cursor.fetchone()
                     if type(result) == tuple:
-                        game_dict["next_location"] = result[0]
                         print(styles["output"] + f"{random_action[1]}\n" + styles["reset"])
+                        game_dict["next_location_bool"] = True
+                        print(styles["output"] + f"The next location is: {result[0]}" + styles["reset"])
 
                 else:
                     print(styles["output"] + f"{random_action[2]}\n" + styles["reset"])
