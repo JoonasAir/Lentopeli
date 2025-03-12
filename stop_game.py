@@ -1,3 +1,4 @@
+from game import leaderboard_update
 
 
 def stop_game(game_dict:dict):
@@ -5,6 +6,7 @@ def stop_game(game_dict:dict):
 
     if game_dict["criminal_caught"]: # olemme saaneet rikollisen kiinni
         print("Sait rikollisen kiinni. Voitit pelin!")
+        leaderboard_update(game_dict)
         return True
 
 
