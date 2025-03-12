@@ -5,8 +5,17 @@ from styles import styles
 
 
 def change_location(game_dict):
-    game_dict["player_location"] = game_dict["next_location"]
-    game_dict["next_location"] = ""
+    cursor = mysql_connection.cursor()
+    sql = "SELECT ident FROM airport"
+    cursor.execute(sql)
+    database = cursor.fetchall()
+    game_dict["player_location"] = input("Give ICAO-code for the airport where you want to travel next: ")
+    ICAO = []
+    for row in database:
+        ICAO.append(row)
+    while game_dict["player_location"] not in ICAO:
+        game_dict["player_location"] = input("ICAO-code not found! Try again: ")
+
 
 def print_location(icao):
     cursor = mysql_connection.cursor(dictionary=True)
