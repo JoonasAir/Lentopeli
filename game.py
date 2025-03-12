@@ -125,7 +125,7 @@ def point_calculator(game_dict:dict):
     elif game_dict["difficulty"] == "hard":
         mode = 2.5
 
-    score = time * mode
+    score = time * mode * 150
     print(score)
     
     return score
@@ -138,7 +138,7 @@ def leaderboard_update(game_dict:dict):
     screen_name = game_dict["screen_name"]
     points = point_calculator(game_dict)
     cursor = mysql_connection.cursor()
-    sql = f"INSERT into leaderboard (screen_name, points) values({screen_name} ,{points})"
+    sql = f"INSERT into leaderboard (screen_name, points) values('{screen_name}' ,{points});"
     cursor.execute(sql)
 
 # Return to the main menu
