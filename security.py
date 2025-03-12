@@ -1,3 +1,4 @@
+from logging import warning
 from mysql_connection import mysql_connection
 from styles import styles
 
@@ -11,26 +12,29 @@ def talk_to_security(game_dict:dict, luck_bool:bool):
         sql = f"SELECT location FROM criminal WHERE Location = '{game_dict["player_location"]}';" # Check if our location is found in criminal-table
         cursor.execute(sql)
         result = cursor.fetchone()
+        if type(result) == tuple:
+            if game_dict["player_location"] in result: # If our location equals to the last of the visited locations in criminal-table
+                print(styles["output"] + f"\nSecurity chief's monitows were down due to the criminal's attack.\nStill he had a clue about criminal for you. Try to solve it\n" + styles["reset"])
+                game_dict["criminal_was_here"] = True
 
-        if game_dict["player_location"] in result: # If our location equals to the last of the visited locations in criminal-table
-            print(styles["output"] + f"\nSecurity chief's monitows were down due to the criminal's attack.\nStill he had a clue about criminal for you. Try to solve it\n" + styles["reset"])
-            game_dict["criminal_was_here"] = True
-
+            else:
+                print(styles["output"] + f"\nSecurity chief told you the criminal haven't been at the airport. Try to solve last clue again.\n" + styles["reset"])
+                game_dict["criminal_was_here"] = False
         else:
-            print(styles["output"] + f"\nSecurity chief told you the criminal haven't been at the airport. Try to solve last clue again.\n" + styles["reset"])
-            game_dict["criminal_was_here"] = False
-
+            print(styles["warning"] + "No result from sql query" + styles["reset"])
 
     elif luck_bool and game_dict["criminal_was_here"]: # If criminal have been here and we got luck_booly
         game_dict["got_location"] = True
         sql = "SELECT location FROM criminal WHERE visited = 0 LIMIT 1;"
         cursor.execute(sql)
         result = cursor.fetchone()
-        result = result[0][0]
-        print(styles["output"] + f"\n{result}" + styles["reset"])
-        print(styles["output"] + f"\nThe chief had just found the country where the criminal headed from here!" + styles["reset"])
-        print(styles["output"] + f"\nThe fight ICAO-code is: {result}" + styles["reset"])
-
+        if type(result) == tuple:
+            result = result[0][0]
+            print(styles["output"] + f"\n{result}" + styles["reset"])
+            print(styles["output"] + f"\nThe chief had just found the country where the criminal headed from here!" + styles["reset"])
+            print(styles["output"] + f"\nThe fight ICAO-code is: {result}" + styles["reset"])
+        else:
+            print(styles["warning"] + "No result from sql query" + styles["reset"])
     elif game_dict["criminal_was_here"]:
         pass
 
