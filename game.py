@@ -23,6 +23,7 @@ def game_timer(game_dict:dict, stop_timer:threading.Event):
         game_dict["time_left_str"] = styles["time"] + f"Time remaining: {min:02d}:{sec:02d}" + styles["reset"]
         time.sleep(1)
         game_dict["game_time"] -= 1
+    game_dict["time_left_str"] = styles["warning"] + f"Time is running up, you have time to take only one more flight!" + styles["reset"]
     game_dict["time_left_bool"] = False
 #   pelin koodi
 
