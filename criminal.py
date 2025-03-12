@@ -53,6 +53,7 @@ def criminal_caught(): # check at the new airport if we are at the same airport 
     sql1 = "SELECT location FROM criminal WHERE visited = 0 LIMIT 1;"
     cursor.execute(sql1)
     criminal_location = cursor.fetchone()
+    print(type(criminal_location))
 
     if type(criminal_location) == tuple:
         return False
@@ -62,6 +63,8 @@ def criminal_caught(): # check at the new airport if we are at the same airport 
 
 
 if __name__ == "__main__": # Main block
+    print(criminal_caught())
+
     from game_setup import game_setup
     import multiprocessing
 

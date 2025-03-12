@@ -4,7 +4,7 @@ def stop_game(game_dict:dict):
 
 
     if game_dict["criminal_caught"]: # olemme saaneet rikollisen kiinni
-        print("Saat rikollisen kiinni. Voitit pelin! Peli päättyy!")
+        print("Sait rikollisen kiinni. Voitit pelin!")
         return True
 
 
@@ -16,7 +16,7 @@ def stop_game(game_dict:dict):
 
 
     elif not game_dict["time_left_bool"]: # aika loppu
-        print("Aika on loppunut. Hävisit pelin")
+        print("Aika on loppunut. Hävisit pelin.")
         return True
 
 

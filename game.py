@@ -89,7 +89,6 @@ def new_game(game_dict:dict):
 
         # reset airport_menu-helper parameters to default value before entering airport-menu on the new airport
         game_dict['talk_to_chief'] = False
-        game_dict['criminal_caught'] = False
         game_dict['tried_luck'] = False
         game_dict['first_iteration'] = True
         game_dict['next_location'] = ""
