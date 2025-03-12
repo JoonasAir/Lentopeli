@@ -15,14 +15,13 @@ from questions import ask_category, get_questions
 stop_timer = threading.Event()
 
 def game_timer(game_dict:dict, stop_timer:threading.Event):
-    game_time = game_dict["game_time"]
-    while game_time >= 0:
+    while game_dict["game_time"] >= 0:
         if stop_timer.is_set():
             break
-        min, sec = divmod(game_time, 60)
+        min, sec = divmod(game_dict["game_time"], 60)
         game_dict["time_left_str"] = styles["time"] + f"Time remaining: {min:02d}:{sec:02d}" + styles["reset"]
         sleep(1)
-        game_time -= 1
+        game_dict["game_time"] -= 1
     game_dict["time_left_str"] = styles["warning"] + f"Time is running up, you have time to take only one more flight!" + styles["reset"]
     game_dict["time_left_bool"] = False
 
@@ -116,7 +115,8 @@ def point_calculator(game_dict:dict):
         mode = 2.5
 
     score = time * mode * 150
-    print(score)
+    print("YOUR SCORE: ", score)
+    
     
     return score
 
