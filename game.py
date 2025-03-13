@@ -121,8 +121,17 @@ def leaderboard_update(game_dict:dict):
     screen_name = game_dict["screen_name"]
     points = point_calculator(game_dict)
     cursor = mysql_connection.cursor()
-    sql = f"INSERT into leaderboard (screen_name, points) values('{screen_name}' ,{points});"
+
+    sql = f"SELECT screen_name, points FROM leadreboard WHERE screen_name = '{screen_name}';"
     cursor.execute(sql)
+    result = cursor.fetchone()
+    if type(result) == tuple: # screen_name is found in leaderboard
+        if result[1] < points: # update points if new personal highscore
+            sql = f"UPDATE leaderboard SET points = '{points}' WHERE screen_name = '{screen_name}';"
+            cursor.execute(sql)
+    else: # screen_name is found in leaderboard
+        sql = f"INSERT into leaderboard (screen_name, points) values('{screen_name}' ,{points});"
+        cursor.execute(sql)
 
 
 # Return to the main menu

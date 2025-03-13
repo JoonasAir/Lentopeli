@@ -12,7 +12,7 @@ def leaderboard():
     # Luodaan taulukko otsikoilla RANK, NAME & POINTS
     table = PrettyTable(["RANK", "NAME", "POINTS"])
     rank = 1
-    for i in tulos:
+    for i in tulos[:10]:
         name, points = i
         table.add_row([rank, name, points])# Lisätään taulukkoon riveittäin muuttujat name&points
         table.add_divider() # Jaotellaan rivit viivalla

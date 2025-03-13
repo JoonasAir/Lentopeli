@@ -27,6 +27,8 @@ if __name__ == "__main__":
     process_criminal_timer.start()
 
 
+    lista = [1,2]
+    intti = int(1)
 
 
     x = input("Input: ")
