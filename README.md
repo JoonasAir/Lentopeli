@@ -1,6 +1,6 @@
 # CatchTheCriminal - Europe Edition
 
-### works at least with python version 3.13.1
+### built and tested with python version 3.13.1
 ## Install needed third-party-packages
 ### Run following command in terminal, at *root* directory of the game
 ```
