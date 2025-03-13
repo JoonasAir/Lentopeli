@@ -234,7 +234,7 @@ def practice_quiz():
     # Pelaaja vastaa kolmeen kysymykseen
     score = 0
     for _ in range(x):
-        if ask_question(questions):
+        if ask_question(questions)[0]:
             score += 1
 
     # Peli päättyy
