@@ -111,7 +111,6 @@ def point_calculator(game_dict:dict):
         mode = 2.5
 
     score = time * mode * 150
-    print("YOUR SCORE: ", score)
     
     
     return score
@@ -129,9 +128,14 @@ def leaderboard_update(game_dict:dict):
         if result[1] < points: # update points if new personal highscore
             sql = f"UPDATE leaderboard SET points = '{points}' WHERE screen_name = '{screen_name}';"
             cursor.execute(sql)
+            print(f"\nYou got a new highscore: {points} \nYour previous highscore: {result[1]}".upper())
+
+        else:
+            print(f"\nYour score: {points} \nYou didn't beat your highscore: {result[1]}".upper())
     else: # screen_name is found in leaderboard
         sql = f"INSERT into leaderboard (screen_name, points) values('{screen_name}' ,{points});"
         cursor.execute(sql)
+        print(f"\nYour score: {points} ".upper())
 
 
 # Return to the main menu

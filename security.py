@@ -30,7 +30,7 @@ def talk_to_security(game_dict:dict, luck_bool:bool):
             result = result[0][0]
             print(styles["output"] + f"\n{result}" + styles["reset"])
             print(styles["output"] + f"\nThe chief had just found the country where the criminal headed from here!" + styles["reset"])
-            print(styles["output"] + f"\nThe fight ICAO-code is: {result}" + styles["reset"])
+            print(styles["output"] + f"\nThe fight ICAO-code is:{styles["location"] + styles["bold"]} {result}" + styles["reset"])
         else:
             print(styles["warning"] + "No result from sql query (you're on same airport with the criminal)" + styles["reset"])
             

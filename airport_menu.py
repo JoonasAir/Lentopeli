@@ -1,10 +1,12 @@
 from random import randint
-from player import change_location, print_location
+from player import change_location
 from mysql_connection import mysql_connection
 from questions import quiz_icao, ask_question, ask_again
 from security import talk_to_security
 from styles import styles
 from reduce_money import reduce_money
+import textwrap
+import shutil
 
 
 
@@ -155,9 +157,15 @@ def airport_menu(game_dict:dict):
                     cursor.execute(sql)
                     result = cursor.fetchone()
                     if type(result) == tuple:
-                        print(styles["output"] + f"{random_action[1]}\n" + styles["reset"])
+                        longtext = random_action[1]
+                        terminal_width = shutil.get_terminal_size().columns
+                        wrapped_text = textwrap.fill(longtext, width = terminal_width/2)
+
+
+
+                        print(styles["output"] + f"{wrapped_text}\n" + styles["reset"])
                         game_dict["next_location_bool"] = True
-                        print(styles["output"] + f"The next location is: {result[0]}" + styles["reset"])
+                        print(styles["output"] + f"The next location is:{styles["location"] + styles["bold"]} {result[0]}" + styles["reset"])
 
                 else:
                     print(styles["output"] + f"{random_action[2]}\n" + styles["reset"])

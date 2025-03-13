@@ -1,6 +1,7 @@
 from multiprocessing import Process
 from time import sleep
 from mysql_connection import mysql_connection
+from styles import styles
 
 
 def criminal_new_location():
@@ -30,6 +31,7 @@ if __name__ == "__main__":
     lista = [1,2]
     intti = int(1)
 
+    print(styles["bold"] + "1234" + styles["reset"] + "  1234")
 
     x = input("Input: ")
     print(x)
