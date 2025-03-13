@@ -134,9 +134,9 @@ def ask_question(questions:list):
     previous_question = [answers, correct_answer, question_text]
 
     # Tulostetaan kysymys ja vaihtoehdot. Enumerate numeroi jokaisen listan alkoin, alkaen numerosta 1.
-    print(f"{output_color}\nQuestion: {question_text}\nOptions:\n{reset_color}")
+    print(f"{input_color}\nQuestion: {question_text}\nOptions:\n{reset_color}")
     for i, answer in enumerate(answers, 1):
-        print(f"{output_color}{i}. {answer}{reset_color}")
+        print(f"{input_color}{i}. {answer}{reset_color}")
         
 
     # Kysytään käyttäjältä valinta
@@ -232,8 +232,14 @@ def practice_quiz():
     # Pelaaja vastaa kolmeen kysymykseen
     score = 0
     for _ in range(x):
-        if ask_question(questions)[0]:
+        boolean, previous_question = ask_question(questions) 
+        if boolean:
             score += 1
+            print(f"{output_color}\nCorrect!{reset_color}")
+        else:
+            print(f"{warning_color}\nWrong! The correct answer was: {previous_question[1]}{reset_color}")
+
+            
 
     # Peli päättyy
     print(f"{warning_color}Your score: {score}/{x}! {reset_color}")
