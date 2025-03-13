@@ -100,10 +100,6 @@ def play_game(game_dict:dict):
 
 
 
-
-
-
-
 def point_calculator(game_dict:dict):
     mode = 0
     time = game_dict["game_time"]
