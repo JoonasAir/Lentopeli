@@ -41,7 +41,7 @@ DIFFICULTY_game_parameters = {
         'criminal_headstart': 2,    # the criminal's head start at the start of the game
         'criminal_time': 30,         # the time interval at which the criminal flies to the next location
         'difficulty': 'easy',       # difficulty for quiz questions
-        'random_luck': 1,        # the possibility of benefiting from random functions
+        'random_luck': 0.3,        # the possibility of benefiting from random functions
         'eco_points': 100,          # eco points at the beginning of the game
 
     }
