@@ -34,7 +34,7 @@ DIFFICULTY_game_parameters = {
         'eco_points': 100,          # eco points at the beginning of the game
 
     },
-    'C': { # Custom (played can modify these from main menu -> settings -> custom difficulty's settings)
+    'C': { # Custom (played can modify these in: main menu -> settings -> custom difficulty's settings)
         'game_money': 5000,         # money at the beginning of the game
         'flight_price':200,         # price of a flight ticket          
         'game_time': 60*5,          # time at the beginning of the game
