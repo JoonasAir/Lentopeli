@@ -204,7 +204,7 @@ def quiz_icao(ask_question_bool:bool, game_dict:dict):
         result = cursor.fetchone()
         if type(result) == tuple: # if the sql query returns a value
             game_dict["next_location_bool"] = True
-            print(styles["output"] + f"The next location is: {result[0]}" + styles["reset"])
+            print(styles["output"] + f"The next location is: {styles["location"] + styles["bold"]}{result[0]}" + styles["reset"])
 
 
     elif ask_question_bool == False:# we'll get wrong ICAO-code
@@ -213,7 +213,7 @@ def quiz_icao(ask_question_bool:bool, game_dict:dict):
         result = cursor.fetchone()
         if type(result) == tuple: # if the sql query returns a value
             game_dict["next_location_bool"] = True
-            print(styles["output"] + f"The next location is: {result[0]}" + styles["reset"])
+            print(styles["output"] + f"The next location is: {styles["location"] + styles["bold"]}{result[0]}" + styles["reset"])
 
 
 # Testataan koodin toimivuus kolmella kysymyksellä
