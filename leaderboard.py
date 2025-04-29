@@ -1,29 +1,31 @@
-from styles import styles
 from mysql_connection import mysql_connection
-from prettytable import PrettyTable
+from flask import Flask, jsonify
+from flask_cors import CORS
 
+app = Flask(__name__)
+cors = CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
+
+
+
+@app.route("/leaderboard")
 def leaderboard():
-    
     sql = "SELECT screen_name, points FROM leaderboard ORDER BY points DESC;"
     kursori = mysql_connection.cursor()
     kursori.execute(sql)
     tulos = kursori.fetchall()
     
-    # Luodaan taulukko otsikoilla RANK, NAME & POINTS
-    table = PrettyTable(["RANK", "NAME", "POINTS"])
-    rank = 1
-    for i in tulos[:10]:
-        name, points = i
-        table.add_row([rank, name, points])# Lisätään taulukkoon riveittäin muuttujat name&points
-        table.add_divider() # Jaotellaan rivit viivalla
-        rank += 1 # Lisätään sijoitukset
+    results = []
+    for rivi in tulos:
+        result = {"Name": rivi[0],
+                "Points": rivi[1]}
+        results.append(result)
+        
+    return jsonify(results)
     
-    result = table
+   
 
-    print(styles["output"] + f"{result}" + styles["reset"])
-
-    input(styles["input"] + "\nPress enter to return to the main menu." + styles["reset"])
 
 
 if __name__ == "__main__":
-    leaderboard()
+   app.run(debug=True)
