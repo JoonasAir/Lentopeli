@@ -1,7 +1,7 @@
-# difficulty specified parameters
 from copy import deepcopy
 
 
+# difficulty specified parameters
 DIFFICULTY_game_parameters = {
     'E': { # Easy
         'game_money': 5000,         # money at the beginning of the game

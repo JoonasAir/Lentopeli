@@ -7,7 +7,6 @@ from background_story import background_story
 from criminal import criminal_timer, criminal_caught
 from player import print_location
 from stop_game import stop_game
-from styles import styles
 from multiprocessing import Process
 from questions import ask_category, get_questions
 
@@ -19,10 +18,10 @@ def game_timer(game_dict:dict, stop_timer:threading.Event):
         if stop_timer.is_set():
             break
         min, sec = divmod(game_dict["game_time"], 60)
-        game_dict["time_left_str"] = styles["time"] + f"Time remaining: {min:02d}:{sec:02d}" + styles["reset"]
+        game_dict["time_left_str"] = f"Time remaining: {min:02d}:{sec:02d}"
         sleep(1)
         game_dict["game_time"] -= 1
-    game_dict["time_left_str"] = styles["warning"] + f"Time is running up, you have time to take only one more flight!" + styles["reset"]
+    game_dict["time_left_str"] = f"Time is running up, you have time to take only one more flight!"
     game_dict["time_left_bool"] = False
 
 

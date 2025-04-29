@@ -3,7 +3,6 @@ from player import change_location
 from mysql_connection import mysql_connection
 from questions import quiz_icao, ask_question, ask_again
 from security import talk_to_security
-from styles import styles
 from reduce_money import reduce_money
 import textwrap
 import shutil
@@ -110,13 +109,13 @@ def airport_menu_input(game_dict:dict):
     
     while True:
         try:
-            user_input_int = int(input(styles["input"] + menu + "Input: "+ styles["reset"]))
+            user_input_int = int(input(menu + "Input: "))
             if user_input_int in range(1, len(option_list)+1):
                 break
             else:
-                print(styles["warning"] + "Invalid input, try again." + styles["reset"])
+                print("Invalid input, try again." )
         except ValueError:
-            print(styles["warning"] + "Invalid input, try again." + styles["reset"])
+            print("Invalid input, try again." )
         except KeyboardInterrupt:
             break
 
@@ -142,14 +141,14 @@ def airport_menu(game_dict:dict):
         print("\n\n")
 
         if user_input == "Check remaining money" : 
-            print(styles["output"] + f"You have {game_dict['game_money']}€ left to spend." + styles["reset"])
+            print(f"You have {game_dict['game_money']}€ left to spend." )
 
 
         elif user_input == random_action[0]:
             if game_dict["tried_luck"]: # if we have tried our luck at current airport
-                print(styles["output"] + f"{random_action[3]}" + styles["reset"])
+                print(f"{random_action[3]}" )
             else:
-                print(styles["output"] + f"You chose to {random_action[0].lower()}.\n" + styles["reset"])
+                print(f"You chose to {random_action[0].lower()}.\n" )
                 game_dict["tried_luck"] = True
                 if luck_bool:
                     game_dict["got_location"] = True
@@ -163,12 +162,12 @@ def airport_menu(game_dict:dict):
 
 
 
-                        print(styles["output"] + f"{wrapped_text}\n" + styles["reset"])
+                        print(f"{wrapped_text}\n" )
                         game_dict["next_location_bool"] = True
-                        print(styles["output"] + f"The next location is:{styles["location"] + styles["bold"]} {result[0]}" + styles["reset"])
+                        print(f"The next location is: {result[0]}" )
 
                 else:
-                    print(styles["output"] + f"{random_action[2]}\n" + styles["reset"])
+                    print(f"{random_action[2]}\n" )
 
 
         elif user_input == "Talk to airport's security chief": 

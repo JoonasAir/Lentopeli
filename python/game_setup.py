@@ -1,7 +1,5 @@
 from criminal import criminal_headstart
 from mysql_connection import mysql_connection
-from styles import styles
-
 
 
 # game_setup() funktiossa käyttäjä valitsee pelin vaikeusasteen, pelinimen, sekä pelaajalle arvotaan aloituslentokenttä
@@ -10,18 +8,18 @@ from styles import styles
 def game_setup(game_parameters:dict):
     
     # Screen_name input
-    screen_name = str(input(styles["input"] + "Enter your game name: " + styles["reset"])) 
+    screen_name = str(input("Enter your game name: ")) 
 
     # Get parameters for game from game_parameters dictionary
     # user will be asked for a difficulty until valid inputs is given  
     while True:
-        difficulty_input = str(input(styles["input"] + "\nChoose difficulty of the game:\n    'E' = Easy\n    'M' = Medium\n    'H' = Hard\n    'C' = Custom\nInput: " + styles["reset"]))
+        difficulty_input = str(input("\nChoose difficulty of the game:\n    'E' = Easy\n    'M' = Medium\n    'H' = Hard\n    'C' = Custom\nInput: "))
 
         if difficulty_input.upper() in game_parameters:
             game_dict = game_parameters[difficulty_input.upper()] # stores the parameters ​​of the difficulty selected by the user 
             break # break out from loop when valid input is given
         else:
-            print(styles["warning"] + "\nInvalid input. Try again.\n" + styles["reset"])
+            print("\nInvalid input. Try again.\n")
 
     # clears criminal table and adds "criminal_headstart" amount of airports 
     criminal_headstart(game_dict["criminal_headstart"]) 
