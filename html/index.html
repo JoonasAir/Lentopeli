@@ -9,33 +9,28 @@
 </head>
 
 <body>
-    <h2>Leaderboard</h2>
-    <button id="leaderboard">Check leaderboard</button>
-    <dialog>
-        <span>&#x2715;</span>
-        <img>
-    </dialog>
-    <p>Select difficulty:</p>
-    <select id="difficulty">
-        <option value="easy">Easy</option>
-        <option value="medium">Medium</option>
-        <option value="hard">Hard</option>
-    </select>
-    <p>Select category:</p>
-    <select id="category">
-        <option value="geography">Geography</option>
-        <option value="security">Security</option>
-        <option value="airports">Airports</option>
-    </select>
-    <br><br><br>
-    <button onclick="startGame()">New Game</button>
-    <script>
-        function startGame() {
-            let difficulty = document.getElementById("difficulty").value;
-            let category = document.getElementById("category").value;
-            window.location.href = "game.html?difficulty=" + difficulty + "&category=" + category;
-        }
-    </script>
+<h1>Leaderport</h1>
+<p>Select difficulty:</p>
+<select id="difficulty">
+    <option value="easy">Easy</option>
+    <option value="medium">Medium</option>
+    <option value="hard">Hard</option>
+</select>
+<p>Select category:</p>
+<select id="category">
+    <option value="geography">Geography</option>
+    <option value="security">Security</option>
+    <option value="airports">Airports</option>
+</select>
+<br><br><br>
+<button onclick="startGame()">New Game</button>
+<script>
+    function startGame() {
+        let difficulty = document.getElementById("difficulty").value;
+        let category = document.getElementById("category").value;
+        window.location.href = "game.html?difficulty=" + difficulty + "&category=" + category;
+    }
+</script>
 </body>
 
 </html>
