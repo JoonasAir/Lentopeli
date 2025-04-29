@@ -9,54 +9,28 @@
 </head>
 
 <body>
-    <h2>Leaderboard</h2>
-    <button id="leaderboard">Check leaderboard</button>
-    <dialog>
-        <span>&#x2715;</span>
-        <img>
-    </dialog>
-    <p>Select difficulty:</p>
-    <select id="difficulty">
-        <option value="easy">Easy</option>
-        <option value="medium">Medium</option>
-        <option value="hard">Hard</option>
-    </select>
-    <p>Select category:</p>
-    <select id="category">
-        <option value="general-knowledge">General Knowledge</option>
-        <option value="books">Entertaiment: Books</option>
-        <option value="films">Entertaiment: Films</option>
-        <option value="music">Entertaiment: Music</option>
-        <option value="musicals">Entertaiment: Musicals & Theateres</option>
-        <option value="television">Entertainment: TV-Shows</option>
-        <option value="videogames">Entertainment: Video Games</option>
-        <option value="boardgames">Entertainment: Board Games</option>
-        <option value="comics">Entertainment: Comics</option>
-        <option value="anime">Entertainment: Anime & Manga</option>
-        <option value="cartoon">Entertainment: Cartoon & Animation</option>
-        <option value="nature">Science: Nature</option>
-        <option value="computers">Science: Computers</option>
-        <option value="math">Science: Mathematics</option>
-        <option value="gadgets">Science: Gadgets</option>
-        <option value="Mythology">Mythology</option>
-        <option value="Sports">Sports</option>
-        <option value="geography">Geography</option>
-        <option value="history">History</option>
-        <option value="politics">Politics</option>
-        <option value="art">Art</option>
-        <option value="celebrities">Celebrities</option>
-        <option value="animals">Animals</option>
-        <option value="vehicles">Vehicles</option>
-    </select>
-    <br><br><br>
-    <button onclick="startGame()">New Game</button>
-    <script>
-        function startGame() {
-            let difficulty = document.getElementById("difficulty").value;
-            let category = document.getElementById("category").value;
-            window.location.href = "game.html?difficulty=" + difficulty + "&category=" + category;
-        }
-    </script>
+<h1>Leaderport</h1>
+<p>Select difficulty:</p>
+<select id="difficulty">
+    <option value="easy">Easy</option>
+    <option value="medium">Medium</option>
+    <option value="hard">Hard</option>
+</select>
+<p>Select category:</p>
+<select id="category">
+    <option value="geography">Geography</option>
+    <option value="security">Security</option>
+    <option value="airports">Airports</option>
+</select>
+<br><br><br>
+<button onclick="startGame()">New Game</button>
+<script>
+    function startGame() {
+        let difficulty = document.getElementById("difficulty").value;
+        let category = document.getElementById("category").value;
+        window.location.href = "game.html?difficulty=" + difficulty + "&category=" + category;
+    }
+</script>
 </body>
 
 </html>
