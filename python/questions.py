@@ -16,7 +16,7 @@ input_color = styles["input"]
 warning_color = styles["warning"]
 reset_color = styles["reset"]
 
-with open("questions.json", "r", encoding="utf-8") as f:
+with open("./json/questions.json", "r", encoding="utf-8") as f:
     data = json.load(f)
 
 
