@@ -1,7 +1,6 @@
 import threading
 from time import sleep
 from mysql_connection import mysql_connection
-from tkinter import N
 from airport_menu import airport_menu
 from background_story import background_story
 from criminal import criminal_timer, criminal_caught
