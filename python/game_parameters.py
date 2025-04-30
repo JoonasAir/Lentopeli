@@ -39,9 +39,9 @@ DIFFICULTY_game_parameters = {
         'flight_price':200,         # price of a flight ticket          
         'game_time': 60*5,          # time at the beginning of the game
         'criminal_headstart': 2,    # the criminal's head start at the start of the game
-        'criminal_time': 30,         # the time interval at which the criminal flies to the next location
+        'criminal_time': 30,        # the time interval at which the criminal flies to the next location
         'difficulty': 'easy',       # difficulty for quiz questions
-        'random_luck': 0.3,        # the possibility of benefiting from random functions
+        'random_luck': 0.3,         # the possibility of benefiting from random functions
         'eco_points': 100,          # eco points at the beginning of the game
 
     }
@@ -59,7 +59,7 @@ COMMON_game_parameters = {
         'tried_luck':False,         # have we tried our luck at this airport yet?
         'talk_to_chief': False,     # have we talked to security chief at current airport or not? True=yes, False=no
         'previous_quiz_answer':bool,# did we answer right or wrong on previous quiz question? True=right, False=wrong
-        'next_location_bool':False,        # have we solved a clue at current airport or got the next location otherwise? True=yes, False=no
+        'next_location_bool':False, # have we solved a clue at current airport or got the next location otherwise? True=yes, False=no
         'criminal_was_here':bool,   # security chief tells us if the criminal has been at the air port or not. True=has been, False=has not been
         'criminal_caught':False,    # have we caught the criminal yet? True=yes, False=no
         'win':bool,                 # when conditions meet to end the game, this is turned to True if we won and False if we lost the game
