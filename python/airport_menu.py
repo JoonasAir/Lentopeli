@@ -4,10 +4,9 @@ from mysql_connection import mysql_connection
 from questions import quiz_icao, ask_question, ask_again
 from security import talk_to_security
 from reduce_money import reduce_money
+from game_parameters import airport_random_actions
 import textwrap
 import shutil
-
-
 
 
 def airport_menu_input(game_dict:dict):
@@ -22,69 +21,18 @@ def airport_menu_input(game_dict:dict):
         "Try to solve the previous clue again", # visible if we gave wrong ansver in quiz -> we came to wrong airport and we have talked to security chief to find out that the criminal has not been here
         "Buy a flight ticket",                  # visible after solving a clue
     ]
-    random_actions = [
-        ("Visit the restroom", 
-         "You overheard a conversation in the restroom about Shadow's next move! The individuals were discussing a recent sighting of Shadow boarding a flight. You decide to verify this information and find out it's true; you got his next location.", 
-         "You went to the restroom and now feel refreshed.", 
-         "You already went to the restroom. No need to go again."),
-
-        ("Go to get a cup of coffee", 
-         "The barista, recognizing you as an Interpol agent, mentioned seeing someone suspicious matching Shadow's description. They saw him purchasing a ticket at the counter. You decide to follow up on this lead and confirm that Shadow was indeed spotted here recently; you got his next location.", 
-         "You went to get a large cup of coffee and now feel more energized.", 
-         "Maybe it's better not to get a second cup of coffee. You've had enough caffeine."),
-
-        ("Go to get a meal", 
-         "A fellow diner, impressed by your Interpol badge, shared a rumor about Shadow's next move. They overheard Shadow talking on the phone about his next flight. You decide to verify this information and discover it's all true; you got his next location.", 
-         "You went to grab a hamburger meal and now feel satisfied.", 
-         "You already went to McDonald's. You're not hungry anymore."),
-
-        ("Go to relax in a lounge", 
-         "You saw a live news report in the lounge hinting at Shadow's activities! The report mentioned increased security due to a recent sighting of Shadow. You decide to verify this information and find out that the report is accurate; you got his next location.", 
-         "You went to the lounge to rest for a moment and now feel rejuvenated.", 
-         "You already relaxed in the lounge. Time to get back to work."),
-
-        ("Browse the duty-free shop", 
-         "A shop assistant, noticing your Interpol credentials, mentioned seeing someone suspicious. They saw Shadow making a purchase and then heading towards the gates. You decide to investigate further and confirm that the person was indeed acting suspiciously; you got his next location.", 
-         "You browsed the duty-free shop and found some interesting items.", 
-         "You already browsed the duty-free shop. No need to go again."),
-
-        ("Check the flight information board", 
-         "You noticed some unusual activity on the flight information board. You decide to check it out and discover that Shadow has been tampering with the flight schedules. The tampering indicates his next move; you got his next location.", 
-         "You checked the flight information board and confirmed your flight details.", 
-         "You already checked the flight information board. No need to check again."),
-
-        ("Talk to the information desk", 
-         "The staff at the information desk, eager to assist an Interpol agent, gave you a tip about Shadow's next move. They received a report from security about Shadow's recent activity. You decide to follow up on this lead and find out that the tip is credible; you got his next location.", 
-         "You talked to the information desk and got some useful travel information.", 
-         "You already talked to the information desk. No need to ask again."),
-
-        ("Visit the airport bookstore", 
-         "You found a live news broadcast in the bookstore with an update on Shadow's activities! The broadcast mentioned a recent sighting of Shadow in the airport. You decide to verify this information and confirm that the broadcast is providing accurate updates; you got his next location.", 
-         "You visited the airport bookstore and found some interesting reads.", 
-         "You already visited the airport bookstore. No need to go again."),
-
-        ("Take a walk around the terminal", 
-         "You overheard a conversation about Shadow's next move while walking. The individuals were discussing seeing Shadow near the boarding gates. You decide to investigate further and find out that the conversation was based on a real sighting; you got his next location.", 
-         "You took a walk around the terminal and stretched your legs.", 
-         "You already took a walk around the terminal. No need to walk again."),
-
-        ("Charge your phone at a charging station", 
-         "You saw a suspicious person leaving a note at the charging station. The note mentioned Shadow's next flight. You decide to check it out and discover that the note contains valuable information about Shadow's plans; you got his next location.", 
-         "You charged your phone and now have a full battery.", 
-         "You already charged your phone. No need to charge again.")
-    ]
 
     if game_dict["first_iteration"]:
-        game_dict["random_index_airport"] = randint(0, len(random_actions)-1)
+        game_dict["random_index_airport"] = randint(0, len(airport_random_actions)-1)
         game_dict["first_iteration"] = False
 
     menu = "\nChoose your action from following options:\n"
     menu += f"    {option_num} - {airport_actions[0]}\n"               # Check remaining time and money
     option_num += 1
     option_list.append(airport_actions[0])
-    menu += f"    {option_num} - {random_actions[game_dict['random_index_airport']][0]}\n"  # Randomly picked action from random_actions
+    menu += f"    {option_num} - {airport_random_actions[game_dict['random_index_airport']][0]}\n"  # Randomly picked action from airport_random_actions
     option_num += 1
-    option_list.append(random_actions[game_dict['random_index_airport']][0])
+    option_list.append(airport_random_actions[game_dict['random_index_airport']][0])
     menu += f"    {option_num} - {airport_actions[1]}\n"               # Talk to airport's security chief
     option_list.append(airport_actions[1])
     option_num += 1
@@ -123,7 +71,7 @@ def airport_menu_input(game_dict:dict):
     
     user_input = option_list[user_input_int-1]
     
-    return game_dict, user_input, random_actions[game_dict['random_index_airport']]
+    return game_dict, user_input, airport_random_actions[game_dict['random_index_airport']]
 
 
 
