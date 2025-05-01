@@ -4,59 +4,72 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>"pelin nimi" - Main menu</title>
+    <title>"pelin nimi"</title>
     <script src="../js/leaderboard.js" defer></script>
+    <script src="../js/game.js" defer></script>
+    <link rel="stylesheet" href="../css/style.css">
 </head>
 
 <body>
-    <h2>Leaderboard</h2>
-    <button id="leaderboard">Check leaderboard</button>
-    <dialog>
-        <span>&#x2715;</span>
-        <img>
+
+    <h2>Main menu</h2>
+    <button id="leaderboard">Check Leaderboard</button>
+
+    <!-- Leaderboard-modaali -->
+    <dialog id="leaderboardModal">
+        <span id="closeLeaderboard">&#x2715;</span>
+        <div id="leaderboardContainer"></div>
     </dialog>
-    <p>Select difficulty:</p>
-    <select id="difficulty">
-        <option value="easy">Easy</option>
-        <option value="medium">Medium</option>
-        <option value="hard">Hard</option>
-    </select>
-    <p>Select category:</p>
-    <select id="category">
-        <option value="general-knowledge">General Knowledge</option>
-        <option value="books">Entertaiment: Books</option>
-        <option value="films">Entertaiment: Films</option>
-        <option value="music">Entertaiment: Music</option>
-        <option value="musicals">Entertaiment: Musicals & Theateres</option>
-        <option value="television">Entertainment: TV-Shows</option>
-        <option value="videogames">Entertainment: Video Games</option>
-        <option value="boardgames">Entertainment: Board Games</option>
-        <option value="comics">Entertainment: Comics</option>
-        <option value="anime">Entertainment: Anime & Manga</option>
-        <option value="cartoon">Entertainment: Cartoon & Animation</option>
-        <option value="nature">Science: Nature</option>
-        <option value="computers">Science: Computers</option>
-        <option value="math">Science: Mathematics</option>
-        <option value="gadgets">Science: Gadgets</option>
-        <option value="Mythology">Mythology</option>
-        <option value="Sports">Sports</option>
-        <option value="geography">Geography</option>
-        <option value="history">History</option>
-        <option value="politics">Politics</option>
-        <option value="art">Art</option>
-        <option value="celebrities">Celebrities</option>
-        <option value="animals">Animals</option>
-        <option value="vehicles">Vehicles</option>
-    </select>
-    <br><br><br>
-    <button onclick="startGame()">New Game</button>
-    <script>
-        function startGame() {
-            let difficulty = document.getElementById("difficulty").value;
-            let category = document.getElementById("category").value;
-            window.location.href = "game.html?difficulty=" + difficulty + "&category=" + category;
-        }
-    </script>
+
+    <!-- Uuden pelin modaalin rakenne -->
+    <button id="newGameButton">New Game</button>
+    <dialog id="gameModal">
+        <form id="gameForm">
+            <h3>Start a New Game</h3>
+            <label for="username">Enter your name:</label>
+            <input type="text" id="username" required>
+
+            <p>Select difficulty:</p>
+            <select id="difficulty">
+                <option value="easy">Easy</option>
+                <option value="medium">Medium</option>
+                <option value="hard">Hard</option>
+            </select>
+
+            <p>Select category:</p>
+            <select id="category">
+                <option value="general-knowledge">General Knowledge</option>
+                <option value="books">Entertainment: Books</option>
+                <option value="films">Entertainment: Films</option>
+                <option value="music">Entertainment: Music</option>
+                <option value="musicals">Entertainment: Musicals & Theaters</option>
+                <option value="television">Entertainment: TV Shows</option>
+                <option value="videogames">Entertainment: Video Games</option>
+                <option value="boardgames">Entertainment: Board Games</option>
+                <option value="comics">Entertainment: Comics</option>
+                <option value="anime">Entertainment: Anime & Manga</option>
+                <option value="cartoon">Entertainment: Cartoon & Animation</option>
+                <option value="nature">Science: Nature</option>
+                <option value="computers">Science: Computers</option>
+                <option value="math">Science: Mathematics</option>
+                <option value="gadgets">Science: Gadgets</option>
+                <option value="mythology">Mythology</option>
+                <option value="sports">Sports</option>
+                <option value="geography">Geography</option>
+                <option value="history">History</option>
+                <option value="politics">Politics</option>
+                <option value="art">Art</option>
+                <option value="celebrities">Celebrities</option>
+                <option value="animals">Animals</option>
+                <option value="vehicles">Vehicles</option>
+            </select>
+
+            <br><br>
+            <button type="submit">Start Game</button>
+            <button type="button" id="closeModal">Cancel</button>
+        </form>
+    </dialog>
+
 </body>
 
 </html>

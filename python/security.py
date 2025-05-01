@@ -1,5 +1,5 @@
 from logging import warning
-from mysql_connection import mysql_connection
+from python.mysql_connection import mysql_connection
 
 def talk_to_security(game_dict:dict, luck_bool:bool):
 

@@ -4,48 +4,60 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="css/style.css" rel="stylesheet">
     <title>"pelin nimi" - Game</title>
 </head>
 
 <body>
-    <div class="conteiner">
+    <div class="container">
         <header class="page-header">
             <h1 class="page-title">Pelin nimi</h1>
             <nav>
                 <a href="index.html">Quit game</a>
             </nav>
         </header>
+
+
+
         <main class="main-content">
-            <!-- Location, weather -->
-            <!-- Map -->
-            <div class="game-info">
-                <section class="box">
-                    <header>
-                        <h2>Player status</h2>
-                    </header>
-                    <table>
-                        <tr>
-                            <td colspan="2">
-                                <h3>Player name</h3>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Money: <span id="money">0</span></td>
-                            <td>CO2: <span id="CO2-emissions">1000</span></td>
-                        </tr>
-                    </table>
+            <div id="map">  <!-- MAP -->
+                <!-- Map, Location, Weather -->
+            </div>
+
+            <div class="boxes">
+
+                <section class="box" id="status"> <!-- PLAYER / CRIMINAL STATUS -->
+                    <div id="player-status">
+                        <header>
+                            <h2>Player status</h2>
+                        </header>
+                        <table>
+                            <tr>
+                                <td colspan="2">Player name</td>
+                            </tr>
+                            <tr>
+                                <td>Money: <span id="money">0</span></td>
+                                <td>CO2 consumed: <span id="CO2-consumed">0</span></td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div id="criminal-status">
+                        <header>
+                            <h2>Criminal status</h2>
+                        </header>
+                        <table>
+                            <tr>
+                                <td>Airports hacked: <span id="airport-hacked">0</span></td>
+                                <td>CO2 consumed: <span id="CO2-status">0</span></td>
+                            </tr>
+                        </table>
+                    </div>
                 </section>
-                <section class="box">
-                    <header>
-                        <h2>Criminal status</h2>
-                    </header>
-                    <table>
-                        <tr>
-                            <td>Airports hacked: <span id="airp-hacked">0</span></td>
-                            <td>CO2 status: <span id="CO2-status">0</span></td>
-                        </tr>
-                    </table>
+                <section class="box" id="game"> <!-- GAME -->
+
                 </section>
+
             </div>
         </main>
     </div>
