@@ -1,5 +1,5 @@
 from criminal import criminal_headstart
-from mysql_connection import mysql_connection
+from python.mysql_connection import mysql_connection
 
 
 # game_setup() funktiossa käyttäjä valitsee pelin vaikeusasteen, pelinimen, sekä pelaajalle arvotaan aloituslentokenttä
