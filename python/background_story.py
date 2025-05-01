@@ -1,7 +1,8 @@
-# background story of the game (Y/N) = (player can read or skip the story)
 import textwrap
 import shutil
-from styles import styles
+
+
+# background story of the game (Y/N) = (player can read or skip the story)
 
 def background_story(screen_name:str):
 
@@ -14,16 +15,13 @@ def background_story(screen_name:str):
     formatted_text = wrapped_text.replace("\n", "\n\n")
     final_text = formatted_text.replace(".", ". ")
 
-    ask = input(styles["input"] + "\n\nWould you like to read background story for the game? (Y)es (N)o:" + styles["reset"])
+    ask = input("\n\nWould you like to read background story for the game? (Y)es (N)o:")
 
     if ask.upper() == "Y":
-        print(styles["output"] + f"\n\n{final_text}" + styles["reset"])
-        input(styles["input"] + "\n\nPress enter to begin the game." + styles["reset"])
+        print(f"\n\n{final_text}")
+        input("\n\nPress enter to begin the game.")
     else:
-        pass
-
-    
-    
+        pass    
 
 
 if __name__ == "__main__":

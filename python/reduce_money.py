@@ -1,6 +1,3 @@
-from styles import styles
-
-
 def reduce_money(game_dict):
 
     flight_cost = game_dict["flight_price"]
@@ -14,7 +11,7 @@ def reduce_money(game_dict):
     game_dict["game_money"] = game_dict["game_money"] - game_dict["flight_price"]
 
 #Näyttää kuinka paljon rahaa on vielä jäljellä
-    print(styles["output"] + f"You took a flight. Remaining money: {game_dict['game_money']}€." + styles["reset"])
+    print(f"You took a flight. Remaining money: {game_dict['game_money']}€.")
 
     return game_dict
 

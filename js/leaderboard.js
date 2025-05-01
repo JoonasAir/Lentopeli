@@ -16,9 +16,9 @@ async function leaderboard() {
       dialog.appendChild(closeButton);
 
       // Add leaderboard data to dialog
-      for (let i = 0; i < jsonData.length; i++) {
+      for (let i = 0; i < jsonData.length && i < 10; i++) {
         const listItem = document.createElement("p");
-        listItem.textContent = jsonData[i].Name + ": " + jsonData[i].Points;
+        listItem.textContent = i+1 + ". " + jsonData[i].Name + ": " + jsonData[i].Points;
         dialog.appendChild(listItem);
       }
 

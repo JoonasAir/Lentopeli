@@ -1,6 +1,6 @@
 from copy import deepcopy
 from game_parameters import game_parameters_DEFAULT
-from styles import styles_DEFAULT, colors
+from python.unnecessary.styles import styles_DEFAULT, colors
 
 
 def settings(game_parameters:dict, styles:dict):

@@ -1,6 +1,5 @@
 # Voidaan käyttää json tiedostoa missä kysymykset
 import json
-from styles import styles
 from mysql_connection import mysql_connection
 # Voidaan valita satunnaisia kysymyksiä sekä sekoitta vastausvaihtoehdot
 import random 
@@ -10,11 +9,6 @@ import html
 
 # Avataan kysymykset luettavassa muodossa muuttujaan data. Käytetään encoding koska tiedosto sisältää
 #muitakin kuin ASCII-merkkejä
-menu_color = styles["menu"]
-output_color = styles["output"]
-input_color = styles["input"]
-warning_color = styles["warning"]
-reset_color = styles["reset"]
 
 with open("./json/questions.json", "r", encoding="utf-8") as f:
     data = json.load(f)
@@ -24,10 +18,10 @@ with open("./json/questions.json", "r", encoding="utf-8") as f:
 # Määritetään vaikeusaste
 def ask_difficulty():
 
-    print(f"{menu_color}Select difficulty level:{reset_color}")
-    print(f"{output_color}1. Easy{reset_color}")
-    print(f"{output_color}2. Medium{reset_color}")
-    print(f"{output_color}3. Hard{reset_color}\n")
+    print(f"Select difficulty level:")
+    print(f"1. Easy")
+    print(f"2. Medium")
+    print(f"3. Hard\n")
     
     # Määritellään vaikeusasteet
     difficulty_levels = {1: "easy", 2: "medium", 3: "hard"}
@@ -37,14 +31,14 @@ def ask_difficulty():
     # Tarkistetaan, että käyttäjän valinta on oikein ja palautetaan valittu vaikeusaste
     while True:
         try:
-            user_choice = int(input(f"{input_color}Enter the number corresponding to your choice: " + reset_color))
+            user_choice = int(input(f"Enter the number corresponding to your choice: "))
             if 1 <= user_choice <= 3:
                 break
-            print(f"{output_color}Wrong input, try!{reset_color}")
+            print(f"Wrong input, try!")
         except KeyboardInterrupt: 
             break
         except: 
-            print(f"{output_color}Wrong input, try again!{reset_color}")
+            print(f"Wrong input, try again!")
         
             
             
@@ -87,22 +81,22 @@ def ask_category():
     ]
 
     # Tulostetaan ja numeroidaan kaikki listassa olevat kategoriat
-    print(f"{output_color}\nAvailable categories for questions: " + reset_color)
+    print(f"\nAvailable categories for questions: ")
     for i, category in enumerate(categories, 1):
-        print(f"{menu_color}{i}. {category}{reset_color}")
+        print(f"{i}. {category}")
 
 
     # Kysytään kategoriaa niin kauan kunnes annettu vastaus on joku numeron 1 ja 22 väliltä
     while True:
         try:
-            select_category = int(input(f"{input_color}Enter the number corresponding to your choice: " + reset_color))
+            select_category = int(input(f"Enter the number corresponding to your choice: "))
             if 1 <= select_category <= 24:
                 break
-            print(f"{output_color}Wrong input, try again!{reset_color}")
+            print(f"Wrong input, try again!")
         except KeyboardInterrupt: 
             break
         except: 
-            print(f"{output_color}Wrong input, try again!{reset_color}")
+            print(f"Wrong input, try again!")
 
     
     # Palautetaan valittu kategoria, miinustetaan siitä 1 koska listan tulostuksessa lisättiin numeroinnin takia 1
@@ -134,54 +128,54 @@ def ask_question(questions:list):
     previous_question = [answers, correct_answer, question_text]
 
     # Tulostetaan kysymys ja vaihtoehdot. Enumerate numeroi jokaisen listan alkoin, alkaen numerosta 1.
-    print(f"{input_color}\nQuestion: {question_text}\nOptions:\n{reset_color}")
+    print(f"\nQuestion: {question_text}\nOptions:\n")
     for i, answer in enumerate(answers, 1):
-        print(f"{input_color}{i}. {answer}{reset_color}")
+        print(f"{i}. {answer}")
         
 
     # Kysytään käyttäjältä valinta
     while True:
         try:
-            user_answer = int(input(f"{output_color}Select the right answer: " + reset_color))
+            user_answer = int(input(f"Select the right answer: "))
             if 1 <= user_answer <= len(answers):
                 break
             else:
-                print(f"{output_color}Wrong input, try again!{reset_color}")
+                print(f"Wrong input, try again!")
         except ValueError:
-            print(f"{output_color}Wrong input, try again!{reset_color}")
+            print(f"Wrong input, try again!")
 
     
     # Tarkistetaan, onko valittu vastaus oikea. Pitää laittaa -1 edellisessä for silmukassa lisättiin yksi numeroinnin takia
     if answers[user_answer - 1] == correct_answer:
-        #print(f"{output_color}\nCorrect!{reset_color}")
+        #print(f"\nCorrect!")
         return True, previous_question# Oikea vastaus
     else:
-        #print(f"{output_color}\nWrong! The correct answer was: {correct_answer}{reset_color}")
+        #print(f"\nWrong! The correct answer was: {correct_answer}")
         return False, previous_question  # Väärä vastaus
     
 def ask_again(previous_question):
     answers, correct_answer, question_text = previous_question
 
-    print(f"{output_color}\nQuestion: {question_text}\nOptions:\n{reset_color}")
+    print(f"\nQuestion: {question_text}\nOptions:\n")
     for i, answer in enumerate(answers, 1):
-        print(f"{output_color}{i}. {answer}{reset_color}")
+        print(f"{i}. {answer}")
 
 
     while True:
         try:
-            user_answer = int(input(f"{output_color}Select the right answer: " + reset_color))
+            user_answer = int(input(f"Select the right answer: "))
             if 1 <= user_answer <= len(answers):
                 break
             else:
-                print(f"{output_color}Wrong input, try again!{reset_color}")
+                print(f"Wrong input, try again!")
         except ValueError:
-            print(f"{output_color}Wrong input, try again!{reset_color}")
+            print(f"Wrong input, try again!")
     
     if answers[user_answer - 1] == correct_answer:
-        #print(f"{output_color}\nCorrect!{reset_color}")
+        #print(f"\nCorrect!")
         return True # Oikea vastaus
     else:
-        #print(f"{output_color}\nWrong! The correct answer was: {correct_answer}{reset_color}")
+        #print(f"\nWrong! The correct answer was: {correct_answer}")
         return False  # Väärä vastaus
 
 
@@ -204,7 +198,7 @@ def quiz_icao(ask_question_bool:bool, game_dict:dict):
         result = cursor.fetchone()
         if type(result) == tuple: # if the sql query returns a value
             game_dict["next_location_bool"] = True
-            print(styles["output"] + f"The next location is: {styles["location"] + styles["bold"]}{result[0]}" + styles["reset"])
+            print(f"The next location is: {result[0]}")
 
 
     elif ask_question_bool == False:# we'll get wrong ICAO-code
@@ -213,13 +207,13 @@ def quiz_icao(ask_question_bool:bool, game_dict:dict):
         result = cursor.fetchone()
         if type(result) == tuple: # if the sql query returns a value
             game_dict["next_location_bool"] = True
-            print(styles["output"] + f"The next location is: {styles["location"] + styles["bold"]}{result[0]}" + styles["reset"])
+            print(f"The next location is: {result[0]}")
 
 
 # Testataan koodin toimivuus kolmella kysymyksellä
 def practice_quiz():
 
-    x = int(input(f"{input_color}How many questions would you like to practice?: {reset_color}"))
+    x = int(input(f"How many questions would you like to practice?: "))
     # Kysytään vaikeusaste käyttäjältä
     chosen_difficulty = ask_difficulty()
 
@@ -235,14 +229,14 @@ def practice_quiz():
         boolean, previous_question = ask_question(questions) 
         if boolean:
             score += 1
-            print(f"{output_color}\nCorrect!{reset_color}")
+            print(f"\nCorrect!")
         else:
-            print(f"{warning_color}\nWrong! The correct answer was: {previous_question[1]}{reset_color}")
+            print(f"\nWrong! The correct answer was: {previous_question[1]}")
 
             
 
     # Peli päättyy
-    print(f"{warning_color}Your score: {score}/{x}! {reset_color}")
+    print(f"Your score: {score}/{x}! ")
 
 # Käynnistetään peli
 if __name__ == "__main__": # testikoodi main blockin sisällä, jotta sitä ei ajeta heti importin yhteydessä

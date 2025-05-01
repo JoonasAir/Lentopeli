@@ -1,6 +1,5 @@
 from logging import warning
 from mysql_connection import mysql_connection
-from styles import styles
 
 def talk_to_security(game_dict:dict, luck_bool:bool):
 
@@ -13,11 +12,11 @@ def talk_to_security(game_dict:dict, luck_bool:bool):
         cursor.execute(sql)
         result = cursor.fetchone()
         if type(result) == tuple: # If result is tupole, our location is found on criminal's table
-            print(styles["output"] + f"\nSecurity chief's monitows were down due to the criminal's attack.\nStill he had a clue about criminal for you. Try to solve it\n" + styles["reset"])
+            print(f"\nSecurity chief's monitows were down due to the criminal's attack.\nStill he had a clue about criminal for you. Try to solve it\n")
             game_dict["criminal_was_here"] = True
 
         else:
-            print(styles["output"] + f"\nSecurity chief told you the criminal haven't been at the airport. Try to solve last clue again.\n" + styles["reset"])
+            print(f"\nSecurity chief told you the criminal haven't been at the airport. Try to solve last clue again.\n")
             game_dict["criminal_was_here"] = False
 
     elif luck_bool and game_dict["criminal_was_here"] and not game_dict["tried_luck"]: # If criminal have been here AND we got lucky AND we haven't tried our luck yet at the current airport
@@ -28,14 +27,14 @@ def talk_to_security(game_dict:dict, luck_bool:bool):
         result = cursor.fetchone()
         if type(result) == tuple:
             result = result[0][0]
-            print(styles["output"] + f"\n{result}" + styles["reset"])
-            print(styles["output"] + f"\nThe chief had just found the country where the criminal headed from here!" + styles["reset"])
-            print(styles["output"] + f"\nThe fight ICAO-code is:{styles["location"] + styles["bold"]} {result}" + styles["reset"])
+            print(f"\n{result}")
+            print(f"\nThe chief had just found the country where the criminal headed from here!")
+            print(f"\nThe fight ICAO-code is: {result}")
         else:
-            print(styles["warning"] + "No result from sql query (you're on same airport with the criminal)" + styles["reset"])
+            print("No result from sql query (you're on same airport with the criminal)")
             
     else:
-        print(styles["output"] + f"\nThe chief had nothing new to tell you. He was still on a mission to recover his monitors from the attack of the criminal." + styles["reset"])
+        print(f"\nThe chief had nothing new to tell you. He was still on a mission to recover his monitors from the attack of the criminal.")
 
 
     return game_dict
