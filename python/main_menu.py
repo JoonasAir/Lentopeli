@@ -1,6 +1,6 @@
 from game import play_game
 from game_setup import game_setup
-from leaderboard import leaderboard
+#from leaderboard import leaderboard
 from questions import practice_quiz
 from game_parameters import game_parameters
 from tutorial import tutorial
@@ -33,7 +33,7 @@ def main_menu():
     
         elif user_input == 3: # Leaderboard
             print("\nL E A D E R B O A R D\n\n")
-            leaderboard()
+            # leaderboard()
 
     
         elif user_input == 4: # Quiz practice

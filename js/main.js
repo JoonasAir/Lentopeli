@@ -57,6 +57,8 @@ function newGame() {
     const difficulty = document.querySelector("#difficulty").value;
     const category = document.querySelector("#category").value;
 
+    console.log(username, difficulty, category) // testi
+    
     window.location.href =
       "game.html?username=" +
       encodeURIComponent(username) +
