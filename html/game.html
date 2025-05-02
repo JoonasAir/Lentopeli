@@ -19,45 +19,64 @@
 
 
         <div class="boxes">
-
             <main class="main-content">
-                <section class="box" id="map"> <!-- MAP -->
+                <section class="box" id="map-box"> <!-- MAP -->
                     <h2>Map</h2>
                     <img src="/images/map.gif" alt="Map">
                     <!-- Map, Location, Weather -->
                 </section>
 
-
-                <section class="box" id="status"> <!-- PLAYER / CRIMINAL STATUS -->
+                <section class="box" id="status-box"> <!-- PLAYER / CRIMINAL STATUS -->
                     <h2>Status-box</h2>
+
                     <div id="player-status">
                         <header>
-                            <h3>Player status</h3>
+                            <h3>Player</h3>
                         </header>
                         <table>
                             <tr>
-                                <td colspan="2">Player name</td>
+                                <td>Player name: </td>
+                                <td>
+                                    <span id="screen-name"> - </span>
+                                </td>
                             </tr>
                             <tr>
-                                <td>Money: <span id="money">0</span></td>
-                                <td>CO2 consumed: <span id="CO2-consumed">0</span></td>
+                                <td>Money left: </td>
+                                <td>
+                                    <span id="money"> - </span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>CO2 consumed: </td>
+                                <td>
+                                    <span id="CO2-consumed"> - </span>
+                                </td>
                             </tr>
                         </table>
                     </div>
 
                     <div id="criminal-status">
                         <header>
-                            <h3>Criminal status</h3>
+                            <h3>Criminal</h3>
                         </header>
                         <table>
                             <tr>
-                                <td>Airports hacked: <span id="airport-hacked">0</span></td>
-                                <td>CO2 consumed: <span id="CO2-status">0</span></td>
+                                <td>Airports hacked: </td>
+                                <td>
+                                    <span id="airports-hacked"> - </span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>CO2 consumed: </td>
+                                <td>
+                                    <span id="CO2-status"> - </span>
+                                </td>
                             </tr>
                         </table>
                     </div>
                 </section>
-                <section class="box" id="game"> <!-- GAME -->
+
+                <section class="box" id="game-box"> <!-- GAME -->
                     <h2>Game-box</h2>
                 </section>
 
