@@ -35,6 +35,7 @@ async function gameSetup() {
     }
 }
 
+// Päivittää html:ään statustiedot
 function updateStatusBox(game_dict) {
     document.querySelector("#screen-name").textContent = game_dict["screen_name"];
     document.querySelector("#difficulty").textContent = game_dict["game_difficulty"];
@@ -48,8 +49,8 @@ function updateStatusBox(game_dict) {
 
 // Peli kasataan tämän funktion sisään
 async function main() {
-    const game_dict = await gameSetup() // Pelin parametrien luonti palvelimella
-    updateStatusBox(game_dict.data)
+    const game_dict = await gameSetup() // Pelin parametrien luonti palvelimella, palauttaa pythonista tutun game_dict -sanakirjan 
+    updateStatusBox(game_dict.data) // Päivittää html:ään statustiedot
 }
 
 main()
