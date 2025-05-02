@@ -1,0 +1,44 @@
+:root {
+    --bg-color-main: #cfccc0;
+    --text-color-main: #200000;
+    --bg-color-secondary: #161212;
+    --text-color-secondary: #b6b3aa;
+    --border-color: #852a00;
+}
+
+html, body {
+    padding: 0;
+    margin: 0;
+    background-color: var(--bg-color-main);
+    color: var(--text-color-main);
+}
+
+#page-header {
+    background-color: var(--bg-color-secondary);
+    color: var(--text-color-secondary);
+}
+
+footer {
+    background-color: var(--bg-color-secondary);
+    color: var(--text-color-secondary);
+}
+
+dialog {
+    background-color: var(--bg-color-main);
+}
+::backdrop {
+    background: #000000c5;
+}
+
+.box {
+    border: var(--border-color) solid 1px;
+    margin: 1rem;
+    width: 45vw;
+    margin: 1rem auto;
+    justify-items: center;
+}
+
+#map img {
+    width: 95%;
+    margin-left: calc(45vw * (1 - 0.95) / 2);
+} 
