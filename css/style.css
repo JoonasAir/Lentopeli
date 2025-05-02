@@ -38,7 +38,11 @@ dialog {
     justify-items: center;
 }
 
-#map img {
+#status-box div {
+    justify-items: center;
+}
+
+#map-box img {
     width: 95%;
     margin-left: calc(45vw * (1 - 0.95) / 2);
 } 
