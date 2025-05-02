@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="../css/style.css" rel="stylesheet">
+    <script src="../js/game.js" defer></script>
     <title>CatchTheCriminal - Europe Edition</title>
 </head>
 
@@ -15,13 +16,35 @@
             <nav>
                 <a href="index.html">Quit game</a>
             </nav>
+
+            <table id="game-parameters">
+                <tr>
+                    <td>Player name: </td>
+                    <td>
+                        <span id="screen-name"> - </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Difficulty: </td>
+                    <td>
+                        <span id="difficulty"> - </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Category: </td>
+                    <td>
+                        <span id="category"> - </span>
+                    </td>
+                </tr>
+            </table>
+
         </header>
 
 
         <div class="boxes">
             <main class="main-content">
                 <section class="box" id="map-box"> <!-- MAP -->
-                    <h2>Map</h2>
+                    <h2>Map-box</h2>
                     <img src="/images/map.gif" alt="Map">
                     <!-- Map, Location, Weather -->
                 </section>
@@ -35,22 +58,10 @@
                         </header>
                         <table>
                             <tr>
-                                <td>Player name: </td>
-                                <td>
-                                    <span id="screen-name"> - </span>
-                                </td>
+                                <p>Money left: <span id="money"> - </span> €</p>
                             </tr>
                             <tr>
-                                <td>Money left: </td>
-                                <td>
-                                    <span id="money"> - </span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>CO2 consumed: </td>
-                                <td>
-                                    <span id="CO2-player"> - </span>
-                                </td>
+                                <p>CO² emissions: <span id="CO2-player"> - </span> kg</p>
                             </tr>
                         </table>
                     </div>
@@ -61,16 +72,10 @@
                         </header>
                         <table>
                             <tr>
-                                <td>Airports hacked: </td>
-                                <td>
-                                    <span id="airports-hacked"> - </span>
-                                </td>
+                                <p>Airports hacked: <span id="airports-hacked"> - </span></p>
                             </tr>
                             <tr>
-                                <td>CO2 consumed: </td>
-                                <td>
-                                    <span id="CO2-criminal"> - </span>
-                                </td>
+                                <p>CO² emissions: <span id="CO2-criminal"> - </span> kg</p>
                             </tr>
                         </table>
                     </div>

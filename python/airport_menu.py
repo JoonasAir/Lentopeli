@@ -1,6 +1,6 @@
 from random import randint
 from player import change_location
-from python.mysql_connection import mysql_connection
+from mysql_connection import mysql_connection
 from questions import quiz_icao, ask_question, ask_again
 from security import talk_to_security
 from reduce_money import reduce_money

@@ -1,25 +1,18 @@
 from criminal import criminal_headstart
-from python.mysql_connection import mysql_connection
+from mysql_connection import mysql_connection
 
 
 # game_setup() funktiossa käyttäjä valitsee pelin vaikeusasteen, pelinimen, sekä pelaajalle arvotaan aloituslentokenttä
 # tiedot palautetaan sanakirjana
 
-def game_setup(game_parameters:dict):
-    
-    # Screen_name input
-    screen_name = str(input("Enter your game name: ")) 
+def game_setup(game_parameters:dict, data:dict):
 
-    # Get parameters for game from game_parameters dictionary
-    # user will be asked for a difficulty until valid inputs is given  
-    while True:
-        difficulty_input = str(input("\nChoose difficulty of the game:\n    'E' = Easy\n    'M' = Medium\n    'H' = Hard\n    'C' = Custom\nInput: "))
+    difficulty_input = data["difficulty_input"] 
 
-        if difficulty_input.upper() in game_parameters:
-            game_dict = game_parameters[difficulty_input.upper()] # stores the parameters ​​of the difficulty selected by the user 
-            break # break out from loop when valid input is given
-        else:
-            print("\nInvalid input. Try again.\n")
+    if difficulty_input in game_parameters:
+        game_dict = game_parameters[difficulty_input]
+    else:
+        print("\nINVALID DIFFICULTY.\n")
 
     # clears criminal table and adds "criminal_headstart" amount of airports 
     criminal_headstart(game_dict["criminal_headstart"]) 
@@ -32,7 +25,8 @@ def game_setup(game_parameters:dict):
 
     # add screen_name and location to dict
     game_dict["player_location"] = result["location"]
-    game_dict["screen_name"] = screen_name
+    game_dict["quiz_category"] = data["category_input"]
+    game_dict["screen_name"] = data["name_input"]
 
 
 
