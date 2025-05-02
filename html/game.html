@@ -10,7 +10,7 @@
 
 <body>
     <div class="container">
-        <header class="page-header">
+        <header id="page-header">
             <h1 class="page-title">CatchTheCriminal - Europe Edition</h1>
             <nav>
                 <a href="index.html">Quit game</a>
@@ -18,18 +18,21 @@
         </header>
 
 
+        <div class="boxes">
 
-        <main class="main-content">
-            <div id="map"> <!-- MAP -->
-                <!-- Map, Location, Weather -->
-            </div>
+            <main class="main-content">
+                <section class="box" id="map"> <!-- MAP -->
+                    <h2>Map</h2>
+                    <img src="/images/map.gif" alt="Map">
+                    <!-- Map, Location, Weather -->
+                </section>
 
-            <div class="boxes">
 
                 <section class="box" id="status"> <!-- PLAYER / CRIMINAL STATUS -->
+                    <h2>Status-box</h2>
                     <div id="player-status">
                         <header>
-                            <h2>Player status</h2>
+                            <h3>Player status</h3>
                         </header>
                         <table>
                             <tr>
@@ -44,7 +47,7 @@
 
                     <div id="criminal-status">
                         <header>
-                            <h2>Criminal status</h2>
+                            <h3>Criminal status</h3>
                         </header>
                         <table>
                             <tr>
@@ -55,7 +58,7 @@
                     </div>
                 </section>
                 <section class="box" id="game"> <!-- GAME -->
-
+                    <h2>Game-box</h2>
                 </section>
 
             </div>
