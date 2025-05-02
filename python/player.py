@@ -1,4 +1,4 @@
-from python.mysql_connection import mysql_connection
+from mysql_connection import mysql_connection
 
 
 

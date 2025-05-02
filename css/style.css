@@ -1,8 +1,8 @@
 :root {
-    --bg-color-main: #cfccc0;
+    --bg-color-main: #b9b5a4;
     --text-color-main: #200000;
     --bg-color-secondary: #161212;
-    --text-color-secondary: #b6b3aa;
+    --text-color-secondary: #b9b5a4;
     --border-color: #852a00;
 }
 
@@ -36,13 +36,19 @@ dialog {
     width: 45vw;
     margin: 1rem auto;
     justify-items: center;
-}
-
-#status-box div {
-    justify-items: center;
+    background-color: #ffffff1c;
 }
 
 #map-box img {
     width: 95%;
     margin-left: calc(45vw * (1 - 0.95) / 2);
 } 
+
+#status-box div {
+    justify-items: center;
+    width: 90%;
+}
+
+#game-box {
+    width: 90vw;
+}

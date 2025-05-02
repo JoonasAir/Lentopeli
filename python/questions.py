@@ -1,6 +1,6 @@
 # Voidaan käyttää json tiedostoa missä kysymykset
 import json
-from python.mysql_connection import mysql_connection
+from mysql_connection import mysql_connection
 # Voidaan valita satunnaisia kysymyksiä sekä sekoitta vastausvaihtoehdot
 import random 
 # Voidaan muuttaa kysymysten HTML elementit oikeiksi merkeiksi

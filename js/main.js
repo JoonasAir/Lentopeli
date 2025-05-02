@@ -67,6 +67,7 @@ function newGame() {
   });
 }
 
+
 // Kutsutaan funktiot
 leaderboard();
 newGame();
