@@ -1,54 +1,64 @@
 :root {
-    --bg-color-main: #b9b5a4;
-    --text-color-main: #200000;
-    --bg-color-secondary: #161212;
-    --text-color-secondary: #b9b5a4;
-    --border-color: #852a00;
+  --bg-color-main: #b9b5a4;
+  --text-color-main: #200000;
+  --bg-color-secondary: #161212;
+  --text-color-secondary: #b9b5a4;
+  --border-color: #852a00;
 }
 
-html, body {
-    padding: 0;
-    margin: 0;
-    background-color: var(--bg-color-main);
-    color: var(--text-color-main);
+html,
+body {
+  padding: 0;
+  margin: 0;
+  background-color: var(--bg-color-main);
+  color: var(--text-color-main);
 }
 
 #page-header {
-    background-color: var(--bg-color-secondary);
-    color: var(--text-color-secondary);
+  background-color: var(--bg-color-secondary);
+  color: var(--text-color-secondary);
+  text-align: center;
 }
 
 footer {
-    background-color: var(--bg-color-secondary);
-    color: var(--text-color-secondary);
+  background-color: var(--bg-color-secondary);
+  color: var(--text-color-secondary);
+  padding: 1rem;
+  text-align: center;
 }
 
 dialog {
-    background-color: var(--bg-color-main);
+  background-color: var(--bg-color-main);
 }
 ::backdrop {
-    background: #000000c5;
+  background: #000000c5;
 }
 
 .box {
-    border: var(--border-color) solid 1px;
-    margin: 1rem;
-    width: 45vw;
-    margin: 1rem auto;
-    justify-items: center;
-    background-color: #ffffff1c;
+  border: var(--border-color) solid 1px;
+  margin: 1rem;
+  width: 45vw;
+  margin: 1rem auto;
+  justify-items: center;
+  background-color: #ffffff1c;
 }
 
 #map-box img {
-    width: 95%;
-    margin-left: calc(45vw * (1 - 0.95) / 2);
-} 
+  width: 95%;
+  margin-left: calc(45vw * (1 - 0.95) / 2);
+}
 
 #status-box div {
-    justify-items: center;
-    width: 90%;
+  justify-items: center;
+  width: 90%;
 }
 
 #game-box {
-    width: 90vw;
+  width: 90vw;
+}
+
+#map {
+  height: 400px;
+  width: 95%;
+  border-radius: 10px;
 }

@@ -33,12 +33,37 @@ def leaderboard():
 @app.route("/gameSetup", methods=['POST'])
 def gameSetup():
     data = request.json
-    
+
     game_dict = game_setup(game_parameters, data)
     game_dict["quiz_questions"] = get_questions(game_dict["quiz_difficulty"], game_dict["quiz_category"])
 
     return jsonify({"message": "Game setup received successfully", "data": game_dict}), 200
 
+
+@app.route("/flyto", methods=['PUT'])
+def get_location():
+    data = request.json["data"]
+
+    cursor1 = mysql_connection.cursor()
+    cursor2 = mysql_connection.cursor()
+    sqlfrom = f"SELECT latitude_deg, longitude_deg FROM airport WHERE ident='{data["player_location"]}'"
+    sqlto = "SELECT latitude_deg, longitude_deg FROM airport WHERE ident='EHAM'"
+
+    cursor1.execute(sqlfrom)
+    flyfrom = cursor1.fetchall()
+
+    cursor2.execute(sqlto)
+    flyto = cursor2.fetchall()
+
+    if not flyfrom or not flyto:
+        return jsonify({"error": "No data found"}), 404
+
+    result = {
+        "from": {"latitude": flyfrom[0][0], "longitude": flyfrom[0][1]},
+        "to": {"latitude": flyto[0][0], "longitude": flyto[0][1]}
+    }
+
+    return jsonify(result)
 
 
 if __name__ == "__main__":
