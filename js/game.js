@@ -49,8 +49,6 @@ document.addEventListener("timerEnd", () => {
   alert("Aika loppui!");
 });
 
-
-
 // Käyttäjän syöttämien aloitustietojen haku
 // ja pelin parametrien luonti palvelimella
 async function gameSetup() {
@@ -182,95 +180,92 @@ async function stopGame(game_dict) {
 }
 // Airport options
 async function airportOptions(game_dict) {
-    try {
-        const response = await fetch(baseUrl + '/airportOptions', {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(game_dict)
-        });
-        game_dict = await response.json()
-        const options = game_dict["value"]["airport_options"]
-        updateGameInput(options)
-        return game_dict
-    } catch (error) {
-        console.error("Error:", error)
-    }
+  try {
+    const response = await fetch(baseUrl + "/airportOptions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(game_dict),
+    });
+    game_dict = await response.json();
+    const options = game_dict["value"]["airport_options"];
+    updateGameInput(options);
+    return game_dict;
+  } catch (error) {
+    console.error("Error:", error);
+  }
 }
 
 function updateGameInput(newButtons) {
-    const gameInput = document.querySelector("#game-input");
+  const gameInput = document.querySelector("#game-input");
 
-    gameInput.innerHTML = "<h3>Game input</h3>";
-    for (const newButton of newButtons) {
-        if (typeof newButton !== "string") {
-            if (newButton["value"] != "randomAction") {
-                const button = document.createElement("button");
-                button.value = newButton["value"];
-                button.textContent = newButton["text"];
-                gameInput.appendChild(button);
-            } else {
-                const button = document.createElement("button");
-                button.value = newButton["value"];
-                button.textContent = newButton["text"][0];
-                gameInput.appendChild(button);
-            }
-        }
+  gameInput.innerHTML = "<h3>Game input</h3>";
+  for (const newButton of newButtons) {
+    if (typeof newButton !== "string") {
+      if (newButton["value"] != "randomAction") {
+        const button = document.createElement("button");
+        button.value = newButton["value"];
+        button.textContent = newButton["text"];
+        gameInput.appendChild(button);
+      } else {
+        const button = document.createElement("button");
+        button.value = newButton["value"];
+        button.textContent = newButton["text"][0];
+        gameInput.appendChild(button);
+      }
     }
+  }
 }
 
 // Airport actions
 async function airportActions() {
+  const gameInput = document.querySelector("#game-input");
 
-    const gameInput = document.querySelector("#game-input");
+  gameInput.addEventListener("click", (event) => {
+    const buttonValue = event.target.value;
 
-    gameInput.addEventListener("click", (event) => {
-        const buttonValue = event.target.value;
-        
-        if (buttonValue === "security") {
-            console.log("Talking to the airport's security chief...");
-            
-
-        } else if (buttonValue === "solveClue") {
-            console.log("Solving the clue...");
-            
-
-        } else if (buttonValue === "solvePreviousClue") {
-            console.log("Trying to solve the previous clue again...");
-            
-
-        }
-    });
+    if (buttonValue === "security") {
+      console.log("Talking to the airport's security chief...");
+    } else if (buttonValue === "solveClue") {
+      console.log("Solving the clue...");
+    } else if (buttonValue === "solvePreviousClue") {
+      console.log("Trying to solve the previous clue again...");
+    }
+  });
 }
-
 
 // PELI KASATAAN TÄMÄN FUNKTION SISÄLLE
 async function main() {
-// PELIN JA HTML:N ALUSTUS #####################################################
-    const game_dict = await gameSetup() // Pelin parametrien luonti palvelimella, palauttaa pythonista tutun game_dict -sanakirjan 
-    updateStatusBox(game_dict.data) // Päivittää html:ään statustiedot
-    await fetchCoordinates(game_dict); // Haetaan rikollisen ja pelaajan koordinaatit
-    
-    // Alustetaan kartta
-    const routes = [];
-    const map = L.map("map").setView([game_dict["coordinates"][0][0], game_dict["coordinates"][0][1]], 10);
-    const marker = L.marker([game_dict["coordinates"][0][0], game_dict["coordinates"][0][1]]).addTo(map);
-    marker.bindPopup("<b>Olet tässä</b>").openPopup();
-    
-    L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
-        maxZoom: 19,
-        attribution:
-        '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-    }).addTo(map);
-    
-    // animateAirplane(game_dict)
-    
-    
-    // sleep-funktion teko
-    const sleep = (delay) => new Promise((resolve) => setTimeout(resolve, delay));
+  // PELIN JA HTML:N ALUSTUS #####################################################
+  const game_dict = await gameSetup(); // Pelin parametrien luonti palvelimella, palauttaa pythonista tutun game_dict -sanakirjan
+  updateStatusBox(game_dict.data); // Päivittää html:ään statustiedot
+  await fetchCoordinates(game_dict); // Haetaan rikollisen ja pelaajan koordinaatit
 
-// PELIN LOOPPI ALKAA TÄSTÄ ##################################################
+  // Alustetaan kartta
+  const routes = [];
+  const map = L.map("map").setView(
+    [game_dict["coordinates"][0][0], game_dict["coordinates"][0][1]],
+    10
+  );
+  const marker = L.marker([
+    game_dict["coordinates"][0][0],
+    game_dict["coordinates"][0][1],
+  ]).addTo(map);
+  marker.bindPopup("<b>Olet tässä</b>").openPopup();
+
+  L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    maxZoom: 19,
+    attribution:
+      '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+  }).addTo(map);
+
+  // animateAirplane(game_dict)
+
+  // sleep-funktion teko
+  const sleep = (delay) => new Promise((resolve) => setTimeout(resolve, delay));
+
+  // PELIN LOOPPI ALKAA TÄSTÄ ##################################################
   let endGame = false;
   while (!endGame) {
     // reset airport_menu-helper parameters to default value before entering airport-menu at the new airport
@@ -281,21 +276,19 @@ async function main() {
     game_dict["clue_solved"] = false;
     game_dict["criminal_was_here"] = false;
 
-        // AIRPORT-MENU
-        airportActions()
-        // game_dict = airportMenu(game_dict)
+    // AIRPORT-MENU
+    airportActions();
+    // game_dict = airportMenu(game_dict)
 
-        if (game_dict["first_airport"]) {
-            game_dict["first_airport"] = false
-        }
-
-        
-        await sleep(5000); // sleep-funktion käyttö, jotta kone ei mene jumiin, poistetaan myöhemmin
-        endGame = await stopGame(game_dict) // tarkistaa palvelimelta täyttyykö edellytykset pelin päättämiselle
-        console.log("Game ends:", endGame)
+    if (game_dict["first_airport"]) {
+      game_dict["first_airport"] = false;
     }
-}
 
+    await sleep(5000); // sleep-funktion käyttö, jotta kone ei mene jumiin, poistetaan myöhemmin
+    endGame = await stopGame(game_dict); // tarkistaa palvelimelta täyttyykö edellytykset pelin päättämiselle
+    console.log("Game ends:", endGame);
+  }
+}
 
 startTimer();
 main();
