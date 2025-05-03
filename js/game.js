@@ -292,7 +292,7 @@ async function main() {
         
         await sleep(5000); // sleep-funktion käyttö, jotta kone ei mene jumiin, poistetaan myöhemmin
         endGame = await stopGame(game_dict) // tarkistaa palvelimelta täyttyykö edellytykset pelin päättämiselle
-        console.log(endGame)
+        console.log("Game ends:", endGame)
     }
 }
 
