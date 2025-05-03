@@ -55,24 +55,25 @@ async function fetchCoordinates() {
     );
 
     // Animaation asetukset
-    let progress = 0;
-    let steps = 150;
-    let interval = 20;
-    let start = points[0];
-    let end = points[1];
+    let progress = 0; // Animaation etenemisen tila (0 = alku, 1 = loppu)
+    let steps = 150; // Kuinka monessa vaiheessa animaatio etenee
+    let interval = 20; // Viive jokaisen animaatioaskeleen välillä (ms)
+    let start = points[0]; // Lentoreitin aloituspiste
+    let end = points[1]; // Lentoreitin päätepiste
 
     function animateAirplane() {
       if (progress >= 1) {
-        map.removeLayer(polyline);
-        map.flyTo(end, 8, { duration: 3 });
-        routes.push(points);
+        // Kun animaatio on valmis:
+        map.removeLayer(polyline); // Poista polku kartalta
+        map.flyTo(end, 8, { duration: 3 }); // Siirrä kartta lopulliseen sijaintiin (zoom 8)
+        routes.push(points); // Lisää reitti tallennettuihin reitteihin
       } else {
-        progress += 1 / steps;
-        const lat = start[0] + (end[0] - start[0]) * progress;
-        const lng = start[1] + (end[1] - start[1]) * progress;
+        progress += 1 / steps; // Kasvata animaation etenemistä
+        const lat = start[0] + (end[0] - start[0]) * progress; // Lasketaan uusi väliarvo latitude
+        const lng = start[1] + (end[1] - start[1]) * progress; // Lasketaan uusi väliarvo longitude
 
-        airplaneMarker.setLatLng([lat, lng]);
-        setTimeout(animateAirplane, interval);
+        airplaneMarker.setLatLng([lat, lng]); // Päivitä lentokoneen sijainti kartalla
+        setTimeout(animateAirplane, interval); // Suorita seuraava animaatioaskel viiveen jälkeen
       }
     }
 
