@@ -16,6 +16,8 @@ const dataToFlask = {
     category_input: category_input,
 };
 
+
+
 // Game timer
 const timerElement = document.getElementById("timer");
 const timerEndEvent = new Event("timerEnd");
@@ -37,6 +39,8 @@ function updateTimer(countdownTime) {
     return countdownTime
 }
 
+
+
 // Käynnistää ajastimen (vain kun peli alkaa tai nollataan)
 function startTimer(countdownTime) {
     clearInterval(timerInterval); // Estetään päällekkäiset ajastimet
@@ -45,6 +49,7 @@ function startTimer(countdownTime) {
     }, 1000);
     updateTimer(countdownTime); // Päivitetään heti, jotta käyttäjä näkee ajan muutoksen
 }
+
 
 
 // Käyttäjän syöttämien aloitustietojen haku
@@ -64,6 +69,8 @@ async function gameSetup() {
   }
 }
 
+
+
 // Päivittää html:ään statustiedot
 function updateStatusBox(game_dict) {
     document.querySelector("#screen-name").textContent = game_dict["screen_name"];
@@ -74,6 +81,8 @@ function updateStatusBox(game_dict) {
     document.querySelector("#airports-hacked").textContent = game_dict["airports_hacked"];
     document.querySelector("#CO2-criminal").textContent = game_dict["CO2_criminal"];
 }
+
+
 
 // Asynkroninen funktio koordinaattien hakemiseen
 async function fetchCoordinates(game_dict) {
@@ -108,6 +117,8 @@ async function fetchCoordinates(game_dict) {
     console.log("Virhe haettaessa tietoa:", error.message);
   }
 }
+
+
 
 // // Piirretään viiva kartalle
 // const polyline = L.polyline(game_dict["coordinates"], { color: "blue" }).addTo(map);
@@ -153,6 +164,8 @@ async function fetchCoordinates(game_dict) {
 //   }
 // }
 
+
+
 // tarkistaa palvelimelta täyttyykö edellytykset pelin päättämiselle
 async function stopGame(game_dict) {
     try {
@@ -167,6 +180,9 @@ async function stopGame(game_dict) {
     console.error("Error:", error);
   }
 }
+
+
+
 // Airport options
 async function airportOptions(game_dict) {
     try {
@@ -185,6 +201,8 @@ async function airportOptions(game_dict) {
         console.error("Error:", error)
     }
 }
+
+
 
 function updateGameInput(newButtons) {
     const gameInput = document.querySelector("#game-input");
@@ -206,6 +224,8 @@ function updateGameInput(newButtons) {
         }
     }
 }
+
+
 
 // Airport actions
 async function airportActions() {
@@ -232,15 +252,16 @@ async function airportActions() {
 }
 
 
+
 // PELI KASATAAN TÄMÄN FUNKTION SISÄLLE
 async function main() {
 // PELIN JA HTML:N ALUSTUS #####################################################
 
     const game_dict = await gameSetup() // Pelin parametrien luonti palvelimella, palauttaa pythonista tutun game_dict -sanakirjan 
-    startTimer(+game_dict.data["game_time"]);
+    startTimer(game_dict.data["game_time"]);
     // Mitä tapahtuu kun aika loppuu
     document.addEventListener("timerEnd", () => {
-      alert("Aika loppui!");
+        game_dict["time_left_bool"] = false;
     });
 
     updateStatusBox(game_dict.data) // Päivittää html:ään statustiedot
