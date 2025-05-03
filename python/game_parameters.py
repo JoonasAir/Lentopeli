@@ -9,7 +9,7 @@ DIFFICULTY_game_parameters = {
         'game_time': 60*10,         # time at the beginning of the game
         'criminal_headstart': 2,    # the criminal's head start at the start of the game
         'criminal_time': 60,        # the time interval at which the criminal flies to the next location
-        'quiz_difficulty': 'easy',       # difficulty for quiz questions
+        'quiz_difficulty': 'easy',  # difficulty for quiz questions
         'game_difficulty': 'Easy',
         'random_luck': 0.10,        # the possibility of benefiting from random functions
         'eco_points': 100,          # eco points at the beginning of the game
@@ -20,7 +20,7 @@ DIFFICULTY_game_parameters = {
         'game_time': 60*7,          # time at the beginning of the game
         'criminal_headstart': 3,    # the criminal's head start at the start of the game
         'criminal_time': 45,        # the time interval at which the criminal flies to the next location
-        'quiz_difficulty': 'medium',     # difficulty for quiz questions
+        'quiz_difficulty': 'medium',# difficulty for quiz questions
         'game_difficulty': 'Medium',
         'random_luck': 0.05,        # the possibility of benefiting from random functions
         'eco_points': 100,          # eco points at the beginning of the game
@@ -31,7 +31,7 @@ DIFFICULTY_game_parameters = {
         'game_time': 60*5,          # time at the beginning of the game
         'criminal_headstart': 4,    # the criminal's head start at the start of the game
         'criminal_time': 30,        # the time interval at which the criminal flies to the next location
-        'quiz_difficulty': 'hard',       # difficulty for quiz questions
+        'quiz_difficulty': 'hard',  # difficulty for quiz questions
         'game_difficulty': 'Hard',
         'random_luck': 0.025,       # the possibility of benefiting from random functions
         'eco_points': 100,          # eco points at the beginning of the game
@@ -43,7 +43,7 @@ DIFFICULTY_game_parameters = {
         'game_time': 60*5,          # time at the beginning of the game
         'criminal_headstart': 2,    # the criminal's head start at the start of the game
         'criminal_time': 30,        # the time interval at which the criminal flies to the next location
-        'quiz_difficulty': 'easy',       # difficulty for quiz questions
+        'quiz_difficulty': 'easy',  # difficulty for quiz questions
         'game_difficulty': 'Custom',
         'random_luck': 0.3,         # the possibility of benefiting from random functions
         'eco_points': 100,          # eco points at the beginning of the game
@@ -75,6 +75,7 @@ COMMON_game_parameters = {
         'airports_hacked':0,
         'CO2_criminal':0,
         'CO2_player':0,
+        'coordinates': [],
 
 }
 
