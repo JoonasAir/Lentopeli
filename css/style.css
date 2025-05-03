@@ -18,6 +18,7 @@ body {
   background-color: var(--bg-color-secondary);
   color: var(--text-color-secondary);
   text-align: center;
+  padding: 1rem;
 }
 
 footer {
@@ -98,8 +99,8 @@ h3 {
 }
 
 .poliisi {
-  width: 70px; /* tai esim. 10%, 2em, jne. */
-  height: auto; /* pitää kuvasuhteen oikeana */
-  margin: 0 5px; /* lisää vähän väliä kuviin */
-  vertical-align: middle; /* pitää kuvat tekstin linjassa */
+  width: 70px;
+  height: auto;
+  margin: 0 5px;
+  vertical-align: middle;
 }
