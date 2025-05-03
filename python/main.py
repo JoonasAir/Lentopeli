@@ -67,7 +67,7 @@ def get_location():
     return jsonify(result)
 
 
-@app.route('/stopGame', methods=['PUT'])
+@app.route('/stopGame', methods=['POST'])
 def stopGame():
     data = request.json
     returnValue = stop_game(data["data"])

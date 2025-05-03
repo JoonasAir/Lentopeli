@@ -136,7 +136,7 @@ async function fetchCoordinates(game_dict) {
 async function stopGame(game_dict) {
     try {
         const response = await fetch(baseUrl + '/stopGame', {
-            method: "PUT",
+            method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
