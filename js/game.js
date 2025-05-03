@@ -51,11 +51,15 @@ function updateStatusBox(game_dict) {
 async function main() {
     const game_dict = await gameSetup() // Pelin parametrien luonti palvelimella, palauttaa pythonista tutun game_dict -sanakirjan 
     updateStatusBox(game_dict.data) // Päivittää html:ään statustiedot
-    fetchCoordinates(game_dict);
+
+    await fetchCoordinates(game_dict);
+
     // Alustetaan kartta
     const routes = [];
     const map = L.map("map").setView([game_dict["coordinates"][0][0], game_dict["coordinates"][0][1]], 10);
-    
+    const marker = L.marker([game_dict["coordinates"][0][0], game_dict["coordinates"][0][1]]).addTo(map);
+    marker.bindPopup("<b>Olet tässä</b>").openPopup();
+
     L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
       maxZoom: 19,
       attribution:
