@@ -16,7 +16,9 @@
 <body>
     <div class="container">
         <header id="page-header">
-            <h1 class="page-title">CatchTheCriminal - Europe Edition</h1>
+            <h1 class="page-title"><img class="poliisi" src="../images/poliisi.png"><img class="poliisi"
+                    src="../images/poliisikone.png">CatchTheCriminal - Europe Edition<img class="poliisi"
+                    src="../images/rosvokone.png"><img class="poliisi" src="../images/rosvo.png"></h1>
             <nav>
                 <a href="index.html">Quit game</a>
             </nav>
@@ -48,18 +50,18 @@
         <div class="boxes">
             <main class="main-content">
                 <section class="box" id="map-box"> <!-- MAP -->
-                    <h2>Map-box</h2>
+                    <h2><u>Map-box</u></h2>
                     <!-- <img src="/images/map.gif" alt="Map"> -->
                     <div id="map"></div>
                     <!-- Map, Location, Weather -->
                 </section>
 
                 <section class="box" id="status-box"> <!-- PLAYER / CRIMINAL STATUS -->
-                    <h2>Status-box</h2>
+                    <h2><u>Status-box</u></h2>
 
                     <div id="player-status">
                         <header>
-                            <h3>Player</h3>
+                            <h3>Player:</h3>
                         </header>
                         <table>
                             <tr>
@@ -73,7 +75,7 @@
 
                     <div id="criminal-status">
                         <header>
-                            <h3>Criminal</h3>
+                            <h3>Criminal:</h3>
                         </header>
                         <table>
                             <tr>
@@ -87,7 +89,10 @@
                 </section>
 
                 <section class="box" id="game-box"> <!-- GAME -->
-                    <h2>Game-box</h2>
+                    <h2><u>Gaming console</u></h2>
+                    <div id="timer-box">
+                        <p><strong>Time remaining:&nbsp;&nbsp;</strong> <span id="timer"> </span></p>
+                    </div>
                     <div id="game-input">
                         <h3>Game input</h3>
                         <button value="security">Talk to airport's security chief</button>
@@ -96,7 +101,6 @@
                     </div>
                     <div id="game-output">
                         <h3>Game output</h3>
-                        <p id="timer"></p>
                     </div>
                 </section>
 

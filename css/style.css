@@ -55,10 +55,51 @@ dialog {
 
 #game-box {
   width: 90vw;
+  position: relative;
+}
+
+.game-box-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 #map {
   height: 400px;
   width: 95%;
   border-radius: 10px;
+}
+
+.game-box-header {
+  display: flex;
+  justify-content: space-between;
+  margin-left: 5rem;
+}
+
+#game-input button {
+  padding: 0.8rem;
+}
+
+#timer {
+  position: absolute;
+  font-weight: bold;
+}
+
+#timer-box {
+  position: absolute;
+  top: 10px;
+  right: 50px;
+  font-weight: bold;
+  font-size: 1.1em;
+}
+
+h3 {
+  text-align: center;
+}
+
+.poliisi {
+  width: 70px; /* tai esim. 10%, 2em, jne. */
+  height: auto; /* pitää kuvasuhteen oikeana */
+  margin: 0 5px; /* lisää vähän väliä kuviin */
+  vertical-align: middle; /* pitää kuvat tekstin linjassa */
 }
