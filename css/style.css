@@ -17,6 +17,7 @@ body {
 #page-header {
   background-color: var(--bg-color-secondary);
   color: var(--text-color-secondary);
+  text-align: center;
 }
 
 footer {
