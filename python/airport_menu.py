@@ -88,7 +88,7 @@ def airport_menu(game_dict:dict):
         game_dict, user_input, random_action = airport_menu_input(game_dict) # ask what user wants to do at the airport
         print("\n\n")
 
-        if user_input == "Check remaining money" : 
+        if user_input == "Check remaining money": 
             print(f"You have {game_dict['game_money']}€ left to spend." )
 
 

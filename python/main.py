@@ -4,6 +4,7 @@ from flask_cors import CORS
 from game_setup import game_setup
 from game_parameters import game_parameters
 from questions import get_questions
+from stop_game import stop_game
 import json
 
 app = Flask(__name__)
@@ -64,6 +65,23 @@ def get_location():
     }
 
     return jsonify(result)
+
+
+@app.route('/stopGame', methods=['PUT'])
+def stopGame():
+    data = request.json
+    returnValue = stop_game(data["data"])
+
+    if returnValue:
+        return jsonify({"message": "Game ends now", "value": True}), 200
+    else:
+        return jsonify({"message": "Game continues", "value": False}), 200
+
+
+
+
+
+
 
 
 if __name__ == "__main__":
