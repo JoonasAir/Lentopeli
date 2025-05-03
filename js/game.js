@@ -65,6 +65,8 @@ async function main() {
       attribution:
         '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
     }).addTo(map);
+
+    // animateAirplane(game_dict)
 }
 
 
@@ -107,54 +109,49 @@ async function fetchCoordinates(game_dict) {
   }
 }
 
-//     // Piirretään viiva kartalle
-//     const polyline = L.polyline(points, { color: "blue" }).addTo(map);
 
-//     // Keskitetään kartta reitin ympärille
-//     const bounds = polyline.getBounds();
-//     map.fitBounds(bounds, {
-//       padding: [100, 100],
-//       maxZoom: 10,
-//     });
 
-//     // Lentokoneikoni
-//     const airplaneIcon = L.icon({
-//       iconUrl: "../images/plane.png",
-//       iconSize: [32, 32],
-//       iconAnchor: [16, 16],
-//     });
+// // Piirretään viiva kartalle
+// const polyline = L.polyline(game_dict["coordinates"], { color: "blue" }).addTo(map);
 
-//     // Lentokone aloituspisteeseen
-//     const airplaneMarker = L.marker(points[0], { icon: airplaneIcon }).addTo(
-//       map
-//     );
+// // Keskitetään kartta reitin ympärille
+// const bounds = polyline.getBounds();
+// map.fitBounds(bounds, {
+//     padding: [100, 100],
+//     maxZoom: 10,
+// });
 
-//     // Animaation asetukset
-//     let progress = 0; // Animaation etenemisen tila (0 = alku, 1 = loppu)
-//     let steps = 150; // Kuinka monessa vaiheessa animaatio etenee
-//     let interval = 20; // Viive jokaisen animaatioaskeleen välillä (ms)
-//     let start = points[0]; // Lentoreitin aloituspiste
-//     let end = points[1]; // Lentoreitin päätepiste
+// // Lentokoneikoni
+// const airplaneIcon = L.icon({
+//     iconUrl: "../images/plane.png",
+//     iconSize: [32, 32],
+//     iconAnchor: [16, 16],
+// });
 
-//     function animateAirplane() {
-//       if (progress >= 1) {
-//         // Kun animaatio on valmis:
-//         map.removeLayer(polyline); // Poista polku kartalta
-//         map.flyTo(end, 8, { duration: 3 }); // Siirrä kartta lopulliseen sijaintiin (zoom 8)
-//         routes.push(points); // Lisää reitti tallennettuihin reitteihin
-//       } else {
-//         progress += 1 / steps; // Kasvata animaation etenemistä
-//         const lat = start[0] + (end[0] - start[0]) * progress; // Lasketaan uusi väliarvo latitude
-//         const lng = start[1] + (end[1] - start[1]) * progress; // Lasketaan uusi väliarvo longitude
+// // Lentokone aloituspisteeseen
+// const airplaneMarker = L.marker(game_dict["coordinates"][0], { icon: airplaneIcon }).addTo(
+//     map
+// );
 
-//         airplaneMarker.setLatLng([lat, lng]); // Päivitä lentokoneen sijainti kartalla
-//         setTimeout(animateAirplane, interval); // Suorita seuraava animaatioaskel viiveen jälkeen
-//       }
-//     }
+// // Animaation asetukset
+// let progress = 0; // Animaation etenemisen tila (0 = alku, 1 = loppu)
+// let steps = 150; // Kuinka monessa vaiheessa animaatio etenee
+// let interval = 20; // Viive jokaisen animaatioaskeleen välillä (ms)
+// let start = game_dict["coordinates"][0]; // Lentoreitin aloituspiste
+// let end = game_dict["coordinates"][1]; // Lentoreitin päätepiste
 
-//     animateAirplane();
-//   } catch (error) {
-//     console.log("Virhe haettaessa tietoa:", error.message);
+// function animateAirplane(game_dict) {
+//   if (progress >= 1) {
+//     // Kun animaatio on valmis:
+//     map.removeLayer(polyline); // Poista polku kartalta
+//     map.flyTo(end, 8, { duration: 3 }); // Siirrä kartta lopulliseen sijaintiin (zoom 8)
+//     routes.push(game_dict["coordinates"]); // Lisää reitti tallennettuihin reitteihin
+//   } else {
+//     progress += 1 / steps; // Kasvata animaation etenemistä
+//     const lat = start[0] + (end[0] - start[0]) * progress; // Lasketaan uusi väliarvo latitude
+//     const lng = start[1] + (end[1] - start[1]) * progress; // Lasketaan uusi väliarvo longitude
+//     airplaneMarker.setLatLng([lat, lng]); // Päivitä lentokoneen sijainti kartalla
+//     setTimeout(animateAirplane, interval); // Suorita seuraava animaatioaskel viiveen jälkeen
 //   }
 // }
 
