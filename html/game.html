@@ -5,7 +5,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="../css/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin="" defer></script>
     <script src="../js/game.js" defer></script>
+    <script src="../js/map.js" defer></script>
     <title>CatchTheCriminal - Europe Edition</title>
 </head>
 
@@ -45,7 +50,8 @@
             <main class="main-content">
                 <section class="box" id="map-box"> <!-- MAP -->
                     <h2>Map-box</h2>
-                    <img src="/images/map.gif" alt="Map">
+                    <!-- <img src="/images/map.gif" alt="Map"> -->
+                    <div id="map"></div>
                     <!-- Map, Location, Weather -->
                 </section>
 
@@ -85,7 +91,7 @@
                     <h2>Game-box</h2>
                 </section>
 
-            </div>
+        </div>
         </main>
         <footer>
             <p>Ryhmä 1</p>
