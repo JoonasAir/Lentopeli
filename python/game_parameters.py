@@ -56,9 +56,9 @@ DIFFICULTY_game_parameters = {
 COMMON_game_parameters = {
         'player_location':"",      # player's current location (ICAO)
         "win_game":False,           # did we win the game? True = Yes, False = No
-        'screen_name':"",          # player's screen name
-        'quiz_questions':[],      # questions of player's difficulty and category
-        'previous_question':{},   # previously asked question in case of player have to solve it again
+        'screen_name':"",           # player's screen name
+        'quiz_questions':[],        # questions of player's difficulty and category
+        'previous_question':{},     # previously asked question in case of player have to solve it again
         'clue_solved':False,        # have we solved a clue at current airport?
         'tried_luck':False,         # have we tried our luck at this airport yet?
         'talk_to_chief': False,     # have we talked to security chief at current airport or not? True=yes, False=no

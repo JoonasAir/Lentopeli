@@ -84,4 +84,6 @@ async function fetchCoordinates() {
 }
 
 // Käynnistetään tietojen haku
-fetchCoordinates();
+// fetchCoordinates();
+
+export {fetchCoordinates};
