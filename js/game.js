@@ -49,10 +49,7 @@ document.addEventListener("timerEnd", () => {
   alert("Aika loppui!");
 });
 
-// Käynnistetään timer
-startTimer();
 
-main();
 
 // Käyttäjän syöttämien aloitustietojen haku
 // ja pelin parametrien luonti palvelimella
@@ -66,7 +63,7 @@ async function gameSetup() {
       body: JSON.stringify(dataToFlask),
     });
     const data = await response.json();
-
+    console.log("Response from gameSetup:", data); // Debugging
     return data;
   } catch (error) {
     console.error("Error:", error);
@@ -273,7 +270,7 @@ async function main() {
     // sleep-funktion teko
     const sleep = (delay) => new Promise((resolve) => setTimeout(resolve, delay));
 
-  // PELIN LOOPPI ALKAA TÄSTÄ ##################################################
+// PELIN LOOPPI ALKAA TÄSTÄ ##################################################
   let endGame = false;
   while (!endGame) {
     // reset airport_menu-helper parameters to default value before entering airport-menu at the new airport
@@ -299,4 +296,6 @@ async function main() {
     }
 }
 
+
+startTimer();
 main();

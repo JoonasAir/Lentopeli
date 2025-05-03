@@ -35,7 +35,6 @@ def leaderboard():
 @app.route("/gameSetup", methods=['POST'])
 def gameSetup():
     data = request.json
-
     game_dict = game_setup(game_parameters, data)
     game_dict["quiz_questions"] = get_questions(game_dict["quiz_difficulty"], game_dict["quiz_category"])
 
@@ -77,8 +76,12 @@ def get_location():
 @app.route('/stopGame', methods=['POST'])
 def stopGame():
     data = request.json
-    
-    returnValue = stop_game(data["value"])
+    try:
+        data = data["value"]
+    except:
+        pass
+
+    returnValue = stop_game(data)
 
     if returnValue:
         return jsonify({"message": "Game ends now", "value": True}), 200
