@@ -1,10 +1,15 @@
+from urllib import response
 from mysql_connection import mysql_connection
+import requests
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from game_setup import game_setup
 from game_parameters import game_parameters
+from airport_menu import airport_menu_input
 from questions import get_questions
+from stop_game import stop_game
 import json
+from geopy import distance
 
 app = Flask(__name__)
 cors = CORS(app)
@@ -28,26 +33,30 @@ def leaderboard():
     return jsonify(results)
     
 
-    
+
 # create game_dict and return to game.js
 @app.route("/gameSetup", methods=['POST'])
 def gameSetup():
     data = request.json
-
     game_dict = game_setup(game_parameters, data)
     game_dict["quiz_questions"] = get_questions(game_dict["quiz_difficulty"], game_dict["quiz_category"])
 
     return jsonify({"message": "Game setup received successfully", "data": game_dict}), 200
 
 
+
 @app.route("/flyto", methods=['PUT'])
 def get_location():
-    data = request.json["data"]
+    data = request.json
 
     cursor1 = mysql_connection.cursor()
     cursor2 = mysql_connection.cursor()
-    sqlfrom = f"SELECT latitude_deg, longitude_deg FROM airport WHERE ident='{data["player_location"]}'"
     sqlto = "SELECT latitude_deg, longitude_deg FROM airport WHERE ident='EHAM'"
+    try: 
+        sqlfrom = f"SELECT latitude_deg, longitude_deg FROM airport WHERE ident='{data["data"]["player_location"]}'"
+    except:
+        sqlfrom = f"SELECT latitude_deg, longitude_deg FROM airport WHERE ident='{data["player_location"]}'"
+
 
     cursor1.execute(sqlfrom)
     flyfrom = cursor1.fetchall()
