@@ -84,20 +84,120 @@ footer {
 }
 
 
-//*GAME PAGE *//
+/* GAME PAGE */
+
+.boxes {
+    padding: 0 2rem;
+}
 
 .game-page #page-header {
+    position: relative;
     margin-bottom: 2rem;
+    align-self: flex-start;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    width: 100%;
+    box-sizing: border-box;
+    min-height: 180px;
+}
+
+.game-page .header-top {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.game-page #page-header .page-title {
+    text-align: center;
+    font-size: 1.8rem;
+}
+
+/* Lista */
+.game-page #game-parameters {
+    font-size: 0.85rem;
+    margin-top: 60px;
+    margin-bottom: 20px;
+    border-collapse: collapse;
+}
+
+.game-page #game-parameters td {
+    padding: 0.2rem 0.5rem;
+    text-align: left;
+}
+
+/* Quit game */
+.game-page #page-header nav a {
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+.game-page #page-header nav a:hover {
+    text-decoration: underline;
+}
+
+.game-page #page-header nav a {
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+.game-page #page-header nav a:hover {
+    text-decoration: underline;
+}
+
+/* MAP, GAME STATUS */
+
+.game-page .top-row {
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    align-items: stretch;
+}
+
+/* MAP */
+
+.game-page #map-box {
+    flex: 1 1 50%;
+    min-width: 300px;
+    background-color: var(--bg-color-secondary);
+    padding: 1rem;
+}
+
+.game-page #map {
+    flex: 1;
+    width: 100%;
+    border-radius: 10px;
+}
+
+/* GAME STATUS */
+.game-page #status-box {
+    flex: 1 1 40%;
+    min-width: 300px;
+    background-color: var(--bg-color-secondary);
+    padding: 1rem;
+}
+
+/* GAME */
+.game-page #game-box {
+    margin: 2rem 0;
+    background-color: var(--bg-color-secondary);
+    padding: 2rem;
+    box-sizing: border-box;
 }
 
 
 
 
-
-
-
-
-#map-box img {
+/*#map-box img {
   width: 95%;
   margin-left: calc(45vw * (1 - 0.95) / 2);
 }
