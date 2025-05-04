@@ -9,16 +9,24 @@
         integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
         integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin="" defer></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,200..800;1,200..800&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <script src="../js/game.js" defer></script>
     <title>CatchTheCriminal - Europe Edition</title>
 </head>
 
-<body>
+<body class ="game-page">
     <div class="container">
         <header id="page-header">
-            <h1 class="page-title"><img class="poliisi" src="../images/poliisi.png"><img class="poliisi"
-                    src="../images/poliisikone.png">CatchTheCriminal - Europe Edition<img class="poliisi"
-                    src="../images/rosvokone.png"><img class="poliisi" src="../images/rosvo.png"></h1>
+            <h1 class="page-title">
+                <!-- <img class="poliisi" src="../images/poliisi.png">-->
+                <!--<img class="poliisi" src="../images/poliisikone.png">-->
+                CatchTheCriminal - Europe Edition
+                <!--<img class="poliisi" src="../images/rosvokone.png">-->
+                <!--<img class="poliisi" src="../images/rosvo.png">-->
+            </h1>
+            <div class="header-top">
             <nav>
                 <a href="index.html">Quit game</a>
             </nav>
@@ -43,12 +51,14 @@
                     </td>
                 </tr>
             </table>
+        </div>
 
         </header>
 
 
         <div class="boxes">
             <main class="main-content">
+                <div class="top-row">
                 <section class="box" id="map-box"> <!-- MAP -->
                     <h2><u>Map-box</u></h2>
                     <!-- <img src="/images/map.gif" alt="Map"> -->
@@ -88,6 +98,7 @@
                         </table>
                     </div>
                 </section>
+            </div>
 
                 <section class="box" id="game-box"> <!-- GAME -->
                     <h2><u>Gaming console</u></h2>

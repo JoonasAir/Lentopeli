@@ -370,6 +370,9 @@ let routes = [ // RANDOM LOCATIONS (temporary)
 
 // PELI KASATAAN TÄMÄN FUNKTION SISÄLLE
 async function main() {
+  // sleep-funktion teko
+  const sleep = (delay) => new Promise((resolve) => setTimeout(resolve, delay));
+
   // PELIN ALUSTUS #####################################################
   let game_dict = await gameSetup(); // Pelin parametrien luonti palvelimella, palauttaa pythonista tutun game_dict -sanakirjan
   startTimer(game_dict.data["game_time"]);
@@ -392,6 +395,13 @@ async function main() {
     attribution:
     '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
   }).addTo(map);
+
+  const marker = L.marker([
+    game_dict.data["coordinates"][0][0],
+    game_dict.data["coordinates"][0][1],
+    ]).addTo(map);
+    marker.bindPopup("<b>Olet tässä</b>").openPopup();
+
   weather(game_dict.data.coordinates[0])
 
 
