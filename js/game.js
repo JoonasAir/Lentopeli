@@ -172,9 +172,9 @@ async function fetchCoordinates(game_dict) {
 }
 
 async function drawLine(game_dict, map) {
+  
   //Piirrä reitti annetuilla koordinaateilla
-  console.log(game_dict.data['coordinates'])
-  const polyline = L.polyline(game_dict.data["coordinates"], { color: "blue" }).addTo(map);
+  const polyline = L.polyline(game_dict["coordinates"], { color: "blue" }).addTo(map);
   //Asetata näkymä reitin ympärille
   const bounds = polyline.getBounds();
   map.fitBounds(bounds, {
@@ -190,8 +190,8 @@ async function drawLine(game_dict, map) {
   });
 
   // Lentokone aloituspisteeseen
-  const start = game_dict.data["coordinates"][0];
-  const end = game_dict.data["coordinates"][1];
+  const start = game_dict["coordinates"][0];
+  const end = game_dict["coordinates"][1];
   const airplaneMarker = L.marker(start, { icon: airplaneIcon }).addTo(map);
 
   // Animaation asetukset
@@ -201,12 +201,20 @@ async function drawLine(game_dict, map) {
 
   //Animaatiofunktio
   async function animate() {
+    const sleep = (delay) => new Promise((resolve) => setTimeout(resolve, delay));
+    const marker = L.marker([
+      game_dict["coordinates"][1][0],
+      game_dict["coordinates"][1][1],
+      ]).addTo(map);
+      
     if (progress >= 1) {
       map.removeLayer(polyline);
+      marker.bindPopup("<b>Olet tässä</b>").openPopup();
       await map.flyTo(end, 8, { duration: 3 });
-      console.log(game_dict.data['coordinates'])
-      routes.push(game_dict.data["coordinates"]);
-      console.log(routes)
+      routes.push(game_dict["coordinates"]);
+      map.removeLayer(airplaneMarker);
+      await sleep(3000)
+      marker.closePopup();
     } else {
       progress += 1 / steps;
       const lat = start[0] + (end[0] - start[0]) * progress;
@@ -217,6 +225,7 @@ async function drawLine(game_dict, map) {
   }
 
   animate();
+  
 }
 
 // tarkistaa palvelimelta täyttyykö edellytykset pelin päättämiselle
@@ -299,7 +308,7 @@ async function airportActions(game_dict) {
 }
 
 // Fly to the next airport
-async function flyToNextAirport(game_dict, routes) {
+async function flyToNextAirport(game_dict, routes, map) {
   // Update player's location
 
   // Update coordinates
@@ -311,7 +320,7 @@ async function flyToNextAirport(game_dict, routes) {
   game_dict["CO2_player"] += data.co2
 
   // animateAirplane()
-  await drawLine(game_dict, map)
+  drawLine(game_dict, map)
   // Reduce money
   game_dict["game_money"] -= game_dict["flight_price"]
 
@@ -349,18 +358,11 @@ async function main() {
   game_dict = await fetchCoordinates(game_dict); // Haetaan rikollisen ja pelaajan koordinaatit
   // Alustetaan kartta
   
-
-
-
     const map = L.map("map").setView(
     [game_dict.data["coordinates"][0][0], game_dict.data["coordinates"][0][1]],
     10
   );
-  /* const marker = L.marker([
-    game_dict.data["coordinates"][0][0],
-    game_dict.data["coordinates"][0][1],
-  ]).addTo(map);
-  marker.bindPopup("<b>Olet tässä</b>").openPopup(); */
+
   
   L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
     maxZoom: 19,
@@ -369,8 +371,6 @@ async function main() {
   }).addTo(map);
   weather(game_dict.data.coordinates[0])
 
-
-  drawLine(game_dict, map)
   // sleep-funktion teko
   const sleep = (delay) => new Promise((resolve) => setTimeout(resolve, delay));
   // PELIN LOOPPI ALKAA TÄSTÄ ##################################################
@@ -392,7 +392,7 @@ async function main() {
       await sleep(5000); // sleep-funktion käyttö, jotta kone ei mene jumiin, poistetaan myöhemmin
     }
     // sisältää kaikki tarvittavat toiminnot kun lennetään kentältä toiselle
-    const data = await flyToNextAirport(game_dict, routes)
+    const data = await flyToNextAirport(game_dict, routes, map)
     game_dict = data.game_dict
     routes = data.routes
 
