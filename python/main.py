@@ -99,7 +99,7 @@ def airportOptions():
         pass
     finally:
         game_dict = airport_menu_input(game_dict)
-
+        
     try:
         return jsonify({'message':"Airport menu options returned", 'value': game_dict["data"]})
     except:

@@ -16,6 +16,7 @@ def airport_menu_input(game_dict:dict):
         game_dict = game_dict["value"]
     except:
         pass
+    print(len(game_dict['airport_options']))
     
     if game_dict["first_iteration"]:
         game_dict["random_event_index"] = randint(0, len(airport_random_options)-1)
@@ -30,9 +31,9 @@ def airport_menu_input(game_dict:dict):
     ]
 
 
-    if game_dict['airport_options'] == [] or game_dict["player_location"] not in game_dict['airport_options']:
-        option_list = [game_dict["player_location"]]
-
+    if len(game_dict['airport_options']) == 0 or game_dict["first_iteration"]:
+        option_list = [str(game_dict["player_location"])]
+        print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
         # Talk to security
         option_list.append({"text": airport_options[0]["text"], "value": airport_options[0]["value"]})
         # Random action
@@ -45,10 +46,9 @@ def airport_menu_input(game_dict:dict):
         # Try to solve the previous clue again
         if game_dict["talk_to_chief"] and not game_dict["criminal_was_here"] and not game_dict["clue_solved"] and not game_dict["next_location_bool"]: # visible IF we've talked to security chief AND the criminal has NOT been at the airport AND we haven't solved the clue yet AND we don't know next location
             option_list.append({"text": airport_options[2]["text"], "value": airport_options[2]["value"]})
-
         game_dict["airport_options"] = option_list
     
-    else:
+    elif not game_dict["first_iteration"]:
         option_list = [
             game_dict["player_location"], 
             {"text": airport_options[0]["text"], "value": airport_options[0]["value"]},
