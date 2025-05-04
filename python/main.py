@@ -10,7 +10,7 @@ from stop_game import stop_game
 import json
 
 app = Flask(__name__)
-CORS(app)
+cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 
 
@@ -107,11 +107,17 @@ def airportOptions():
         return jsonify({'message':"Airport menu options returned", 'value': game_dict})
     
     
-API_KEY = "f23df786656104dd27426c1f6b2a0c82"
-url = f"https://api.openweathermap.org/data/2.5/weather?lat=60.1756&lon=24.9342&appid={API_KEY}"
+
+
 
 @app.route('/weather')
 def getTemp():
+    data = game_dict.data['coordinates']
+    d1 = data[0]
+    d2 = d1[0]
+    d3 = d1[1]
+    API_KEY = "f23df786656104dd27426c1f6b2a0c82"
+    url = f"https://api.openweathermap.org/data/2.5/weather?lat={d2}&lon=2{d3}&appid={API_KEY}"
     try:
         response = requests.get(url)
         if response.status_code == 200:

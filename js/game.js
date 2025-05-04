@@ -103,7 +103,7 @@ async function weather() {
   }
 }
 
-weather()
+
 
 // Asynkroninen funktio koordinaattien hakemiseen
 async function fetchCoordinates(game_dict) {
@@ -267,6 +267,7 @@ async function main() {
   // PELIN JA HTML:N ALUSTUS #####################################################
   let game_dict = await gameSetup(); // Pelin parametrien luonti palvelimella, palauttaa pythonista tutun game_dict -sanakirjan
   startTimer(game_dict.data["game_time"]);
+  weather(game_dict.data)
   // Mitä tapahtuu kun aika loppuu
   document.addEventListener("timerEnd", () => {
     game_dict["time_left_bool"] = false;
