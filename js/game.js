@@ -302,6 +302,7 @@ async function flyToNextAirport(game_dict, routes) {
   // Update player's location
 
   // Update coordinates
+  // game_dict = fetchCoordinates(game_dict)
 
   // calculate emissions
   const data = await co2(routes, 0)
@@ -311,10 +312,10 @@ async function flyToNextAirport(game_dict, routes) {
   // animateAirplane()
   await drawLine()
   // Reduce money
+  game_dict["game_money"] -= game_dict["flight_price"]
 
   // Update html
   updateStatusBox(game_dict);
-
 
   return {game_dict: game_dict, routes: routes}
 }
