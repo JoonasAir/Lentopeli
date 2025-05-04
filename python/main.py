@@ -1,4 +1,3 @@
-from urllib import response
 from mysql_connection import mysql_connection
 import requests
 from flask import Flask, request, jsonify
@@ -178,20 +177,14 @@ def getTemp():
 ## CO2 laskuri, ottaa koordinaatit routes listasta johon upataan koordinaatit aina kun lennetään. 
 ## Index 0 pelaaja, index 1 rikollinen
 @app.route('/co2distance', methods=['POST'])
-def calculateCO2():
-    data = request.json
-    routes = data["routes"]
-    index = data["index"] #  0 = player  -  1 = criminal
-
-    coord1 = tuple(routes[-1][index])
-    coord2 = tuple(routes[-2][index])
-    distanceKM = round(distance.distance(coord1, coord2).km)
-    co2 = round(distanceKM * 0.15) 
-    result = {
-        'co2':co2,
-        'distanceKM':distanceKM
-    }
-    return jsonify(result)
+def calculateCO2(routes, index):
+      coord1 = tuple(routes[-1][index])
+      coord2 = tuple(routes[-2][index])
+      distanceKM = round(distance.distance(coord1, coord2).km)
+      co2 = round(distanceKM * 0.15) 
+      
+      
+      return co2, distanceKM
 
 
 if __name__ == "__main__":

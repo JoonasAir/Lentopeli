@@ -75,8 +75,6 @@ COMMON_game_parameters = {
         'airports_hacked':0,
         'CO2_criminal':0,
         'CO2_player':0,
-        'KM_criminal':0,
-        'KM_player':0,
         'coordinates': [],
         'criminal_location': "",
         'airport_options': [],
