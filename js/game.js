@@ -171,12 +171,13 @@ async function fetchCoordinates(game_dict) {
   }
 }
 
-function drawLine(game_dict) {
+async function drawLine(game_dict, map) {
   //Piirrä reitti annetuilla koordinaateilla
-  const polyline = L.polyline(game_dict["coordinates"], { color: "blue" }).addTo(map);
+  console.log(game_dict.data['coordinates'])
+  const polyline = await L.polyline(game_dict.data["coordinates"], { color: "blue" }).addTo(map);
 
   //Asetata näkymä reitin ympärille
-  const bounds = polyline.getBounds();
+  const bounds = await polyline.getBounds();
   map.fitBounds(bounds, {
     padding: [100, 100],
     maxZoom: 10,
@@ -190,8 +191,8 @@ function drawLine(game_dict) {
   });
 
   // Lentokone aloituspisteeseen
-  const start = game_dict["coordinates"][0];
-  const end = game_dict["coordinates"][1];
+  const start = game_dict.data["coordinates"][0];
+  const end = game_dict.data["coordinates"][1];
   const airplaneMarker = L.marker(start, { icon: airplaneIcon }).addTo(map);
 
   // Animaation asetukset
@@ -200,11 +201,11 @@ function drawLine(game_dict) {
   const interval = 20;
 
   //Animaatiofunktio
-  function animate() {
+  async function animate() {
     if (progress >= 1) {
       map.removeLayer(polyline);
-      map.flyTo(end, 8, { duration: 3 });
-      routes.push(game_dict["coordinates"]);
+      await map.flyTo(end, 8, { duration: 3 });
+      routes.push(game_dict.data["coordinates"]);
     } else {
       progress += 1 / steps;
       const lat = start[0] + (end[0] - start[0]) * progress;
@@ -308,7 +309,7 @@ async function flyToNextAirport(game_dict, routes) {
   game_dict["CO2_player"] += data.co2
 
   // animateAirplane()
-  drawLine()
+  await drawLine()
   // Reduce money
 
   // Update html
@@ -330,6 +331,7 @@ async function main() {
   updateStatusBox(game_dict.data); // Päivittää html:ään statustiedot
   game_dict = await fetchCoordinates(game_dict); // Haetaan rikollisen ja pelaajan koordinaatit
   // Alustetaan kartta
+  
 
   let routes = [ // RANDOM LOCATIONS (temporary) 
     [[50.1109, 8.6821], [48.8566, 2.3522]], // Frankfurt, Germany to Paris, France
@@ -361,6 +363,8 @@ async function main() {
   }).addTo(map);
   weather(game_dict.data.coordinates[0])
 
+
+  let draw = await drawLine(game_dict, map)
   // sleep-funktion teko
   const sleep = (delay) => new Promise((resolve) => setTimeout(resolve, delay));
   // PELIN LOOPPI ALKAA TÄSTÄ ##################################################
