@@ -175,7 +175,6 @@ async function drawLine(game_dict, map) {
   //Piirrä reitti annetuilla koordinaateilla
   console.log(game_dict.data['coordinates'])
   const polyline = await L.polyline(game_dict.data["coordinates"], { color: "blue" }).addTo(map);
-
   //Asetata näkymä reitin ympärille
   const bounds = await polyline.getBounds();
   map.fitBounds(bounds, {
@@ -351,11 +350,11 @@ async function main() {
     [game_dict.data["coordinates"][0][0], game_dict.data["coordinates"][0][1]],
     10
   );
-  const marker = L.marker([
+  /* const marker = L.marker([
     game_dict.data["coordinates"][0][0],
     game_dict.data["coordinates"][0][1],
   ]).addTo(map);
-  marker.bindPopup("<b>Olet tässä</b>").openPopup();
+  marker.bindPopup("<b>Olet tässä</b>").openPopup(); */
   
   L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
     maxZoom: 19,
