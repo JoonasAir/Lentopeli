@@ -75,9 +75,13 @@ function updateStatusBox(game_dict) {
 }
 
 // Funktio säätietojen hakemiseen
-async function weather() {
+async function weather(coordinates) {
   try {
-    const response = await fetch("http://127.0.0.1:5000/weather");
+    const response = await fetch("http://127.0.0.1:5000/weather", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(coordinates),
+    });
     const data = await response.json();
 
     let div = document.getElementById("weather");
@@ -133,7 +137,9 @@ async function fetchCoordinates(game_dict) {
       [parseFloat(jsonData.to.latitude), parseFloat(jsonData.to.longitude)], // Määränpää
     ];
 
-    game_dict["coordinates"] = points;
+    game_dict.data["coordinates"] = points;
+    return game_dict
+
   } catch (error) {
     console.log("Virhe haettaessa tietoa:", error.message);
   }
@@ -267,32 +273,31 @@ async function main() {
   // PELIN JA HTML:N ALUSTUS #####################################################
   let game_dict = await gameSetup(); // Pelin parametrien luonti palvelimella, palauttaa pythonista tutun game_dict -sanakirjan
   startTimer(game_dict.data["game_time"]);
-  weather(game_dict.data)
   // Mitä tapahtuu kun aika loppuu
   document.addEventListener("timerEnd", () => {
     game_dict["time_left_bool"] = false;
   });
-
+  
   updateStatusBox(game_dict.data); // Päivittää html:ään statustiedot
-  await fetchCoordinates(game_dict); // Haetaan rikollisen ja pelaajan koordinaatit
-
+  game_dict = await fetchCoordinates(game_dict); // Haetaan rikollisen ja pelaajan koordinaatit
   // Alustetaan kartta
   const routes = [];
   const map = L.map("map").setView(
-    [game_dict["coordinates"][0][0], game_dict["coordinates"][0][1]],
+    [game_dict.data["coordinates"][0][0], game_dict.data["coordinates"][0][1]],
     10
   );
   const marker = L.marker([
-    game_dict["coordinates"][0][0],
-    game_dict["coordinates"][0][1],
+    game_dict.data["coordinates"][0][0],
+    game_dict.data["coordinates"][0][1],
   ]).addTo(map);
   marker.bindPopup("<b>Olet tässä</b>").openPopup();
-
+  
   L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
     maxZoom: 19,
     attribution:
-      '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+    '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
   }).addTo(map);
+  weather(game_dict.data.coordinates[0])
 
   // animateAirplane(game_dict)
 
