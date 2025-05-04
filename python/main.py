@@ -8,6 +8,7 @@ from airport_menu import airport_menu_input
 from questions import get_questions
 from stop_game import stop_game
 import json
+from geopy import distance
 
 app = Flask(__name__)
 cors = CORS(app)
@@ -172,6 +173,18 @@ def getTemp():
     except requests.exceptions.RequestException as e:
         print("Hakua ei voitu suorittaa.")      
 
+
+## CO2 laskuri, ottaa koordinaatit routes listasta johon upataan koordinaatit aina kun lennetään. 
+## Index 0 pelaaja, index 1 rikollinen
+@app.route('/co2distance', methods=['POST'])
+def calculateCO2(routes, index):
+      coord1 = tuple(routes[-1][index])
+      coord2 = tuple(routes[-2][index])
+      distanceKM = round(distance.distance(coord1, coord2).km)
+      co2 = round(distanceKM * 0.15) 
+      
+      
+      return co2, distanceKM
 
 
 if __name__ == "__main__":
