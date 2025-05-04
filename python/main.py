@@ -1,4 +1,5 @@
 from mysql_connection import mysql_connection
+import requests
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from game_setup import game_setup
@@ -104,6 +105,31 @@ def airportOptions():
         return jsonify({'message':"Airport menu options returned", 'value': game_dict["data"]})
     except:
         return jsonify({'message':"Airport menu options returned", 'value': game_dict})
+    
+    
+API_KEY = "f23df786656104dd27426c1f6b2a0c82"
+url = f"https://api.openweathermap.org/data/2.5/weather?lat=60.1756&lon=24.9342&appid={API_KEY}"
+
+@app.route('/weather')
+def getTemp():
+    try:
+        response = requests.get(url)
+        if response.status_code == 200:
+            data = response.json()
+            temp_kelvin = data['main']['temp']
+            temp_celcius = temp_kelvin - 273.15
+            rounded_temp = round(temp_celcius)
+            
+            result = {
+                'icon': data['weather'][0]['icon'],
+                'temp': rounded_temp, 
+                'desc': data['weather'][0]['description'],
+                'name': data['name']
+            }
+            
+            return jsonify(result)
+    except requests.exceptions.RequestException as e:
+        print("Hakua ei voitu suorittaa.")      
 
 
 
