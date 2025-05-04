@@ -174,9 +174,9 @@ async function fetchCoordinates(game_dict) {
 async function drawLine(game_dict, map) {
   //Piirrä reitti annetuilla koordinaateilla
   console.log(game_dict.data['coordinates'])
-  const polyline = await L.polyline(game_dict.data["coordinates"], { color: "blue" }).addTo(map);
+  const polyline = L.polyline(game_dict.data["coordinates"], { color: "blue" }).addTo(map);
   //Asetata näkymä reitin ympärille
-  const bounds = await polyline.getBounds();
+  const bounds = polyline.getBounds();
   map.fitBounds(bounds, {
     padding: [100, 100],
     maxZoom: 10,
@@ -204,7 +204,9 @@ async function drawLine(game_dict, map) {
     if (progress >= 1) {
       map.removeLayer(polyline);
       await map.flyTo(end, 8, { duration: 3 });
+      console.log(game_dict.data['coordinates'])
       routes.push(game_dict.data["coordinates"]);
+      console.log(routes)
     } else {
       progress += 1 / steps;
       const lat = start[0] + (end[0] - start[0]) * progress;
@@ -309,7 +311,7 @@ async function flyToNextAirport(game_dict, routes) {
   game_dict["CO2_player"] += data.co2
 
   // animateAirplane()
-  await drawLine()
+  await drawLine(game_dict, map)
   // Reduce money
   game_dict["game_money"] -= game_dict["flight_price"]
 
@@ -318,6 +320,21 @@ async function flyToNextAirport(game_dict, routes) {
 
   return {game_dict: game_dict, routes: routes}
 }
+
+
+let routes = [ // RANDOM LOCATIONS (temporary) 
+  [[50.1109, 8.6821], [48.8566, 2.3522]], // Frankfurt, Germany to Paris, France
+  [[51.5074, -0.1278], [52.5200, 13.4050]], // London, UK to Berlin, Germany
+  [[41.9028, 12.4964], [40.4168, -3.7038]], // Rome, Italy to Madrid, Spain
+  [[59.3293, 18.0686], [60.1695, 24.9354]], // Stockholm, Sweden to Helsinki, Finland
+  [[53.3498, -6.2603], [55.7558, 37.6173]], // Dublin, Ireland to Moscow, Russia
+  [[47.4979, 19.0402], [48.2082, 16.3738]], // Budapest, Hungary to Vienna, Austria
+  [[37.9838, 23.7275], [45.8150, 15.9819]], // Athens, Greece to Zagreb, Croatia
+  [[50.0755, 14.4378], [52.2297, 21.0122]], // Prague, Czech Republic to Warsaw, Poland
+  [[55.6761, 12.5683], [59.9139, 10.7522]], // Copenhagen, Denmark to Oslo, Norway
+  [[43.7102, 7.2620], [45.4642, 9.1900]] // Nice, France to Milan, Italy
+];
+
 
 // PELI KASATAAN TÄMÄN FUNKTION SISÄLLE
 async function main() {
@@ -333,18 +350,7 @@ async function main() {
   // Alustetaan kartta
   
 
-  let routes = [ // RANDOM LOCATIONS (temporary) 
-    [[50.1109, 8.6821], [48.8566, 2.3522]], // Frankfurt, Germany to Paris, France
-    [[51.5074, -0.1278], [52.5200, 13.4050]], // London, UK to Berlin, Germany
-    [[41.9028, 12.4964], [40.4168, -3.7038]], // Rome, Italy to Madrid, Spain
-    [[59.3293, 18.0686], [60.1695, 24.9354]], // Stockholm, Sweden to Helsinki, Finland
-    [[53.3498, -6.2603], [55.7558, 37.6173]], // Dublin, Ireland to Moscow, Russia
-    [[47.4979, 19.0402], [48.2082, 16.3738]], // Budapest, Hungary to Vienna, Austria
-    [[37.9838, 23.7275], [45.8150, 15.9819]], // Athens, Greece to Zagreb, Croatia
-    [[50.0755, 14.4378], [52.2297, 21.0122]], // Prague, Czech Republic to Warsaw, Poland
-    [[55.6761, 12.5683], [59.9139, 10.7522]], // Copenhagen, Denmark to Oslo, Norway
-    [[43.7102, 7.2620], [45.4642, 9.1900]] // Nice, France to Milan, Italy
-  ];
+
 
     const map = L.map("map").setView(
     [game_dict.data["coordinates"][0][0], game_dict.data["coordinates"][0][1]],
@@ -364,7 +370,7 @@ async function main() {
   weather(game_dict.data.coordinates[0])
 
 
-  let draw = await drawLine(game_dict, map)
+  drawLine(game_dict, map)
   // sleep-funktion teko
   const sleep = (delay) => new Promise((resolve) => setTimeout(resolve, delay));
   // PELIN LOOPPI ALKAA TÄSTÄ ##################################################
