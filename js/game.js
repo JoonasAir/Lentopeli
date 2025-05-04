@@ -62,7 +62,6 @@ async function gameSetup() {
       body: JSON.stringify(dataToFlask),
     });
     const data = await response.json();
-    console.log("Response from gameSetup:", data); // Debugging
     return data;
   } catch (error) {
     console.error("Error:", error);
@@ -227,18 +226,28 @@ async function airportOptions(game_dict) {
 
 
 // Airport actions
-async function airportActions() {
+async function airportActions(game_dict) {
   const gameInput = document.querySelector("#game-input");
 
   gameInput.addEventListener("click", (event) => {
     const buttonValue = event.target.value;
 
-    if (buttonValue === "security") {
+    if (buttonValue === "talkToSecurity") { // 
       console.log("Talking to the airport's security chief...");
-    } else if (buttonValue === "solveClue") {
+
+
+    } else if (buttonValue === "solveClue") { // 
       console.log("Solving the clue...");
-    } else if (buttonValue === "solvePreviousClue") {
+
+
+    } else if (buttonValue === "solvePreviousClue") { // 
       console.log("Trying to solve the previous clue again...");
+
+    
+    } else if (buttonValue === "randomAction") { // 
+      console.log("Doing the random action...");
+
+    
     }
   });
 }
@@ -287,10 +296,15 @@ async function main() {
     game_dict["clue_solved"] = false;
     game_dict["criminal_was_here"] = false;
 
-    // AIRPORT-MENU
-    game_dict = await airportOptions(game_dict);
-    // game_dict = airportMenu(game_dict)
     
+    // AIRPORT-MENU
+    while (!game_dict["next_location_bool"]) {
+      game_dict = await airportOptions(game_dict) // haetaan vaihtoehdot mitä voidaan tehdä lentoasemalla ja viedään gaming consoleen napeiksi
+      game_dict = await airportActions(game_dict) // event listener napeille -> tehdään napin mukainen toiminto
+      // flyToNextAirport(game_dict["next_location_bool"]) // EI ALOITETTU VIELÄ
+      await sleep(5000); // sleep-funktion käyttö, jotta kone ei mene jumiin, poistetaan myöhemmin
+    }
+
     if (game_dict.value["first_airport"]) {
       game_dict.value["first_airport"] = false;
     }

@@ -16,7 +16,6 @@ def airport_menu_input(game_dict:dict):
         game_dict = game_dict["value"]
     except:
         pass
-    print(len(game_dict['airport_options']))
     
     if game_dict["first_iteration"]:
         game_dict["random_event_index"] = randint(0, len(airport_random_options)-1)
@@ -33,7 +32,6 @@ def airport_menu_input(game_dict:dict):
 
     if len(game_dict['airport_options']) == 0 or game_dict["first_iteration"]:
         option_list = [str(game_dict["player_location"])]
-        print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
         # Talk to security
         option_list.append({"text": airport_options[0]["text"], "value": airport_options[0]["value"]})
         # Random action
