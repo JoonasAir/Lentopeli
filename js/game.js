@@ -318,7 +318,7 @@ async function flyToNextAirport(game_dict, routes) {
 
 // PELI KASATAAN TÄMÄN FUNKTION SISÄLLE
 async function main() {
-  // PELIN JA HTML:N ALUSTUS #####################################################
+  // PELIN ALUSTUS #####################################################
   let game_dict = await gameSetup(); // Pelin parametrien luonti palvelimella, palauttaa pythonista tutun game_dict -sanakirjan
   startTimer(game_dict.data["game_time"]);
   // Mitä tapahtuu kun aika loppuu
@@ -329,7 +329,7 @@ async function main() {
   game_dict = await fetchCoordinates(game_dict); // Haetaan rikollisen ja pelaajan koordinaatit
   // Alustetaan kartta
 
-  let routes = [ //@@@@@@@@@ RANDOM LOCATIONS @@@@@@@@@@@@@@@@@@@@@@@ 
+  let routes = [ // RANDOM LOCATIONS (temporary) 
     [[50.1109, 8.6821], [48.8566, 2.3522]], // Frankfurt, Germany to Paris, France
     [[51.5074, -0.1278], [52.5200, 13.4050]], // London, UK to Berlin, Germany
     [[41.9028, 12.4964], [40.4168, -3.7038]], // Rome, Italy to Madrid, Spain
