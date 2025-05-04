@@ -27,8 +27,8 @@ def game_setup(game_parameters:dict, data:dict):
     game_dict["quiz_category"] = data["category_input"]
     game_dict["screen_name"] = data["name_input"]
     game_dict["player_location"] = result["location"]
-    game_dict["KM_criminal"] = km_co2[0]
-    game_dict["CO2_criminal"] = km_co2[1]
+    game_dict["KM_criminal"] =+ km_co2[0]
+    game_dict["CO2_criminal"] =+ km_co2[1]
 
 
 
