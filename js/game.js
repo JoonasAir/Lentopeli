@@ -253,10 +253,9 @@ async function airportActions(game_dict) {
     const buttonValue = event.target.value;
 
     if (buttonValue === "talkToSecurity") {
-      //
       console.log("Talking to the airport's security chief...");
     } else if (buttonValue === "solveClue") {
-      //
+      
       console.log("Solving the clue...");
     } else if (buttonValue === "solvePreviousClue") {
       //
