@@ -54,7 +54,7 @@ DIFFICULTY_game_parameters = {
 
 # Helper parameters for the game. These are combined with difficulty parameters to be one dictionary "game_dict"
 COMMON_game_parameters = {
-        'player_location':"",       # player's current location (ICAO)
+        'player_location':"",      # player's current location (ICAO)
         "win_game":False,           # did we win the game? True = Yes, False = No
         'screen_name':"",           # player's screen name
         'quiz_questions':[],        # questions of player's difficulty and category
@@ -70,17 +70,16 @@ COMMON_game_parameters = {
         'time_left_str':"",         # time left at the game: Formatted string telling minutes and seconds
         'time_left_bool':True,      # time left at the game: True/False
         'first_iteration':True,     # is this first iteration of the loop at current airport? 
-        'random_event_index':0,   # random index that defines random action we can do at current airport
-        'previous_question':[],     # list of previously asked question
+        'random_index_airport':0,   # random index that defines random action we can do at current airport
+        'previous_question':[],   # list of previously asked question
         'airports_hacked':0,
         'CO2_criminal':0,
         'CO2_player':0,
         'coordinates': [],
-        'criminal_location': "",
-        'airport_options': [],
+
 }
 
-airport_random_options = [
+airport_random_actions = [
 ("Visit the restroom", 
 "You overheard a conversation in the restroom about Shadow's next move! The individuals were discussing a recent sighting of Shadow boarding a flight. You decide to verify this information and find out it's true; you got his next location.", 
 "You went to the restroom and now feel refreshed.", 

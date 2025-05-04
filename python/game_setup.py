@@ -23,10 +23,10 @@ def game_setup(game_parameters:dict, data:dict):
     cursor.execute(sql)
     result = cursor.fetchone()
 
-    # add screen_name, category and location to dict
+    # add screen_name and location to dict
+    game_dict["player_location"] = result["location"]
     game_dict["quiz_category"] = data["category_input"]
     game_dict["screen_name"] = data["name_input"]
-    game_dict["player_location"] = result["location"]
 
 
 

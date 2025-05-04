@@ -18,7 +18,6 @@ body {
   background-color: var(--bg-color-secondary);
   color: var(--text-color-secondary);
   text-align: center;
-  padding: 1rem;
 }
 
 footer {
@@ -56,51 +55,10 @@ dialog {
 
 #game-box {
   width: 90vw;
-  position: relative;
-}
-
-.game-box-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
 }
 
 #map {
   height: 400px;
   width: 95%;
   border-radius: 10px;
-}
-
-.game-box-header {
-  display: flex;
-  justify-content: space-between;
-  margin-left: 5rem;
-}
-
-#game-input button {
-  padding: 0.8rem;
-}
-
-#timer {
-  position: absolute;
-  font-weight: bold;
-}
-
-#timer-box {
-  position: absolute;
-  top: 10px;
-  right: 50px;
-  font-weight: bold;
-  font-size: 1.1em;
-}
-
-h3 {
-  text-align: center;
-}
-
-.poliisi {
-  width: 70px;
-  height: auto;
-  margin: 0 5px;
-  vertical-align: middle;
 }
