@@ -286,25 +286,48 @@ async function airportOptions(game_dict) {
 
 // Airport actions
 async function airportActions(game_dict) {
+  console.log("1111111111111111", game_dict);
   const gameInput = document.querySelector("#game-input");
 
-  gameInput.addEventListener("click", (event) => {
-    const buttonValue = event.target.value;
+  // Return a Promise that resolves when a button is clicked
+  return new Promise((resolve) => {
+    const handleClick = async (event) => {
+      const buttonValue = event.target.value;
 
-    if (buttonValue === "talkToSecurity") {
-      console.log("Talking to the airport's security chief...");
-    } else if (buttonValue === "solveClue") {
-      
-      console.log("Solving the clue...");
-    } else if (buttonValue === "solvePreviousClue") {
-      //
-      console.log("Trying to solve the previous clue again...");
-    } else if (buttonValue === "randomAction") {
-      //
-      console.log("Doing the random action...");
-    }
+      if (buttonValue === "talkToSecurity") {
+        console.log("Talking to the airport's security chief...");
+        resolve(game_dict);
+      } else if (buttonValue === "solveClue") {
+        console.log("Solving the clue...");
+        resolve(game_dict);
+      } else if (buttonValue === "solvePreviousClue") {
+        console.log("Trying to solve the previous clue again...");
+        resolve(game_dict);
+      } else if (buttonValue === "randomAction") {
+        try {
+          const response = await fetch(baseUrl + "/randomLuck", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(game_dict),
+          });
+          const data = await response.json();
+          console.log("2222222222222222", data);
+          resolve(data); // Resolve with the updated game_dict from the backend
+        } catch (error) {
+          console.error("Error:", error);
+          resolve(game_dict); // Resolve with the original game_dict in case of error
+        }
+      }
+
+      // Remove the event listener after handling the click
+      gameInput.removeEventListener("click", handleClick);
+    };
+
+    // Add the event listener
+    gameInput.addEventListener("click", handleClick);
   });
-  return game_dict;
 }
 
 // Fly to the next airport
@@ -370,6 +393,7 @@ async function main() {
     '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
   }).addTo(map);
   weather(game_dict.data.coordinates[0])
+
 
   // sleep-funktion teko
   const sleep = (delay) => new Promise((resolve) => setTimeout(resolve, delay));

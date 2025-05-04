@@ -113,25 +113,27 @@ def airportOptions():
 # @app.route('/randomLuck', methods='POST')
 # def randomLuck():
 #     game_dict = request.json
-#     if game_dict["tried_luck"]: # if we have tried our luck at current airport
-#             print(f"{game_dict[""][3]}" )
-#         else:
-#             print(f"You chose to {random_action[0].lower()}.\n" )
-#             game_dict["tried_luck"] = True
-#             if luck_bool:
-#                 game_dict["got_location"] = True
-#                 sql = "SELECT location FROM criminal WHERE visited = 0 LIMIT 1;"
-#                 cursor.execute(sql)
-#                 result = cursor.fetchone()
-#                 if type(result) == tuple:
-#                     longtext = random_action[1]
-#                     terminal_width = shutil.get_terminal_size().columns
-#                     wrapped_text = textwrap.fill(longtext, width = terminal_width/2)
-#                     print(f"{wrapped_text}\n" )
-#                     game_dict["next_location_bool"] = True
-#                     print(f"The next location is: {result[0]}" )
-#             else:
-#                 print(f"{random_action[2]}\n" )
+#     print(game_dict)
+#     # if game_dict["tried_luck"]: # if we have tried our luck at current airport
+#     #         print(f"{game_dict[""][3]}" )
+#     #     else:
+#     #         print(f"You chose to {game_dict["airport"][0].lower()}.\n" )
+#     #         game_dict["tried_luck"] = True
+#     #         if luck_bool:
+#     #             game_dict["got_location"] = True
+#     #             sql = "SELECT location FROM criminal WHERE visited = 0 LIMIT 1;"
+#     #             cursor.execute(sql)
+#     #             result = cursor.fetchone()
+#     #             if type(result) == tuple:
+#     #                 longtext = random_action[1]
+#     #                 terminal_width = shutil.get_terminal_size().columns
+#     #                 wrapped_text = textwrap.fill(longtext, width = terminal_width/2)
+#     #                 print(f"{wrapped_text}\n" )
+#     #                 game_dict["next_location_bool"] = True
+#     #                 print(f"The next location is: {result[0]}" )
+#     #         else:
+#     #             print(f"{random_action[2]}\n" )
+#     return game_dict
 
 
 # @app.route('/talkToSecurity', methods='POST')
