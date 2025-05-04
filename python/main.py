@@ -1,4 +1,5 @@
 from mysql_connection import mysql_connection
+import requests
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from game_setup import game_setup
@@ -7,9 +8,10 @@ from airport_menu import airport_menu_input
 from questions import get_questions
 from stop_game import stop_game
 import json
+from geopy import distance
 
 app = Flask(__name__)
-CORS(app)
+cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 
 
@@ -77,16 +79,16 @@ def get_location():
 def stopGame():
     data = request.json
     try:
-        data = data["value"]
+        data = data["data"]
     except:
         pass
 
     returnValue = stop_game(data)
 
     if returnValue:
-        return jsonify({"message": "Game ends now", "value": True}), 200
+        return jsonify({"message": "Game ends now", "data": True}), 200
     else:
-        return jsonify({"message": "Game continues", "value": False}), 200
+        return jsonify({"message": "Game continues", "data": False}), 200
 
 
 
@@ -99,12 +101,90 @@ def airportOptions():
         pass
     finally:
         game_dict = airport_menu_input(game_dict)
-
+        
     try:
-        return jsonify({'message':"Airport menu options returned", 'value': game_dict["data"]})
+        return jsonify({'message':"Airport menu options returned", 'data': game_dict["data"]})
     except:
-        return jsonify({'message':"Airport menu options returned", 'value': game_dict})
+        return jsonify({'message':"Airport menu options returned", 'data': game_dict})
+    
+    
 
+# @app.route('/randomLuck', methods='POST')
+# def randomLuck():
+#     game_dict = request.json
+#     if game_dict["tried_luck"]: # if we have tried our luck at current airport
+#             print(f"{game_dict[""][3]}" )
+#         else:
+#             print(f"You chose to {random_action[0].lower()}.\n" )
+#             game_dict["tried_luck"] = True
+#             if luck_bool:
+#                 game_dict["got_location"] = True
+#                 sql = "SELECT location FROM criminal WHERE visited = 0 LIMIT 1;"
+#                 cursor.execute(sql)
+#                 result = cursor.fetchone()
+#                 if type(result) == tuple:
+#                     longtext = random_action[1]
+#                     terminal_width = shutil.get_terminal_size().columns
+#                     wrapped_text = textwrap.fill(longtext, width = terminal_width/2)
+#                     print(f"{wrapped_text}\n" )
+#                     game_dict["next_location_bool"] = True
+#                     print(f"The next location is: {result[0]}" )
+#             else:
+#                 print(f"{random_action[2]}\n" )
+
+
+# @app.route('/talkToSecurity', methods='POST')
+# def talkToSecurity():
+#     game_dict = request.json
+
+
+# @app.route('/solveClue', methods='POST')
+# def solveClue():
+#     game_dict = request.json
+
+
+# @app.route('/solvePreviousClue', methods='POST')
+# def solvePreviousClue():
+#     game_dict = request.json
+
+
+
+
+@app.route('/weather', methods=["POST"])
+def getTemp():
+    coordinates = request.json
+    API_KEY = "f23df786656104dd27426c1f6b2a0c82"
+    url = f"https://api.openweathermap.org/data/2.5/weather?lat={coordinates[0]}&lon={coordinates[1]}&appid={API_KEY}"
+    try:
+        response = requests.get(url)
+        if response.status_code == 200:
+            data = response.json()
+            temp_kelvin = data['main']['temp']
+            temp_celcius = temp_kelvin - 273.15
+            rounded_temp = round(temp_celcius)
+            
+            result = {
+                'icon': data['weather'][0]['icon'],
+                'temp': rounded_temp, 
+                'desc': data['weather'][0]['description'],
+                'name': f"{data['name']}, {data["sys"]["country"]}"
+            }
+            return jsonify(result)
+    except requests.exceptions.RequestException as e:
+        print("Hakua ei voitu suorittaa.")      
+
+
+## CO2 laskuri, ottaa koordinaatit routes listasta johon upataan koordinaatit aina kun lennetään. 
+## Index 0 pelaaja, index 1 rikollinen
+@app.route('/co2distance', methods=['POST'])
+def calculateCO2(routes, index):
+      coord1 = tuple(routes[-1][index])
+      coord2 = tuple(routes[-2][index])
+      distanceKM = round(distance.distance(coord1, coord2).km)
+      co2 = round(distanceKM * 0.15) 
+      
+      
+      return co2, distanceKM
 
 
 if __name__ == "__main__":
