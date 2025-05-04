@@ -1,5 +1,8 @@
 
 def stop_game(game_dict:dict):
+    try: 
+        game_dict = game_dict['data']
+    except: pass
 
 
     if game_dict["criminal_caught"]: # olemme saaneet rikollisen kiinni
