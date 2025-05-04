@@ -206,14 +206,14 @@ async function drawLine(game_dict, map) {
       game_dict["coordinates"][1][0],
       game_dict["coordinates"][1][1],
       ]).addTo(map);
-      
+    
     if (progress >= 1) {
       map.removeLayer(polyline);
       marker.bindPopup("<b>Olet tässä</b>").openPopup();
       await map.flyTo(end, 8, { duration: 3 });
       routes.push(game_dict["coordinates"]);
       map.removeLayer(airplaneMarker);
-      await sleep(3000)
+      await sleep(3000);
       marker.closePopup();
     } else {
       progress += 1 / steps;
