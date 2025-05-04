@@ -133,138 +133,28 @@ async function fetchCoordinates(game_dict) {
 //     map
 // );
 
-  // Animaation asetukset
-  let progress = 0;
-  const steps = 150;
-  const interval = 20;
+// // Animaation asetukset
+// let progress = 0; // Animaation etenemisen tila (0 = alku, 1 = loppu)
+// let steps = 150; // Kuinka monessa vaiheessa animaatio etenee
+// let interval = 20; // Viive jokaisen animaatioaskeleen välillä (ms)
+// let start = game_dict["coordinates"][0]; // Lentoreitin aloituspiste
+// let end = game_dict["coordinates"][1]; // Lentoreitin päätepiste
 
-  //Animaatiofunktio
-  async function animate() {
-    const sleep = (delay) => new Promise((resolve) => setTimeout(resolve, delay));
-    const marker = L.marker([
-      game_dict["coordinates"][1][0],
-      game_dict["coordinates"][1][1],
-      ]).addTo(map);
-    
-    if (progress >= 1) {
-      map.removeLayer(polyline);
-      marker.bindPopup("<b>Olet tässä</b>").openPopup();
-      await map.flyTo(end, 8, { duration: 3 });
-      routes.push(game_dict["coordinates"]);
-      map.removeLayer(airplaneMarker);
-      await sleep(3000);
-      marker.closePopup();
-    } else {
-      progress += 1 / steps;
-      const lat = start[0] + (end[0] - start[0]) * progress;
-      const lng = start[1] + (end[1] - start[1]) * progress;
-      airplaneMarker.setLatLng([lat, lng]);
-      setTimeout(animate, interval);
-    }
-  }
+// function animateAirplane(game_dict) {
+//   if (progress >= 1) {
+//     // Kun animaatio on valmis:
+//     map.removeLayer(polyline); // Poista polku kartalta
+//     map.flyTo(end, 8, { duration: 3 }); // Siirrä kartta lopulliseen sijaintiin (zoom 8)
+//     routes.push(game_dict["coordinates"]); // Lisää reitti tallennettuihin reitteihin
+//   } else {
+//     progress += 1 / steps; // Kasvata animaation etenemistä
+//     const lat = start[0] + (end[0] - start[0]) * progress; // Lasketaan uusi väliarvo latitude
+//     const lng = start[1] + (end[1] - start[1]) * progress; // Lasketaan uusi väliarvo longitude
+//     airplaneMarker.setLatLng([lat, lng]); // Päivitä lentokoneen sijainti kartalla
+//     setTimeout(animateAirplane, interval); // Suorita seuraava animaatioaskel viiveen jälkeen
+//   }
+// }
 
-  animate();
-  
-}
-
-// tarkistaa palvelimelta täyttyykö edellytykset pelin päättämiselle
-async function stopGame(game_dict) {
-  try {
-    const response = await fetch(baseUrl + "/stopGame", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(game_dict),
-    });
-    const data = await response.json();
-    return data.data;
-  } catch (error) {
-    console.error("Error:", error);
-  }
-}
-
-// Update game input -buttons in airportOptions()
-function updateGameInput(newButtons) {
-  const gameInput = document.querySelector("#game-input");
-  gameInput.innerHTML = "<h3>Game input</h3>";
-  for (const newButton of newButtons) {
-    if (typeof newButton !== "string") {
-      if (newButton["value"] != "randomAction") {
-        const button = document.createElement("button");
-        button.value = newButton["value"];
-        button.textContent = newButton["text"];
-        gameInput.appendChild(button);
-      } else {
-        const button = document.createElement("button");
-        button.value = newButton["value"];
-        button.textContent = newButton["text"][0];
-        gameInput.appendChild(button);
-      }
-    }
-  }
-}
-
-// Get correct input options from backend
-async function airportOptions(game_dict) {
-  try {
-    const response = await fetch(baseUrl + "/airportOptions", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(game_dict),
-    });
-    const data = await response.json();
-
-    const options = data["data"]["airport_options"];
-    updateGameInput(options);
-    return data.data;
-  } catch (error) {
-    console.error("Error:", error);
-  }
-}
-
-// Airport actions
-async function airportActions(game_dict) {
-  const gameInput = document.querySelector("#game-input");
-
-  gameInput.addEventListener("click", (event) => {
-    const buttonValue = event.target.value;
-
-    if (buttonValue === "talkToSecurity") {
-      console.log("Talking to the airport's security chief...");
-    } else if (buttonValue === "solveClue") {
-      
-      console.log("Solving the clue...");
-    } else if (buttonValue === "solvePreviousClue") {
-      //
-      console.log("Trying to solve the previous clue again...");
-    } else if (buttonValue === "randomAction") {
-      //
-      console.log("Doing the random action...");
-    }
-  });
-  return game_dict;
-}
-
-// Fly to the next airport
-async function flyToNextAirport(game_dict, routes, map) {
-  // Update player's location
-
-  // Update coordinates
-  // game_dict = fetchCoordinates(game_dict)
-
-  // calculate emissions
-  const data = await co2(routes, 0)
-  game_dict["KM_player"] += data.distanceKM
-  game_dict["CO2_player"] += data.co2
-
-  // animateAirplane()
-  drawLine(game_dict, map)
-  // Reduce money
-  game_dict["game_money"] -= game_dict["flight_price"]
-
-  // Update html
-  updateStatusBox(game_dict);
 
 
 
