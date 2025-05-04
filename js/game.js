@@ -258,7 +258,7 @@ async function airportActions(game_dict) {
       //
       console.log("Doing the random action...");
     }
-  }); 
+  });
   return game_dict
 }
 
