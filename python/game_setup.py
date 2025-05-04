@@ -15,7 +15,7 @@ def game_setup(game_parameters:dict, data:dict):
         print("\nINVALID DIFFICULTY.\n")
 
     # clears criminal table and adds "criminal_headstart" amount of airports 
-    criminal_headstart(game_dict["criminal_headstart"]) 
+    km_co2 = criminal_headstart(game_dict["criminal_headstart"]) 
 
     # Starting location
     sql = "SELECT location FROM criminal WHERE id = 1;"
@@ -27,7 +27,8 @@ def game_setup(game_parameters:dict, data:dict):
     game_dict["quiz_category"] = data["category_input"]
     game_dict["screen_name"] = data["name_input"]
     game_dict["player_location"] = result["location"]
-
+    game_dict["KM_criminal"] =+ km_co2[0]
+    game_dict["CO2_criminal"] =+ km_co2[1]
 
 
 
