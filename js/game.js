@@ -250,6 +250,7 @@ async function airportActions(game_dict) {
     
     }
   });
+  return game_dict
 }
 
 
