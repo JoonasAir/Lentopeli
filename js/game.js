@@ -108,14 +108,18 @@ async function weather(coordinates) {
 }
 
 // Funktio co2 sekä kokonaismatkan laskemiseen
-async function co2(coordinates) {
+async function co2(routes, index) {
+  const payload = {
+    routes: routes,
+    index: index
+  }
   try {
     const response = await fetch("http://127.0.0.1:5000/co2distance", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(coordinates),
+      body: JSON.stringify(payload),
     });
 
     if (!response.ok) {
@@ -123,8 +127,11 @@ async function co2(coordinates) {
     }
 
     const data = await response.json();
-    console.log("CO2-vastaus:", data);
-  } catch (error) {}
+    return {co2: data.co2, distanceKM: data.distanceKM}
+
+  } catch (error) {
+    console.log("ERROR:", error.message);
+  }
 }
 
 
@@ -288,15 +295,25 @@ async function airportActions(game_dict) {
 }
 
 // Fly to the next airport
-async function flyToNextAirport(game_dict) {
+async function flyToNextAirport(game_dict, routes) {
   // Update player's location
 
   // Update coordinates
 
-  // Update emissions
+  // calculate emissions
+  const data = await co2(routes, 0)
+  game_dict["KM_player"] += data.distanceKM
+  game_dict["CO2_player"] += data.co2
 
   // animateAirplane()
 
+  // Reduce money
+
+  // Update html
+  updateStatusBox(game_dict);
+
+
+  return {game_dict: game_dict, routes: routes}
 }
 
 // PELI KASATAAN TÄMÄN FUNKTION SISÄLLE
@@ -311,8 +328,21 @@ async function main() {
   updateStatusBox(game_dict.data); // Päivittää html:ään statustiedot
   game_dict = await fetchCoordinates(game_dict); // Haetaan rikollisen ja pelaajan koordinaatit
   // Alustetaan kartta
-  const routes = [];
-  const map = L.map("map").setView(
+
+  let routes = [ //@@@@@@@@@ RANDOM LOCATIONS @@@@@@@@@@@@@@@@@@@@@@@ 
+    [[50.1109, 8.6821], [48.8566, 2.3522]], // Frankfurt, Germany to Paris, France
+    [[51.5074, -0.1278], [52.5200, 13.4050]], // London, UK to Berlin, Germany
+    [[41.9028, 12.4964], [40.4168, -3.7038]], // Rome, Italy to Madrid, Spain
+    [[59.3293, 18.0686], [60.1695, 24.9354]], // Stockholm, Sweden to Helsinki, Finland
+    [[53.3498, -6.2603], [55.7558, 37.6173]], // Dublin, Ireland to Moscow, Russia
+    [[47.4979, 19.0402], [48.2082, 16.3738]], // Budapest, Hungary to Vienna, Austria
+    [[37.9838, 23.7275], [45.8150, 15.9819]], // Athens, Greece to Zagreb, Croatia
+    [[50.0755, 14.4378], [52.2297, 21.0122]], // Prague, Czech Republic to Warsaw, Poland
+    [[55.6761, 12.5683], [59.9139, 10.7522]], // Copenhagen, Denmark to Oslo, Norway
+    [[43.7102, 7.2620], [45.4642, 9.1900]] // Nice, France to Milan, Italy
+  ];
+
+    const map = L.map("map").setView(
     [game_dict.data["coordinates"][0][0], game_dict.data["coordinates"][0][1]],
     10
   );
@@ -331,7 +361,6 @@ async function main() {
 
   // sleep-funktion teko
   const sleep = (delay) => new Promise((resolve) => setTimeout(resolve, delay));
-
   // PELIN LOOPPI ALKAA TÄSTÄ ##################################################
   let endGame = false;
   while (!endGame) {
@@ -347,13 +376,16 @@ async function main() {
     while (!game_dict["next_location_bool"]) {
       game_dict = await airportOptions(game_dict); // haetaan vaihtoehdot mitä voidaan tehdä lentoasemalla ja viedään gaming consoleen napeiksi
       game_dict = await airportActions(game_dict); // event listener napeille -> tehdään napin mukainen toiminto
-
-      // flyToNextAirport(game_dict) // EI ALOITETTU VIELÄ
+      game_dict["next_location_bool"] = true
       await sleep(5000); // sleep-funktion käyttö, jotta kone ei mene jumiin, poistetaan myöhemmin
     }
+    // sisältää kaikki tarvittavat toiminnot kun lennetään kentältä toiselle
+    const data = await flyToNextAirport(game_dict, routes)
+    game_dict = data.game_dict
+    routes = data.routes
 
-    if (game_dict.data["first_airport"]) {
-      game_dict.data["first_airport"] = false;
+    if (game_dict["first_airport"]) {
+      game_dict["first_airport"] = false;
     }
 
     await sleep(5000); // sleep-funktion käyttö, jotta kone ei mene jumiin, poistetaan myöhemmin
