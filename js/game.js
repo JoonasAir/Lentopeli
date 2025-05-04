@@ -198,7 +198,7 @@ async function stopGame(game_dict) {
       body: JSON.stringify(game_dict),
     });
     const data = await response.json();
-    return data.value;
+    return data.data;
   } catch (error) {
     console.error("Error:", error);
   }
@@ -236,9 +236,10 @@ async function airportOptions(game_dict) {
       body: JSON.stringify(game_dict),
     });
     const data = await response.json();
-    const options = data["value"]["airport_options"];
+
+    const options = data["data"]["airport_options"];
     updateGameInput(options);
-    return data;
+    return data.data;
   } catch (error) {
     console.error("Error:", error);
   }
@@ -265,7 +266,19 @@ async function airportActions(game_dict) {
       console.log("Doing the random action...");
     }
   });
-  return game_dict
+  return game_dict;
+}
+
+// Fly to the next airport
+async function flyToNextAirport(game_dict) {
+  // Update player's location
+
+  // Update coordinates
+
+  // Update emissions
+
+  // animateAirplane()
+
 }
 
 // PELI KASATAAN TÄMÄN FUNKTION SISÄLLE
@@ -277,7 +290,6 @@ async function main() {
   document.addEventListener("timerEnd", () => {
     game_dict["time_left_bool"] = false;
   });
-  
   updateStatusBox(game_dict.data); // Päivittää html:ään statustiedot
   game_dict = await fetchCoordinates(game_dict); // Haetaan rikollisen ja pelaajan koordinaatit
   // Alustetaan kartta
@@ -299,8 +311,6 @@ async function main() {
   }).addTo(map);
   weather(game_dict.data.coordinates[0])
 
-  // animateAirplane(game_dict)
-
   // sleep-funktion teko
   const sleep = (delay) => new Promise((resolve) => setTimeout(resolve, delay));
 
@@ -319,12 +329,13 @@ async function main() {
     while (!game_dict["next_location_bool"]) {
       game_dict = await airportOptions(game_dict); // haetaan vaihtoehdot mitä voidaan tehdä lentoasemalla ja viedään gaming consoleen napeiksi
       game_dict = await airportActions(game_dict); // event listener napeille -> tehdään napin mukainen toiminto
-      // flyToNextAirport(game_dict["next_location_bool"]) // EI ALOITETTU VIELÄ
+
+      // flyToNextAirport(game_dict) // EI ALOITETTU VIELÄ
       await sleep(5000); // sleep-funktion käyttö, jotta kone ei mene jumiin, poistetaan myöhemmin
     }
 
-    if (game_dict.value["first_airport"]) {
-      game_dict.value["first_airport"] = false;
+    if (game_dict.data["first_airport"]) {
+      game_dict.data["first_airport"] = false;
     }
 
     await sleep(5000); // sleep-funktion käyttö, jotta kone ei mene jumiin, poistetaan myöhemmin

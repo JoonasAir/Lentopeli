@@ -78,16 +78,16 @@ def get_location():
 def stopGame():
     data = request.json
     try:
-        data = data["value"]
+        data = data["data"]
     except:
         pass
 
     returnValue = stop_game(data)
 
     if returnValue:
-        return jsonify({"message": "Game ends now", "value": True}), 200
+        return jsonify({"message": "Game ends now", "data": True}), 200
     else:
-        return jsonify({"message": "Game continues", "value": False}), 200
+        return jsonify({"message": "Game continues", "data": False}), 200
 
 
 
@@ -102,9 +102,9 @@ def airportOptions():
         game_dict = airport_menu_input(game_dict)
         
     try:
-        return jsonify({'message':"Airport menu options returned", 'value': game_dict["data"]})
+        return jsonify({'message':"Airport menu options returned", 'data': game_dict["data"]})
     except:
-        return jsonify({'message':"Airport menu options returned", 'value': game_dict})
+        return jsonify({'message':"Airport menu options returned", 'data': game_dict})
     
     
 
@@ -113,7 +113,6 @@ def airportOptions():
 @app.route('/weather', methods=["POST"])
 def getTemp():
     coordinates = request.json
-    print(coordinates)
     API_KEY = "f23df786656104dd27426c1f6b2a0c82"
     url = f"https://api.openweathermap.org/data/2.5/weather?lat={coordinates[0]}&lon={coordinates[1]}&appid={API_KEY}"
     try:
