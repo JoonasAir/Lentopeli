@@ -9,24 +9,14 @@
         integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
         integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin="" defer></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,200..800;1,200..800&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <script src="../js/game.js" defer></script>
     <title>CatchTheCriminal - Europe Edition</title>
 </head>
 
-<body class ="game-page">
+<body>
     <div class="container">
         <header id="page-header">
-            <h1 class="page-title">
-                <!-- <img class="poliisi" src="../images/poliisi.png">-->
-                <!--<img class="poliisi" src="../images/poliisikone.png">-->
-                CatchTheCriminal - Europe Edition
-                <!--<img class="poliisi" src="../images/rosvokone.png">-->
-                <!--<img class="poliisi" src="../images/rosvo.png">-->
-            </h1>
-            <div class="header-top">
+            <h1 class="page-title">CatchTheCriminal - Europe Edition</h1>
             <nav>
                 <a href="index.html">Quit game</a>
             </nav>
@@ -51,28 +41,25 @@
                     </td>
                 </tr>
             </table>
-        </div>
 
         </header>
 
 
         <div class="boxes">
             <main class="main-content">
-                <div class="top-row">
                 <section class="box" id="map-box"> <!-- MAP -->
-                    <h2><u>Map-box</u></h2>
+                    <h2>Map-box</h2>
                     <!-- <img src="/images/map.gif" alt="Map"> -->
                     <div id="map"></div>
-                    <div id="weather"></div>
                     <!-- Map, Location, Weather -->
                 </section>
 
                 <section class="box" id="status-box"> <!-- PLAYER / CRIMINAL STATUS -->
-                    <h2><u>Status-box</u></h2>
+                    <h2>Status-box</h2>
 
                     <div id="player-status">
                         <header>
-                            <h3>Player:</h3>
+                            <h3>Player</h3>
                         </header>
                         <table>
                             <tr>
@@ -86,7 +73,7 @@
 
                     <div id="criminal-status">
                         <header>
-                            <h3>Criminal:</h3>
+                            <h3>Criminal</h3>
                         </header>
                         <table>
                             <tr>
@@ -98,20 +85,9 @@
                         </table>
                     </div>
                 </section>
-            </div>
 
                 <section class="box" id="game-box"> <!-- GAME -->
-                    <h2><u>Gaming console</u></h2>
-                    <div id="timer-box">
-                        <p><strong>Time remaining:&nbsp;&nbsp;</strong> <span id="timer"> </span></p>
-                    </div>
-                    <div id="game-input">
-                        <h3>Game input</h3>
-                        <button value="security">Talk to airport's security chief</button>
-                    </div>
-                    <div id="game-output">
-                        <h3>Game output</h3>
-                    </div>
+                    <h2>Game-box</h2>
                 </section>
 
         </div>

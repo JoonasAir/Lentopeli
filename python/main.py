@@ -1,15 +1,10 @@
-from urllib import response
 from mysql_connection import mysql_connection
-import requests
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from game_setup import game_setup
 from game_parameters import game_parameters
-from airport_menu import airport_menu_input
 from questions import get_questions
-from stop_game import stop_game
 import json
-from geopy import distance
 
 app = Flask(__name__)
 cors = CORS(app)
@@ -33,30 +28,26 @@ def leaderboard():
     return jsonify(results)
     
 
-
+    
 # create game_dict and return to game.js
 @app.route("/gameSetup", methods=['POST'])
 def gameSetup():
     data = request.json
+
     game_dict = game_setup(game_parameters, data)
     game_dict["quiz_questions"] = get_questions(game_dict["quiz_difficulty"], game_dict["quiz_category"])
 
     return jsonify({"message": "Game setup received successfully", "data": game_dict}), 200
 
 
-
 @app.route("/flyto", methods=['PUT'])
 def get_location():
-    data = request.json
+    data = request.json["data"]
 
     cursor1 = mysql_connection.cursor()
     cursor2 = mysql_connection.cursor()
+    sqlfrom = f"SELECT latitude_deg, longitude_deg FROM airport WHERE ident='{data["player_location"]}'"
     sqlto = "SELECT latitude_deg, longitude_deg FROM airport WHERE ident='EHAM'"
-    try: 
-        sqlfrom = f"SELECT latitude_deg, longitude_deg FROM airport WHERE ident='{data["data"]["player_location"]}'"
-    except:
-        sqlfrom = f"SELECT latitude_deg, longitude_deg FROM airport WHERE ident='{data["player_location"]}'"
-
 
     cursor1.execute(sqlfrom)
     flyfrom = cursor1.fetchall()
@@ -113,27 +104,25 @@ def airportOptions():
 # @app.route('/randomLuck', methods='POST')
 # def randomLuck():
 #     game_dict = request.json
-#     print(game_dict)
-#     # if game_dict["tried_luck"]: # if we have tried our luck at current airport
-#     #         print(f"{game_dict[""][3]}" )
-#     #     else:
-#     #         print(f"You chose to {game_dict["airport"][0].lower()}.\n" )
-#     #         game_dict["tried_luck"] = True
-#     #         if luck_bool:
-#     #             game_dict["got_location"] = True
-#     #             sql = "SELECT location FROM criminal WHERE visited = 0 LIMIT 1;"
-#     #             cursor.execute(sql)
-#     #             result = cursor.fetchone()
-#     #             if type(result) == tuple:
-#     #                 longtext = random_action[1]
-#     #                 terminal_width = shutil.get_terminal_size().columns
-#     #                 wrapped_text = textwrap.fill(longtext, width = terminal_width/2)
-#     #                 print(f"{wrapped_text}\n" )
-#     #                 game_dict["next_location_bool"] = True
-#     #                 print(f"The next location is: {result[0]}" )
-#     #         else:
-#     #             print(f"{random_action[2]}\n" )
-#     return game_dict
+#     if game_dict["tried_luck"]: # if we have tried our luck at current airport
+#             print(f"{game_dict[""][3]}" )
+#         else:
+#             print(f"You chose to {random_action[0].lower()}.\n" )
+#             game_dict["tried_luck"] = True
+#             if luck_bool:
+#                 game_dict["got_location"] = True
+#                 sql = "SELECT location FROM criminal WHERE visited = 0 LIMIT 1;"
+#                 cursor.execute(sql)
+#                 result = cursor.fetchone()
+#                 if type(result) == tuple:
+#                     longtext = random_action[1]
+#                     terminal_width = shutil.get_terminal_size().columns
+#                     wrapped_text = textwrap.fill(longtext, width = terminal_width/2)
+#                     print(f"{wrapped_text}\n" )
+#                     game_dict["next_location_bool"] = True
+#                     print(f"The next location is: {result[0]}" )
+#             else:
+#                 print(f"{random_action[2]}\n" )
 
 
 # @app.route('/talkToSecurity', methods='POST')
