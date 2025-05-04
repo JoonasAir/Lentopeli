@@ -214,7 +214,7 @@ function drawLine(game_dict) {
     }
   }
 
-  // animate();
+  animate();
 }
 
 // tarkistaa palvelimelta täyttyykö edellytykset pelin päättämiselle
