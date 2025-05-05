@@ -116,11 +116,11 @@ def randomLuck():
     game_dict = request.json
     try: game_dict = game_dict["data"]
     except: pass
-    game_dict["airport_result"] = []
+    game_dict["airport_results"] = []
     if game_dict["tried_luck"]: # if we have tried our luck at current airport
-            game_dict["airport_result"].append(f"{game_dict["airport_options"][2]["text"][3]}")
+            game_dict["airport_results"].append(f"{game_dict["airport_options"][2]["text"][3]}")
     else:
-        game_dict["airport_result"].append(f"You chose to {game_dict["airport_options"][2]["text"][0].lower()}.\n" )
+        game_dict["airport_results"].append(f"You chose to {game_dict["airport_options"][2]["text"][0].lower()}.\n" )
         game_dict["tried_luck"] = True
         if game_dict["random_luck_bool"]:
             game_dict["next_location_bool"] = True
@@ -129,14 +129,14 @@ def randomLuck():
             result = cursor.fetchone()
             if type(result) == tuple:
                 longtext = game_dict["airport_options"][2]["text"][1]
-                game_dict["airport_result"].append(f"{longtext}\n" )
+                game_dict["airport_results"].append(f"{longtext}\n" )
                 game_dict["next_location_bool"] = True
                 game_dict["next_location"] = result[0]
-                game_dict["airport_result"].append(f"The next location is: {result[0]}" )
+                game_dict["airport_results"].append(f"The next location is: {result[0]}" )
             else: 
                 print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n@@@@@@@@@@@@@@@@@@@@@@@@@@\nsaimme(ko?) rikollisen kiinni \n@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
         else:
-            game_dict["airport_result"].append(f"{game_dict["airport_options"][2]["text"][2]}\n" )
+            game_dict["airport_results"].append(f"{game_dict["airport_options"][2]["text"][2]}\n" )
 
     return game_dict
 

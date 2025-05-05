@@ -368,6 +368,13 @@ async function airportActions(game_dict) {
   });
 }
 
+function gameOutput(game_dict) {
+  const gameOutput = document.getElementById("game-output");
+  gameOutput.innerHTML = "<h3>Game output</h3>"
+  for (let result of game_dict["airport_results"]) {
+  gameOutput.innerHTML += `<p>${result}</p>`;
+  }
+}
 
 
 // Fly to the next airport
@@ -460,10 +467,9 @@ async function main() {
     // AIRPORT-MENU
     while (!game_dict["next_location_bool"]) {
       game_dict = await airportOptions(game_dict); // haetaan vaihtoehdot mitä voidaan tehdä lentoasemalla ja viedään gaming consoleen napeiksi
-      console.log(game_dict)
       game_dict = await airportActions(game_dict); // event listener napeille -> tehdään napin mukainen toiminto
-      console.log(game_dict)
-      game_dict["next_location_bool"] = true
+      gameOutput(game_dict)
+      // game_dict["next_location_bool"] = true
     }
     // sisältää kaikki tarvittavat toiminnot kun lennetään kentältä toiselle
     const data = await flyToNextAirport(game_dict, routes, map)
