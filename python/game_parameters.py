@@ -71,7 +71,7 @@ COMMON_game_parameters = {
         'time_left_str':"",         # time left at the game: Formatted string telling minutes and seconds
         'time_left_bool':True,      # time left at the game: True/False
         'first_iteration':True,     # is this first iteration of the loop at current airport? 
-        'random_event_index':0,   # random index that defines random action we can do at current airport
+        'random_event_index':0,     # random index that defines random action we can do at current airport
         'previous_question':[],     # list of previously asked question
         'airports_hacked':0,
         'CO2_criminal':0,
