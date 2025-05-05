@@ -3,7 +3,7 @@ from random import randint
 from click import option
 from player import change_location
 from mysql_connection import mysql_connection
-from questions import quiz_icao, ask_question, ask_again
+from questions import quiz_icao, ask_question
 from security import talk_to_security
 from reduce_money import reduce_money
 from game_parameters import airport_random_options
@@ -129,7 +129,7 @@ def airport_menu(game_dict:dict):
 
 
         elif user_input == "Try to solve the previous clue again": 
-            ask_question_bool = ask_again(game_dict["previous_question"])
+            # ask_question_bool = ask_again(game_dict["previous_question"])
             quiz_icao(ask_question_bool, game_dict)
 
 

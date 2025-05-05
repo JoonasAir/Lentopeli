@@ -175,7 +175,7 @@ async function fetchCoordinates(game_dict) {
       [parseFloat(jsonData.to.latitude), parseFloat(jsonData.to.longitude)], // Määränpää
     ];
     try {
-    game_dict.data["coordinates"] = points;
+      game_dict.data["coordinates"] = points;
     } catch (error) {
       game_dict["coordinates"] = points;
     }
@@ -309,8 +309,9 @@ async function airportActions(game_dict) {
     const handleClick = async (event) => {
       const buttonValue = event.target.value;
 
-      if (buttonValue === "talkToSecurity") {
+
         // TALK TO SECURITY
+        if (buttonValue === "talkToSecurity") {
         try {
           const response = await fetch(baseUrl + "/talkToSecurity", {
             method: "POST",
@@ -325,8 +326,10 @@ async function airportActions(game_dict) {
           console.error("Error:", error);
           resolve(game_dict); // Resolve with the original game_dict in case of error
         }
-      } else if (buttonValue === "solveClue") {
+
+
         // SOLVE A CLUE
+      } else if (buttonValue === "solveClue") {
         try {
           const response = await fetch(baseUrl + "/solveClue", {
             method: "POST",
@@ -336,17 +339,18 @@ async function airportActions(game_dict) {
             body: JSON.stringify(game_dict),
           });
           const data = await response.json();
-          const question = game_dict["clue"] // ["question", ["answer1", "correctAnswer", "answer2", "answer3"], "correctAnswer"]
-          // QUESTION MODAL 
-          
-          
-          resolve(data);
+
+          // Question modal
+          game_dict = await questionModal(data)
+          resolve(game_dict);
         } catch (error) {
           console.error("Error:", error);
           resolve(game_dict);
         }
-      } else if (buttonValue === "solvePreviousClue") {
+
+
         // SOLVE PREVIOUS CLUE
+      } else if (buttonValue === "solvePreviousClue") {
         try {
           const response = await fetch(baseUrl + "/solvePreviousClue", {
             method: "POST",
@@ -356,14 +360,15 @@ async function airportActions(game_dict) {
             body: JSON.stringify(game_dict),
           });
           const data = await response.json();
-          console.log(data)
           resolve(data);
         } catch (error) {
           console.error("Error:", error);
           resolve(game_dict);
         }
-      } else if (buttonValue === "randomAction") {
+
+        
         // RANDOM ACTION
+      } else if (buttonValue === "randomAction") {
         try {
           const response = await fetch(baseUrl + "/randomLuck", {
             method: "POST",
@@ -389,6 +394,79 @@ async function airportActions(game_dict) {
   });
 }
 
+
+
+// Question modal
+async function questionModal(game_dict) {
+  const question = game_dict["clue"][0]; // Question text
+  const answers = game_dict["clue"][1]; // List of answers
+  const correctAnswer = game_dict["clue"][2]; // Correct answer
+  const modal = document.getElementById("questionModal");
+  const questionText = document.getElementById("questionText");
+  const answersContainer = document.getElementById("answersContainer");
+
+  questionText.textContent = question;
+  answersContainer.innerHTML = "";
+
+  return new Promise((resolve) => {
+    answers.forEach((answer) => {
+      const button = document.createElement("button");
+      button.textContent = answer;
+      button.value = answer;
+      button.classList.add("answer-button"); 
+
+      button.addEventListener("click", () => {
+        if (answer === correctAnswer) {
+          console.log("Correct answer")
+          game_dict["previous_quiz_answer"] = true;
+        } else {
+          console.log("Wrong answer")
+          game_dict["previous_quiz_answer"] = false;          
+          if (game_dict.clue[1].length > 2) { // Poistetaan vastattu vastaus listasta kun vastasimme väärin
+            game_dict["clue"][1] = game_dict["clue"][1].filter(item => item !== answer)
+          }
+        }
+        game_dict = nextLocation(game_dict)
+        modal.close();
+        resolve(game_dict);
+      });
+      answersContainer.appendChild(button);
+    });
+    modal.showModal();
+  });
+}
+
+
+async function nextLocation(game_dict) {
+  try {
+    const response = await fetch(baseUrl + "/nextLocation", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(game_dict),
+    });
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error:", error);
+  }
+}
+
+
+async function updateToVisited(location) {
+  try {
+    const response = await fetch(baseUrl + "/updateToVisited", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(location),
+    });
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error:", error);
+  }
+}
+
+
 function gameOutput(game_dict) {
   const gameOutput = document.getElementById("game-output");
   gameOutput.innerHTML = "<h3>Game output</h3>";
@@ -399,24 +477,25 @@ function gameOutput(game_dict) {
 
 // Fly to the next airport
 async function flyToNextAirport(game_dict, routes, map) {
-  // animateAirplane()
+  // Update coordinates
   game_dict = await fetchCoordinates(game_dict)
-  console.log(game_dict)
+
+  // animateAirplane()
   drawLine(game_dict, map)
 
-  // Update coordinates
-  
   // calculate emissions
   const data = await co2(routes, 0);
-  console.log(game_dict.KM_player)
   game_dict["KM_player"] += data.distanceKM;
   game_dict["CO2_player"] += data.co2;
-
-  // Update player's location
-  // game_dict["player_location"] = game_dict["next_location"]
-
+  
   // Reduce money
   game_dict["game_money"] -= game_dict["flight_price"];
+
+  // Update player's location
+  game_dict["player_location"] = game_dict["next_location"]
+
+  // Update location in criminal table to visited
+  await updateToVisited(game_dict["player_location"])
 
   // Update html
   updateStatusBox(game_dict);
@@ -474,6 +553,7 @@ async function main() {
   // PELIN ALUSTUS #####################################################
   let game_dict = await gameSetup(); // Pelin parametrien luonti palvelimella, palauttaa pythonista tutun game_dict -sanakirjan
   startTimer(game_dict.data["game_time"]);
+  await updateToVisited(game_dict.data["player_location"])
 
   // Mitä tapahtuu kun aika loppuu
   document.addEventListener("timerEnd", () => {
@@ -504,10 +584,11 @@ async function main() {
 
 
   let endGame = false;
-  try {game_dict = game_dict.data} catch (error) {console.log(error)}
+  try { game_dict = game_dict.data } catch (error) { console.log(error) }
   locationToGamingConsole(game_dict["player_location"]);
   // PELIN LOOPPI ALKAA TÄSTÄ ##################################################
   while (!endGame) {
+    console.log("GAME LOOP'S FIRST ROW", ` Current: ${game_dict.player_location}, Next: ${game_dict.next_location}`)
     // reset airport_menu-helper parameters to default value before entering airport-menu at the new airport
     game_dict["talk_to_chief"] = false;
     game_dict["tried_luck"] = false;
@@ -517,16 +598,17 @@ async function main() {
     game_dict["criminal_was_here"] = false;
 
     game_dict["random_luck_bool"] = Math.random() <= game_dict["random_luck"];
-    console.log(game_dict.random_luck_bool)
     // AIRPORT-MENU
     while (!game_dict["next_location_bool"]) {
+      console.log("AIRPORT LOOP'S FIRST ROW", ` Current: ${game_dict.player_location}, Next: ${game_dict.next_location}`)
       game_dict = await airportOptions(game_dict); // haetaan vaihtoehdot mitä voidaan tehdä lentoasemalla ja viedään gaming consoleen napeiksi
       game_dict = await airportActions(game_dict); // event listener napeille -> tehdään napin mukainen toiminto
       gameOutput(game_dict);
       // game_dict["next_location_bool"] = true
     }
-
+    
     // Lennetään kentältä toiselle - funktio sisältää kaikki tarvittavat toiminnot
+    console.log("FLY TO NEXT AIRPORT", ` Current: ${game_dict.player_location}, Next: ${game_dict.next_location}`)
     const data = await flyToNextAirport(game_dict, routes, map);
     game_dict = data.game_dict;
     routes = data.routes;

@@ -63,6 +63,8 @@ def criminal_timer(time: int):
 
 
 def criminal_headstart(headstart:int):
+    if not mysql_connection.is_connected():
+        mysql_connection.reconnect()
     cursor = mysql_connection.cursor()
     sql = "DELETE FROM criminal;" # Clears criminal table
     cursor.execute(sql)

@@ -6,7 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,200..800;1,200..800&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,200..800;1,200..800&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
     <link href="../css/style.css" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
         integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
@@ -27,31 +29,31 @@
                 <!--<img class="poliisi" src="../images/rosvo.png">-->
             </h1>
             <div class="header-top">
-            <nav>
-                <a href="index.html">Quit game</a>
-            </nav>
+                <nav>
+                    <a href="index.html">Quit game</a>
+                </nav>
 
-            <table id="game-parameters">
-                <tr>
-                    <td>Player name: </td>
-                    <td>
-                        <span id="screen-name"> - </span>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Difficulty: </td>
-                    <td>
-                        <span id="difficulty"> - </span>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Category: </td>
-                    <td>
-                        <span id="category"> - </span>
-                    </td>
-                </tr>
-            </table>
-        </div>
+                <table id="game-parameters">
+                    <tr>
+                        <td>Player name: </td>
+                        <td>
+                            <span id="screen-name"> - </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Difficulty: </td>
+                        <td>
+                            <span id="difficulty"> - </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Category: </td>
+                        <td>
+                            <span id="category"> - </span>
+                        </td>
+                    </tr>
+                </table>
+            </div>
 
         </header>
 
@@ -59,46 +61,46 @@
         <div class="boxes">
             <main class="main-content">
                 <div class="top-row">
-                <section class="box" id="map-box"> <!-- MAP -->
-                    <h2><u>Map-box</u></h2>
-                    <!-- <img src="/images/map.gif" alt="Map"> -->
-                    <div id="map"></div>
-                    <div id="weather"></div>
-                    <!-- Map, Location, Weather -->
-                </section>
+                    <section class="box" id="map-box"> <!-- MAP -->
+                        <h2><u>Map-box</u></h2>
+                        <!-- <img src="/images/map.gif" alt="Map"> -->
+                        <div id="map"></div>
+                        <div id="weather"></div>
+                        <!-- Map, Location, Weather -->
+                    </section>
 
-                <section class="box" id="status-box"> <!-- PLAYER / CRIMINAL STATUS -->
-                    <h2><u>Status-box</u></h2>
+                    <section class="box" id="status-box"> <!-- PLAYER / CRIMINAL STATUS -->
+                        <h2><u>Status-box</u></h2>
 
-                    <div id="player-status">
-                        <header>
-                            <h3>Player:</h3>
-                        </header>
-                        <table>
-                            <tr>
-                                <p>Money left: <span id="money"> - </span> €</p>
-                            </tr>
-                            <tr>
-                                <p>CO² emissions: <span id="CO2-player"> - </span> kg</p>
-                            </tr>
-                        </table>
-                    </div>
+                        <div id="player-status">
+                            <header>
+                                <h3>Player:</h3>
+                            </header>
+                            <table>
+                                <tr>
+                                    <p>Money left: <span id="money"> - </span> €</p>
+                                </tr>
+                                <tr>
+                                    <p>CO² emissions: <span id="CO2-player"> - </span> kg</p>
+                                </tr>
+                            </table>
+                        </div>
 
-                    <div id="criminal-status">
-                        <header>
-                            <h3>Criminal:</h3>
-                        </header>
-                        <table>
-                            <tr>
-                                <p>Airports hacked: <span id="airports-hacked"> - </span></p>
-                            </tr>
-                            <tr>
-                                <p>CO² emissions: <span id="CO2-criminal"> - </span> kg</p>
-                            </tr>
-                        </table>
-                    </div>
-                </section>
-            </div>
+                        <div id="criminal-status">
+                            <header>
+                                <h3>Criminal:</h3>
+                            </header>
+                            <table>
+                                <tr>
+                                    <p>Airports hacked: <span id="airports-hacked"> - </span></p>
+                                </tr>
+                                <tr>
+                                    <p>CO² emissions: <span id="CO2-criminal"> - </span> kg</p>
+                                </tr>
+                            </table>
+                        </div>
+                    </section>
+                </div>
                 <section class="box" id="game-box"> <!-- GAME -->
                     <h2><u>Gaming console</u></h2>
                     <div id="timer-box">
@@ -113,7 +115,10 @@
                         <h3>Game output</h3>
                     </div>
                 </section>
-
+                <dialog id="questionModal">
+                    <h3 id="questionText"></h3>
+                    <div id="answersContainer"></div>
+                </dialog>
         </div>
         </main>
         <footer>

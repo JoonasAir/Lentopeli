@@ -1,7 +1,8 @@
 from mysql_connection import mysql_connection
 
 def talk_to_security(game_dict:dict):
-
+    if not mysql_connection.is_connected():
+        mysql_connection.reconnect()
     cursor = mysql_connection.cursor()
     game_dict["game_output"] = []
 
@@ -15,7 +16,7 @@ def talk_to_security(game_dict:dict):
             game_dict["criminal_was_here"] = True
 
         else:
-            print(f"\nSecurity chief told you the criminal haven't been at the airport. Try to solve last clue again.\n")
+            game_dict["game_output"].append(f"\nSecurity chief told you the criminal haven't been at the airport. Try to solve last clue again.\n")
             game_dict["criminal_was_here"] = False
 
     elif game_dict["random_luck_bool"] and game_dict["criminal_was_here"] and not game_dict["tried_luck"]: # If criminal have been here AND we got lucky AND we haven't tried our luck yet at the current airport
@@ -27,8 +28,6 @@ def talk_to_security(game_dict:dict):
             game_dict["next_location_bool"] = True
             game_dict["next_location"] = result[0]
             game_dict["game_output"].append(f"\nThe chief had just found the country where the criminal headed from here!")
-        else:
-            game_dict["game_output"].append("You caught the criminal!!")
             
     else:
         game_dict["game_output"].append(f"\nThe chief had nothing new to tell you. He was still on a mission to recover his monitors from the attack of the criminal.")

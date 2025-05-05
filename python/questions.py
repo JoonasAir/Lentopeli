@@ -131,8 +131,8 @@ def ask_question(game_dict):
     random.shuffle(answers)
     previous_question = [answers, correct_answer, question_text]
 
-    # Tulostetaan kysymys ja vaihtoehdot. Enumerate numeroi jokaisen listan alkoin, alkaen numerosta 1.
-    game_dict["clue"].append(f"Question: {question_text}")
+    # Lisätään listaan kysymys, vastauslista ja oikea vastaus
+    game_dict["clue"] = [f"Question: {question_text}"]
     answer_list = []
     for answer in answers:
         answer_list.append(answer)
@@ -142,39 +142,6 @@ def ask_question(game_dict):
 
     return game_dict
     
-def ask_again(previous_question):
-    answers, correct_answer, question_text = previous_question
-
-    print(f"\nQuestion: {question_text}\nOptions:\n")
-    for i, answer in enumerate(answers, 1):
-        print(f"{i}. {answer}")
-
-
-    while True:
-        try:
-            user_answer = int(input(f"Select the right answer: "))
-            if 1 <= user_answer <= len(answers):
-                break
-            else:
-                print(f"Wrong input, try again!")
-        except ValueError:
-            print(f"Wrong input, try again!")
-    
-    if answers[user_answer - 1] == correct_answer:
-        #print(f"\nCorrect!")
-        return True # Oikea vastaus
-    else:
-        #print(f"\nWrong! The correct answer was: {correct_answer}")
-        return False  # Väärä vastaus
-
-
-
-
-# takes following parameters:
-#   1. boolean (from ask_question() -function)
-#       True    ->    return ICAO for the next location in the criminal-table the player has not visited yet 
-#       False   ->    return random ICAO (not player's current location and not found in criminal-table)
-#   2. Player's current location (ICAO-code)
 
 
 def quiz_icao(ask_question_bool:bool, game_dict:dict):
@@ -197,6 +164,7 @@ def quiz_icao(ask_question_bool:bool, game_dict:dict):
         if type(result) == tuple: # if the sql query returns a value
             game_dict["next_location_bool"] = True
             print(f"The next location is: {result[0]}")
+
 
 
 # Testataan koodin toimivuus kolmella kysymyksellä

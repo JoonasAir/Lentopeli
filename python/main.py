@@ -40,6 +40,7 @@ def leaderboard():
 def gameSetup():
     data = request.json
     game_dict = game_setup(game_parameters, data)
+    print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
     game_dict["quiz_questions"] = get_questions(game_dict["quiz_difficulty"], game_dict["quiz_category"])
     return jsonify({"message": "Game setup received successfully", "data": game_dict}), 200
 
@@ -64,7 +65,6 @@ def get_location():
     except: pass
     cursor1 = mysql_connection.cursor()
     cursor2 = mysql_connection.cursor()
-    print(f"next: {data["next_location"]}, player: {data["player_location"]}")
     sqlto = f"SELECT latitude_deg, longitude_deg FROM airport WHERE ident='{data["next_location"]}'"
 
     sqlfrom = f"SELECT latitude_deg, longitude_deg FROM airport WHERE ident='{data["player_location"]}'"
@@ -83,7 +83,6 @@ def get_location():
         "from": {"latitude": flyfrom[0][0], "longitude": flyfrom[0][1]},
         "to": {"latitude": flyto[0][0], "longitude": flyto[0][1]}
     }
-    print(result)
     return jsonify(result)
 
 
@@ -134,7 +133,6 @@ def randomLuck():
     else:
         game_dict["tried_luck"] = True
         if game_dict["random_luck_bool"]:
-            game_dict["next_location_bool"] = True
             sql = "SELECT location FROM criminal WHERE visited = 0 LIMIT 1;"
             cursor.execute(sql)
             result = cursor.fetchone()
@@ -169,12 +167,50 @@ def solveClue():
     
     return game_dict
 
+    
+@app.route('/nextLocation', methods=['POST'])
+def solvePreviousClue():
+    game_dict = request.json
+    cursor = mysql_connection.cursor()
+    if game_dict["previous_quiz_answer"]:
+        sql = "SELECT location FROM criminal WHERE visited = 0 LIMIT 1;"
+        cursor.execute(sql)
+        result = cursor.fetchone()
+    else: 
+        sql = "SELECT ident FROM airport WHERE continent = 'EU' AND type = 'large_airport' AND airport.name LIKE '%Airport' AND ident NOT IN (SELECT location FROM criminal) ORDER BY RAND() LIMIT 1;"
+        cursor.execute(sql)
+        result = cursor.fetchone()
+    game_dict["next_location"] = result[0]
+    game_dict["next_location_bool"] = True
 
+    return game_dict
 
-# @app.route('/solvePreviousClue', methods=['POST'])
-# def solvePreviousClue():
-#     game_dict = request.json
-
+@app.route('/updateToVisited', methods=['POST'])
+def updateToVisited():
+    location = request.json
+    if not mysql_connection.is_connected():
+        mysql_connection.reconnect()
+    cursor = mysql_connection.cursor()
+    sql_select = """
+    SELECT id
+    FROM criminal
+    WHERE visited = 0 AND location = %s
+    LIMIT 1;
+    """
+    cursor.execute(sql_select, (location,))
+    result = cursor.fetchone()
+    print(result)
+    if result:
+        criminal_id = result[0]
+        sql_update = """
+        UPDATE criminal
+        SET visited = 1
+        WHERE id = %s;
+        """
+        cursor.execute(sql_update, (criminal_id,))
+        return jsonify({"message": "Updated", "value": True})
+    else:
+        return jsonify({"message": "No matching record found", "value": False}), 404
 
 
 
