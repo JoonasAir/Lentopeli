@@ -284,28 +284,100 @@ async function airportOptions(game_dict) {
   }
 }
 
+
+
 // Airport actions
 async function airportActions(game_dict) {
   const gameInput = document.querySelector("#game-input");
 
-  gameInput.addEventListener("click", (event) => {
-    const buttonValue = event.target.value;
+  return new Promise((resolve) => {
+    const handleClick = async (event) => {
+      const buttonValue = event.target.value;
 
-    if (buttonValue === "talkToSecurity") {
-      console.log("Talking to the airport's security chief...");
-    } else if (buttonValue === "solveClue") {
-      
-      console.log("Solving the clue...");
-    } else if (buttonValue === "solvePreviousClue") {
-      //
-      console.log("Trying to solve the previous clue again...");
-    } else if (buttonValue === "randomAction") {
-      //
-      console.log("Doing the random action...");
-    }
+      if (buttonValue === "talkToSecurity") {
+        console.log("Talking to the airport's security chief...");
+        // Example: Call an endpoint for "talkToSecurity"
+        try {
+          const response = await fetch(baseUrl + "/talkToSecurity", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(game_dict),
+          });
+          const data = await response.json();
+          console.log("Response from talkToSecurity:", data);
+          resolve(data); // Resolve with the updated game_dict
+        } catch (error) {
+          console.error("Error:", error);
+          resolve(game_dict); // Resolve with the original game_dict in case of error
+        }
+      } else if (buttonValue === "solveClue") {
+        console.log("Solving the clue...");
+        // Example: Call an endpoint for "solveClue"
+        try {
+          const response = await fetch(baseUrl + "/solveClue", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(game_dict),
+          });
+          const data = await response.json();
+          console.log("Response from solveClue:", data);
+          resolve(data);
+        } catch (error) {
+          console.error("Error:", error);
+          resolve(game_dict);
+        }
+      } else if (buttonValue === "solvePreviousClue") {
+        console.log("Trying to solve the previous clue again...");
+        // Example: Call an endpoint for "solvePreviousClue"
+        try {
+          const response = await fetch(baseUrl + "/solvePreviousClue", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(game_dict),
+          });
+          const data = await response.json();
+          console.log("Response from solvePreviousClue:", data);
+          resolve(data);
+        } catch (error) {
+          console.error("Error:", error);
+          resolve(game_dict);
+        }
+      } else if (buttonValue === "randomAction") {
+        console.log("Doing the random action...");
+        // Example: Call an endpoint for "randomAction"
+        try {
+          const response = await fetch(baseUrl + "/randomLuck", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(game_dict),
+          });
+          const data = await response.json();
+          console.log("Response from randomAction:", data);
+          resolve(data);
+        } catch (error) {
+          console.error("Error:", error);
+          resolve(game_dict);
+        }
+      }
+
+      // Remove the event listener after handling the click
+      gameInput.removeEventListener("click", handleClick);
+    };
+
+    // Add the event listener
+    gameInput.addEventListener("click", handleClick);
   });
-  return game_dict;
 }
+
+
 
 // Fly to the next airport
 async function flyToNextAirport(game_dict, routes, map) {
@@ -392,11 +464,12 @@ async function main() {
     game_dict["next_location_bool"] = false;
     game_dict["clue_solved"] = false;
     game_dict["criminal_was_here"] = false;
-
+    
+    game_dict["random_luck_bool"] = Math.random() <= game_dict["random_luck"];
     // AIRPORT-MENU
     while (!game_dict["next_location_bool"]) {
       game_dict = await airportOptions(game_dict); // haetaan vaihtoehdot mitä voidaan tehdä lentoasemalla ja viedään gaming consoleen napeiksi
-      game_dict = await airportActions(game_dict); // event listener napeille -> tehdään napin mukainen toiminto
+      // game_dict = await airportActions(game_dict); // event listener napeille -> tehdään napin mukainen toiminto
       game_dict["next_location_bool"] = true
       await sleep(5000); // sleep-funktion käyttö, jotta kone ei mene jumiin, poistetaan myöhemmin
     }

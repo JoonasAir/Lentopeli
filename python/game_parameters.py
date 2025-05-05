@@ -64,6 +64,7 @@ COMMON_game_parameters = {
         'talk_to_chief': False,     # have we talked to security chief at current airport or not? True=yes, False=no
         'previous_quiz_answer':True,# did we answer right or wrong on previous quiz question? True=right, False=wrong
         'next_location_bool':False, # have we solved a clue at current airport or got the next location otherwise? True=yes, False=no
+        'next_location': "",
         'criminal_was_here':False,  # security chief tells us if the criminal has been at the air port or not. True=has been, False=has not been
         'criminal_caught':False,    # have we caught the criminal yet? True=yes, False=no
         'first_airport':True,       # are we at our first airport?
@@ -80,6 +81,7 @@ COMMON_game_parameters = {
         'coordinates': [],
         'criminal_location': "",
         'airport_options': [],
+        'random_luck_bool': False,
 }
 
 airport_random_options = [
