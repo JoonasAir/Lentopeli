@@ -4,6 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,200..800;1,200..800&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <link href="../css/style.css" rel="stylesheet">
     <script src="../js/main.js" defer></script>
     <title>CatchTheCriminal - Europe Edition</title>
@@ -13,9 +16,11 @@
     <header id="page-header">
         <h1 class="page-title">CatchTheCriminal - Europe Edition</h1>
     </header>
-
-    <h2>Main menu</h2>
-    <button id="leaderboard">Check Leaderboard</button>
+    <main class="menu-container">
+        <h2>Main menu</h2>
+        <button id="newGameButton">New Game</button>
+        <button id="leaderboard">Check Leaderboard</button>
+    </main>
 
     <!-- Leaderboard-modaali -->
     <dialog id="leaderboardModal">
@@ -24,7 +29,6 @@
     </dialog>
 
     <!-- Uuden pelin modaalin rakenne -->
-    <button id="newGameButton">New Game</button>
     <dialog id="gameModal">
         <form id="gameForm">
             <h3>Start a New Game</h3>
