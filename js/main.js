@@ -63,7 +63,7 @@ function newGame() {
       "&difficulty=" +
       difficulty +
       "&category=" +
-      category;
+      encodeURIComponent(category);
   });
 }
 
