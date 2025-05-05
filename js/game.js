@@ -60,6 +60,35 @@ async function gameSetup() {
   }
 }
 
+
+
+function startCriminalTimer(time) {
+  try {
+    const response = fetch(baseUrl + "/startCriminalTimer", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(time),
+    });
+    data = response.json();
+    return data;
+  } catch (error) {
+    console.error("Error:", error);
+  }
+}
+
+
+
+function stopCriminalTimer() {
+  try {
+    fetch(baseUrl + "/stopCriminalTimer");
+
+  } catch (error) {
+    console.error("Error:", error);
+  }
+}
+
+
+
 // päivitetään sijainti gaming consoleen
 async function locationToGamingConsole(icao) {
   try {
@@ -75,6 +104,8 @@ async function locationToGamingConsole(icao) {
   }
 }
 
+
+
 // Päivittää html:ään statustiedot
 function updateStatusBox(game_dict) {
   document.querySelector("#screen-name").textContent = game_dict["screen_name"];
@@ -88,6 +119,8 @@ function updateStatusBox(game_dict) {
   document.querySelector("#CO2-criminal").textContent =
     game_dict["CO2_criminal"];
 }
+
+
 
 // Funktio säätietojen hakemiseen
 async function weather(coordinates) {
@@ -121,6 +154,8 @@ async function weather(coordinates) {
   }
 }
 
+
+
 // Funktio co2 sekä kokonaismatkan laskemiseen
 async function co2(routes, index) {
   const payload = {
@@ -146,6 +181,8 @@ async function co2(routes, index) {
     console.log("ERROR:", error.message);
   }
 }
+
+
 
 // Asynkroninen funktio koordinaattien hakemiseen
 async function fetchCoordinates(game_dict) {
@@ -186,6 +223,7 @@ async function fetchCoordinates(game_dict) {
     console.log("Virhe haettaessa tietoa:", error.message);
   }
 }
+
 
 async function drawLine(game_dict, map) {
   //Piirrä reitti annetuilla koordinaateilla
@@ -245,6 +283,8 @@ async function drawLine(game_dict, map) {
   animate();
 }
 
+
+
 // tarkistaa palvelimelta täyttyykö edellytykset pelin päättämiselle
 async function stopGame(game_dict) {
   try {
@@ -259,6 +299,8 @@ async function stopGame(game_dict) {
     console.error("Error:", error);
   }
 }
+
+
 
 // Update game input -buttons in airportOptions()
 function updateGameInput(newButtons) {
@@ -281,6 +323,8 @@ function updateGameInput(newButtons) {
   }
 }
 
+
+
 // Get correct input options from backend
 async function airportOptions(game_dict) {
   try {
@@ -301,6 +345,8 @@ async function airportOptions(game_dict) {
   }
 }
 
+
+
 // Airport actions
 async function airportActions(game_dict) {
   const gameInput = document.querySelector("#game-input");
@@ -310,8 +356,8 @@ async function airportActions(game_dict) {
       const buttonValue = event.target.value;
 
 
-        // TALK TO SECURITY
-        if (buttonValue === "talkToSecurity") {
+      // TALK TO SECURITY
+      if (buttonValue === "talkToSecurity") {
         try {
           const response = await fetch(baseUrl + "/talkToSecurity", {
             method: "POST",
@@ -366,7 +412,7 @@ async function airportActions(game_dict) {
           resolve(game_dict);
         }
 
-        
+
         // RANDOM ACTION
       } else if (buttonValue === "randomAction") {
         try {
@@ -413,7 +459,7 @@ async function questionModal(game_dict) {
       const button = document.createElement("button");
       button.textContent = answer;
       button.value = answer;
-      button.classList.add("answer-button"); 
+      button.classList.add("answer-button");
 
       button.addEventListener("click", () => {
         if (answer === correctAnswer) {
@@ -421,7 +467,7 @@ async function questionModal(game_dict) {
           game_dict["previous_quiz_answer"] = true;
         } else {
           console.log("Wrong answer")
-          game_dict["previous_quiz_answer"] = false;          
+          game_dict["previous_quiz_answer"] = false;
           if (game_dict.clue[1].length > 2) { // Poistetaan vastattu vastaus listasta kun vastasimme väärin
             game_dict["clue"][1] = game_dict["clue"][1].filter(item => item !== answer)
           }
@@ -435,6 +481,7 @@ async function questionModal(game_dict) {
     modal.showModal();
   });
 }
+
 
 
 async function nextLocation(game_dict) {
@@ -452,6 +499,7 @@ async function nextLocation(game_dict) {
 }
 
 
+
 async function updateToVisited(location) {
   try {
     const response = await fetch(baseUrl + "/updateToVisited", {
@@ -467,6 +515,7 @@ async function updateToVisited(location) {
 }
 
 
+
 function gameOutput(game_dict) {
   const gameOutput = document.getElementById("game-output");
   gameOutput.innerHTML = "<h3>Game output</h3>";
@@ -474,6 +523,8 @@ function gameOutput(game_dict) {
     gameOutput.innerHTML += `<p>${result}</p>`;
   }
 }
+
+
 
 // Fly to the next airport
 async function flyToNextAirport(game_dict, routes, map) {
@@ -487,7 +538,7 @@ async function flyToNextAirport(game_dict, routes, map) {
   const data = await co2(routes, 0);
   game_dict["KM_player"] += data.distanceKM;
   game_dict["CO2_player"] += data.co2;
-  
+
   // Reduce money
   game_dict["game_money"] -= game_dict["flight_price"];
 
@@ -503,6 +554,8 @@ async function flyToNextAirport(game_dict, routes, map) {
 
   return { game_dict: game_dict, routes: routes };
 }
+
+
 
 let routes = [
   // RANDOM LOCATIONS (temporary)
@@ -555,6 +608,8 @@ async function main() {
   startTimer(game_dict.data["game_time"]);
   await updateToVisited(game_dict.data["player_location"])
 
+  startCriminalTimer(game_dict.data.criminal_time)
+
   // Mitä tapahtuu kun aika loppuu
   document.addEventListener("timerEnd", () => {
     game_dict["time_left_bool"] = false;
@@ -606,7 +661,7 @@ async function main() {
       gameOutput(game_dict);
       // game_dict["next_location_bool"] = true
     }
-    
+
     // Lennetään kentältä toiselle - funktio sisältää kaikki tarvittavat toiminnot
     console.log("FLY TO NEXT AIRPORT", ` Current: ${game_dict.player_location}, Next: ${game_dict.next_location}`)
     const data = await flyToNextAirport(game_dict, routes, map);
@@ -619,6 +674,7 @@ async function main() {
 
     endGame = await stopGame(game_dict); // tarkistaa palvelimelta täyttyykö edellytykset pelin päättämiselle
   }
+  stopCriminalTimer()
 }
 
 main();

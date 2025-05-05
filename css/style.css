@@ -162,6 +162,40 @@ footer {
     align-items: stretch;
 }
 
+#weather {
+  position: absolute;
+  top: 0px;
+  width: 25%;
+  right: calc(50% - 12.5%);
+  display: flex;
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-family: sans-serif;
+  z-index: 1000;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  gap: 10px;
+  background-color:#392467ad;
+}
+
+#weather img {
+  width: 40px;
+  height: 40px;
+}
+
+#weather div {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+  text-align: center;
+}
+
+#weather p {
+  margin: 0;
+  font-size: 14px;
+}
+
 /* MAP */
 
 .game-page #map-box {

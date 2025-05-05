@@ -1,4 +1,4 @@
-from urllib import response
+from multiprocessing import Event, Process
 from mysql_connection import mysql_connection
 import requests
 from flask import Flask, request, jsonify
@@ -9,7 +9,7 @@ from airport_menu import airport_menu_input
 from security import talk_to_security
 from questions import ask_question, get_questions, quiz_icao
 from stop_game import stop_game
-import json
+from criminal import criminal_timer
 from geopy import distance
 
 app = Flask(__name__)
@@ -40,7 +40,6 @@ def leaderboard():
 def gameSetup():
     data = request.json
     game_dict = game_setup(game_parameters, data)
-    print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
     game_dict["quiz_questions"] = get_questions(game_dict["quiz_difficulty"], game_dict["quiz_category"])
     return jsonify({"message": "Game setup received successfully", "data": game_dict}), 200
 
@@ -55,6 +54,38 @@ def print_location():
     result = cursor.fetchone()
     location = f"{result['airport']}, {result['country']}"
     return jsonify(location)
+
+
+
+
+ProcessCriminalTimer = None
+stop_event = Event()
+
+@app.route('/startCriminalTimer', methods=['POST'])
+def startCriminalTimer():
+    time = request.json
+    global ProcessCriminalTimer, stop_event
+ # Defining a background process that runs criminal_timer -function
+    ProcessCriminalTimer = Process(target=criminal_timer, args=(time, stop_event))
+ # Start the process
+    ProcessCriminalTimer.start()
+
+    return {"status": "Timer started"}
+
+@app.route('/stopCriminalTimer')
+def stopCriminalTimer():
+    global ProcessCriminalTimer, stop_event
+
+    if ProcessCriminalTimer and ProcessCriminalTimer.is_alive():
+ # Terminate the criminal_timer -background process
+        stop_event.set()
+        ProcessCriminalTimer.terminate()
+ # Ensures that the main program waits for the terminated process to clean up properly before continuing
+        ProcessCriminalTimer.join()
+        ProcessCriminalTimer = None
+        return {"status": "Timer stopped"}
+    else:
+        return {"status": "No timer running"}
 
 
 
@@ -199,7 +230,6 @@ def updateToVisited():
     """
     cursor.execute(sql_select, (location,))
     result = cursor.fetchone()
-    print(result)
     if result:
         criminal_id = result[0]
         sql_update = """
