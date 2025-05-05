@@ -417,9 +417,6 @@ let routes = [ // RANDOM LOCATIONS (temporary)
 
 // PELI KASATAAN TÄMÄN FUNKTION SISÄLLE
 async function main() {
-  // sleep-funktion teko
-  const sleep = (delay) => new Promise((resolve) => setTimeout(resolve, delay));
-
   // PELIN ALUSTUS #####################################################
   let game_dict = await gameSetup(); // Pelin parametrien luonti palvelimella, palauttaa pythonista tutun game_dict -sanakirjan
   startTimer(game_dict.data["game_time"]);
@@ -471,7 +468,8 @@ async function main() {
       gameOutput(game_dict)
       // game_dict["next_location_bool"] = true
     }
-    // sisältää kaikki tarvittavat toiminnot kun lennetään kentältä toiselle
+
+    // Lennetään kentältä toiselle - funktio sisältää kaikki tarvittavat toiminnot
     const data = await flyToNextAirport(game_dict, routes, map)
     game_dict = data.game_dict
     routes = data.routes
