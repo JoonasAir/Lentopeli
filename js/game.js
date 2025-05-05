@@ -174,9 +174,14 @@ async function fetchCoordinates(game_dict) {
       [parseFloat(jsonData.from.latitude), parseFloat(jsonData.from.longitude)], // Lähtöpiste
       [parseFloat(jsonData.to.latitude), parseFloat(jsonData.to.longitude)], // Määränpää
     ];
-
+    try {
     game_dict.data["coordinates"] = points;
+    } catch (error) {
+      game_dict["coordinates"] = points;
+    }
     return game_dict;
+
+
   } catch (error) {
     console.log("Virhe haettaessa tietoa:", error.message);
   }
@@ -395,13 +400,15 @@ function gameOutput(game_dict) {
 // Fly to the next airport
 async function flyToNextAirport(game_dict, routes, map) {
   // animateAirplane()
+  game_dict = await fetchCoordinates(game_dict)
+  console.log(game_dict)
   drawLine(game_dict, map)
 
   // Update coordinates
-  // game_dict = fetchCoordinates(game_dict)
   
   // calculate emissions
   const data = await co2(routes, 0);
+  console.log(game_dict.KM_player)
   game_dict["KM_player"] += data.distanceKM;
   game_dict["CO2_player"] += data.co2;
 
@@ -510,6 +517,7 @@ async function main() {
     game_dict["criminal_was_here"] = false;
 
     game_dict["random_luck_bool"] = Math.random() <= game_dict["random_luck"];
+    console.log(game_dict.random_luck_bool)
     // AIRPORT-MENU
     while (!game_dict["next_location_bool"]) {
       game_dict = await airportOptions(game_dict); // haetaan vaihtoehdot mitä voidaan tehdä lentoasemalla ja viedään gaming consoleen napeiksi

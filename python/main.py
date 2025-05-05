@@ -52,7 +52,7 @@ def print_location():
     sql = f"SELECT country.name AS country, airport.name AS airport FROM airport, country WHERE country.iso_country = airport.iso_country AND airport.ident = '{icao}';"
     cursor.execute(sql)
     result = cursor.fetchone()
-    location =  f"{result['airport']}, {result['country']}."
+    location = f"{result['airport']}, {result['country']}"
     return jsonify(location)
 
 
@@ -60,14 +60,14 @@ def print_location():
 @app.route("/flyto", methods=['PUT'])
 def get_location():
     data = request.json
-
+    try: data = data["data"]
+    except: pass
     cursor1 = mysql_connection.cursor()
     cursor2 = mysql_connection.cursor()
-    sqlto = "SELECT latitude_deg, longitude_deg FROM airport WHERE ident='EHAM'"
-    try: 
-        sqlfrom = f"SELECT latitude_deg, longitude_deg FROM airport WHERE ident='{data["data"]["player_location"]}'"
-    except:
-        sqlfrom = f"SELECT latitude_deg, longitude_deg FROM airport WHERE ident='{data["player_location"]}'"
+    print(f"next: {data["next_location"]}, player: {data["player_location"]}")
+    sqlto = f"SELECT latitude_deg, longitude_deg FROM airport WHERE ident='{data["next_location"]}'"
+
+    sqlfrom = f"SELECT latitude_deg, longitude_deg FROM airport WHERE ident='{data["player_location"]}'"
 
 
     cursor1.execute(sqlfrom)
@@ -83,7 +83,7 @@ def get_location():
         "from": {"latitude": flyfrom[0][0], "longitude": flyfrom[0][1]},
         "to": {"latitude": flyto[0][0], "longitude": flyto[0][1]}
     }
-
+    print(result)
     return jsonify(result)
 
 
@@ -139,11 +139,9 @@ def randomLuck():
             cursor.execute(sql)
             result = cursor.fetchone()
             if type(result) == tuple:
-                longtext = game_dict["airport_options"][2]["text"][1]
-                game_dict["game_output"].append(f"{longtext}\n" )
+                game_dict["game_output"].append(game_dict["airport_options"][2]["text"][1])
                 game_dict["next_location_bool"] = True
                 game_dict["next_location"] = result[0]
-                game_dict["game_output"].append(f"The next location is: {result[0]}" )
             else: 
                 print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n@@@@@@@@@@@@@@@@@@@@@@@@@@\nsaimme(ko?) rikollisen kiinni \n@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
         else:
