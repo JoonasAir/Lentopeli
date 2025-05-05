@@ -148,6 +148,7 @@ def talkToSecurity():
     try: game_dict = game_dict["data"]
     except: pass
     game_dict = talk_to_security(game_dict)
+    
     return game_dict
 
 
@@ -157,7 +158,9 @@ def solveClue():
     try: game_dict = game_dict["data"]
     except: pass
     ask_question_bool, game_dict['previous_question'] = ask_question(game_dict["quiz_questions"])
-    quiz_icao(ask_question_bool, game_dict)
+    # quiz_icao(ask_question_bool, game_dict)
+    
+    return game_dict
 
 
 
