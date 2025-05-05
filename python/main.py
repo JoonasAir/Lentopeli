@@ -45,6 +45,18 @@ def gameSetup():
 
 
 
+@app.route('/location', methods=['POST'])
+def print_location():
+    icao = request.json
+    cursor = mysql_connection.cursor(dictionary=True)
+    sql = f"SELECT country.name AS country, airport.name AS airport FROM airport, country WHERE country.iso_country = airport.iso_country AND airport.ident = '{icao}';"
+    cursor.execute(sql)
+    result = cursor.fetchone()
+    location =  f"{result['airport']}, {result['country']}."
+    return jsonify(location)
+
+
+
 @app.route("/flyto", methods=['PUT'])
 def get_location():
     data = request.json

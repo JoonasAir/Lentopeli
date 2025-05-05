@@ -61,11 +61,19 @@ async function gameSetup() {
 }
 
 // päivitetään sijainti gaming consoleen
-function locationToGamingConsole() {
-  
+async function locationToGamingConsole(icao) {
+  try {
+    const response = await fetch(baseUrl + "/location", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(icao),
+    });
+    const data = await response.json();
+    document.getElementById("location").innerText = data;
+  } catch (error) {
+    console.error("Error:", error);
+  }
 }
-
-
 
 // Päivittää html:ään statustiedot
 function updateStatusBox(game_dict) {
@@ -117,8 +125,8 @@ async function weather(coordinates) {
 async function co2(routes, index) {
   const payload = {
     routes: routes,
-    index: index
-  }
+    index: index,
+  };
   try {
     const response = await fetch("http://127.0.0.1:5000/co2distance", {
       method: "POST",
@@ -133,13 +141,11 @@ async function co2(routes, index) {
     }
 
     const data = await response.json();
-    return {co2: data.co2, distanceKM: data.distanceKM}
-
+    return { co2: data.co2, distanceKM: data.distanceKM };
   } catch (error) {
     console.log("ERROR:", error.message);
   }
 }
-
 
 // Asynkroninen funktio koordinaattien hakemiseen
 async function fetchCoordinates(game_dict) {
@@ -170,17 +176,17 @@ async function fetchCoordinates(game_dict) {
     ];
 
     game_dict.data["coordinates"] = points;
-    return game_dict
-
+    return game_dict;
   } catch (error) {
     console.log("Virhe haettaessa tietoa:", error.message);
   }
 }
 
 async function drawLine(game_dict, map) {
-  
   //Piirrä reitti annetuilla koordinaateilla
-  const polyline = L.polyline(game_dict["coordinates"], { color: "blue" }).addTo(map);
+  const polyline = L.polyline(game_dict["coordinates"], {
+    color: "blue",
+  }).addTo(map);
   //Asetata näkymä reitin ympärille
   const bounds = polyline.getBounds();
   map.fitBounds(bounds, {
@@ -207,12 +213,13 @@ async function drawLine(game_dict, map) {
 
   //Animaatiofunktio
   async function animate() {
-    const sleep = (delay) => new Promise((resolve) => setTimeout(resolve, delay));
+    const sleep = (delay) =>
+      new Promise((resolve) => setTimeout(resolve, delay));
     const marker = L.marker([
       game_dict["coordinates"][1][0],
       game_dict["coordinates"][1][1],
-      ]).addTo(map);
-    
+    ]).addTo(map);
+
     if (progress >= 1) {
       map.removeLayer(polyline);
       marker.bindPopup("<b>Olet tässä</b>").openPopup();
@@ -231,7 +238,6 @@ async function drawLine(game_dict, map) {
   }
 
   animate();
-  
 }
 
 // tarkistaa palvelimelta täyttyykö edellytykset pelin päättämiselle
@@ -290,8 +296,6 @@ async function airportOptions(game_dict) {
   }
 }
 
-
-
 // Airport actions
 async function airportActions(game_dict) {
   const gameInput = document.querySelector("#game-input");
@@ -300,7 +304,8 @@ async function airportActions(game_dict) {
     const handleClick = async (event) => {
       const buttonValue = event.target.value;
 
-      if (buttonValue === "talkToSecurity") { // TALK TO SECURITY
+      if (buttonValue === "talkToSecurity") {
+        // TALK TO SECURITY
         try {
           const response = await fetch(baseUrl + "/talkToSecurity", {
             method: "POST",
@@ -315,7 +320,8 @@ async function airportActions(game_dict) {
           console.error("Error:", error);
           resolve(game_dict); // Resolve with the original game_dict in case of error
         }
-      } else if (buttonValue === "solveClue") { // SOLVE A CLUE
+      } else if (buttonValue === "solveClue") {
+        // SOLVE A CLUE
         try {
           const response = await fetch(baseUrl + "/solveClue", {
             method: "POST",
@@ -334,7 +340,8 @@ async function airportActions(game_dict) {
           console.error("Error:", error);
           resolve(game_dict);
         }
-      } else if (buttonValue === "solvePreviousClue") { // SOLVE PREVIOUS CLUE
+      } else if (buttonValue === "solvePreviousClue") {
+        // SOLVE PREVIOUS CLUE
         try {
           const response = await fetch(baseUrl + "/solvePreviousClue", {
             method: "POST",
@@ -350,7 +357,8 @@ async function airportActions(game_dict) {
           console.error("Error:", error);
           resolve(game_dict);
         }
-      } else if (buttonValue === "randomAction") { // RANDOM ACTION
+      } else if (buttonValue === "randomAction") {
+        // RANDOM ACTION
         try {
           const response = await fetch(baseUrl + "/randomLuck", {
             method: "POST",
@@ -378,12 +386,11 @@ async function airportActions(game_dict) {
 
 function gameOutput(game_dict) {
   const gameOutput = document.getElementById("game-output");
-  gameOutput.innerHTML = "<h3>Game output</h3>"
+  gameOutput.innerHTML = "<h3>Game output</h3>";
   for (let result of game_dict["game_output"]) {
-  gameOutput.innerHTML += `<p>${result}</p>`;
+    gameOutput.innerHTML += `<p>${result}</p>`;
   }
 }
-
 
 // Fly to the next airport
 async function flyToNextAirport(game_dict, routes, map) {
@@ -394,36 +401,66 @@ async function flyToNextAirport(game_dict, routes, map) {
   // game_dict = fetchCoordinates(game_dict)
   
   // calculate emissions
-  const data = await co2(routes, 0)
-  game_dict["KM_player"] += data.distanceKM
-  game_dict["CO2_player"] += data.co2
+  const data = await co2(routes, 0);
+  game_dict["KM_player"] += data.distanceKM;
+  game_dict["CO2_player"] += data.co2;
 
   // Update player's location
   // game_dict["player_location"] = game_dict["next_location"]
 
   // Reduce money
-  game_dict["game_money"] -= game_dict["flight_price"]
+  game_dict["game_money"] -= game_dict["flight_price"];
 
   // Update html
   updateStatusBox(game_dict);
+  locationToGamingConsole(game_dict["player_location"]);
 
-  return {game_dict: game_dict, routes: routes}
+  return { game_dict: game_dict, routes: routes };
 }
 
-
-let routes = [ // RANDOM LOCATIONS (temporary) 
-  [[50.1109, 8.6821], [48.8566, 2.3522]], // Frankfurt, Germany to Paris, France
-  [[51.5074, -0.1278], [52.5200, 13.4050]], // London, UK to Berlin, Germany
-  [[41.9028, 12.4964], [40.4168, -3.7038]], // Rome, Italy to Madrid, Spain
-  [[59.3293, 18.0686], [60.1695, 24.9354]], // Stockholm, Sweden to Helsinki, Finland
-  [[53.3498, -6.2603], [55.7558, 37.6173]], // Dublin, Ireland to Moscow, Russia
-  [[47.4979, 19.0402], [48.2082, 16.3738]], // Budapest, Hungary to Vienna, Austria
-  [[37.9838, 23.7275], [45.8150, 15.9819]], // Athens, Greece to Zagreb, Croatia
-  [[50.0755, 14.4378], [52.2297, 21.0122]], // Prague, Czech Republic to Warsaw, Poland
-  [[55.6761, 12.5683], [59.9139, 10.7522]], // Copenhagen, Denmark to Oslo, Norway
-  [[43.7102, 7.2620], [45.4642, 9.1900]] // Nice, France to Milan, Italy
+let routes = [
+  // RANDOM LOCATIONS (temporary)
+  [
+    [50.1109, 8.6821],
+    [48.8566, 2.3522],
+  ], // Frankfurt, Germany to Paris, France
+  [
+    [51.5074, -0.1278],
+    [52.52, 13.405],
+  ], // London, UK to Berlin, Germany
+  [
+    [41.9028, 12.4964],
+    [40.4168, -3.7038],
+  ], // Rome, Italy to Madrid, Spain
+  [
+    [59.3293, 18.0686],
+    [60.1695, 24.9354],
+  ], // Stockholm, Sweden to Helsinki, Finland
+  [
+    [53.3498, -6.2603],
+    [55.7558, 37.6173],
+  ], // Dublin, Ireland to Moscow, Russia
+  [
+    [47.4979, 19.0402],
+    [48.2082, 16.3738],
+  ], // Budapest, Hungary to Vienna, Austria
+  [
+    [37.9838, 23.7275],
+    [45.815, 15.9819],
+  ], // Athens, Greece to Zagreb, Croatia
+  [
+    [50.0755, 14.4378],
+    [52.2297, 21.0122],
+  ], // Prague, Czech Republic to Warsaw, Poland
+  [
+    [55.6761, 12.5683],
+    [59.9139, 10.7522],
+  ], // Copenhagen, Denmark to Oslo, Norway
+  [
+    [43.7102, 7.262],
+    [45.4642, 9.19],
+  ], // Nice, France to Milan, Italy
 ];
-
 
 // PELI KASATAAN TÄMÄN FUNKTION SISÄLLE
 async function main() {
@@ -438,30 +475,30 @@ async function main() {
   updateStatusBox(game_dict.data); // Päivittää html:ään statustiedot
   game_dict = await fetchCoordinates(game_dict); // Haetaan rikollisen ja pelaajan koordinaatit
   // Alustetaan kartta
-  
-    const map = L.map("map").setView(
+
+  const map = L.map("map").setView(
     [game_dict.data["coordinates"][0][0], game_dict.data["coordinates"][0][1]],
     10
   );
 
-  
   L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
     maxZoom: 19,
     attribution:
-    '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+      '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
   }).addTo(map);
 
   const marker = L.marker([
     game_dict.data["coordinates"][0][0],
     game_dict.data["coordinates"][0][1],
-    ]).addTo(map);
-    marker.bindPopup("<b>Olet tässä</b>").openPopup();
+  ]).addTo(map);
+  marker.bindPopup("<b>Olet tässä</b>").openPopup();
 
-  weather(game_dict.data.coordinates[0])
+  weather(game_dict.data.coordinates[0]);
 
-  
+
   let endGame = false;
   try {game_dict = game_dict.data} catch (error) {console.log(error)}
+  locationToGamingConsole(game_dict["player_location"]);
   // PELIN LOOPPI ALKAA TÄSTÄ ##################################################
   while (!endGame) {
     // reset airport_menu-helper parameters to default value before entering airport-menu at the new airport
@@ -472,19 +509,19 @@ async function main() {
     game_dict["clue_solved"] = false;
     game_dict["criminal_was_here"] = false;
 
-    game_dict["random_luck_bool"] = Math.random() < game_dict["random_luck"];
+    game_dict["random_luck_bool"] = Math.random() <= game_dict["random_luck"];
     // AIRPORT-MENU
     while (!game_dict["next_location_bool"]) {
       game_dict = await airportOptions(game_dict); // haetaan vaihtoehdot mitä voidaan tehdä lentoasemalla ja viedään gaming consoleen napeiksi
       game_dict = await airportActions(game_dict); // event listener napeille -> tehdään napin mukainen toiminto
-      gameOutput(game_dict)
+      gameOutput(game_dict);
       // game_dict["next_location_bool"] = true
     }
 
     // Lennetään kentältä toiselle - funktio sisältää kaikki tarvittavat toiminnot
-    const data = await flyToNextAirport(game_dict, routes, map)
-    game_dict = data.game_dict
-    routes = data.routes
+    const data = await flyToNextAirport(game_dict, routes, map);
+    game_dict = data.game_dict;
+    routes = data.routes;
 
     if (game_dict["first_airport"]) {
       game_dict["first_airport"] = false;
