@@ -4,7 +4,7 @@ from mysql_connection import mysql_connection
 # Voidaan valita satunnaisia kysymyksiä sekä sekoitta vastausvaihtoehdot
 import random 
 # Voidaan muuttaa kysymysten HTML elementit oikeiksi merkeiksi
-import html 
+import html
 
 
 # Avataan kysymykset luettavassa muodossa muuttujaan data. Käytetään encoding koska tiedosto sisältää
@@ -106,17 +106,21 @@ def ask_category():
         
 
 # Funktio, joka kysyy satunnaisen kysymyksen valitun vaikeusasteen mukaan
-def get_questions(difficulty:str, category:str):
+def get_questions(difficulty: str, category: str):
     # Suodatetaan kysymykset valitun vaikeusasteen mukaan
-    selected_questions = [question for question in data if question["difficulty"] == difficulty and question["category"] == category]
+    with open("./json/questions.json", "r", encoding="utf-8") as f:
+        data = json.load(f)
+    selected_questions = [
+        question for question in data 
+        if question["difficulty"] == difficulty and question["category"] == category
+    ]
     return selected_questions
 
-
 # Funktio, joka kysyy käyttäjältä satunnaisen kysymyksen ja tarkistaa vastauksen
-def ask_question(questions:list):
-    # Valitaan satunnainen kysymys
-    question = random.choice(questions)
+def ask_question(game_dict):
 
+    # Valitaan satunnainen kysymys
+    question = random.choice(game_dict["quiz_questions"])
     # Haetaan kysymysteksti ja vastaukset
     question_text = html.unescape(question["question"])
     correct_answer = html.unescape(question["correct_answer"])
@@ -128,30 +132,15 @@ def ask_question(questions:list):
     previous_question = [answers, correct_answer, question_text]
 
     # Tulostetaan kysymys ja vaihtoehdot. Enumerate numeroi jokaisen listan alkoin, alkaen numerosta 1.
-    print(f"\nQuestion: {question_text}\nOptions:\n")
-    for i, answer in enumerate(answers, 1):
-        print(f"{i}. {answer}")
-        
-
-    # Kysytään käyttäjältä valinta
-    while True:
-        try:
-            user_answer = int(input(f"Select the right answer: "))
-            if 1 <= user_answer <= len(answers):
-                break
-            else:
-                print(f"Wrong input, try again!")
-        except ValueError:
-            print(f"Wrong input, try again!")
-
+    game_dict["clue"].append(f"Question: {question_text}")
+    answer_list = []
+    for answer in answers:
+        answer_list.append(answer)
     
-    # Tarkistetaan, onko valittu vastaus oikea. Pitää laittaa -1 edellisessä for silmukassa lisättiin yksi numeroinnin takia
-    if answers[user_answer - 1] == correct_answer:
-        #print(f"\nCorrect!")
-        return True, previous_question# Oikea vastaus
-    else:
-        #print(f"\nWrong! The correct answer was: {correct_answer}")
-        return False, previous_question  # Väärä vastaus
+    game_dict["clue"].append(answer_list)
+    game_dict["clue"].append(correct_answer)
+
+    return game_dict
     
 def ask_again(previous_question):
     answers, correct_answer, question_text = previous_question

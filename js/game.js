@@ -310,7 +310,6 @@ async function airportActions(game_dict) {
             body: JSON.stringify(game_dict),
           });
           const data = await response.json();
-          console.log("Response from talkToSecurity:", data);
           resolve(data); // Resolve with the updated game_dict
         } catch (error) {
           console.error("Error:", error);
@@ -326,7 +325,10 @@ async function airportActions(game_dict) {
             body: JSON.stringify(game_dict),
           });
           const data = await response.json();
-          console.log("Response from solveClue:", data);
+          const question = game_dict["clue"] // ["question", ["answer1", "correctAnswer", "answer2", "answer3"], "correctAnswer"]
+          // QUESTION MODAL 
+          
+          
           resolve(data);
         } catch (error) {
           console.error("Error:", error);
@@ -342,7 +344,7 @@ async function airportActions(game_dict) {
             body: JSON.stringify(game_dict),
           });
           const data = await response.json();
-          console.log("Response from solvePreviousClue:", data);
+          console.log(data)
           resolve(data);
         } catch (error) {
           console.error("Error:", error);
@@ -385,18 +387,20 @@ function gameOutput(game_dict) {
 
 // Fly to the next airport
 async function flyToNextAirport(game_dict, routes, map) {
-  // Update player's location
+  // animateAirplane()
+  drawLine(game_dict, map)
 
   // Update coordinates
   // game_dict = fetchCoordinates(game_dict)
-
+  
   // calculate emissions
   const data = await co2(routes, 0)
   game_dict["KM_player"] += data.distanceKM
   game_dict["CO2_player"] += data.co2
 
-  // animateAirplane()
-  drawLine(game_dict, map)
+  // Update player's location
+  // game_dict["player_location"] = game_dict["next_location"]
+
   // Reduce money
   game_dict["game_money"] -= game_dict["flight_price"]
 
@@ -426,6 +430,7 @@ async function main() {
   // PELIN ALUSTUS #####################################################
   let game_dict = await gameSetup(); // Pelin parametrien luonti palvelimella, palauttaa pythonista tutun game_dict -sanakirjan
   startTimer(game_dict.data["game_time"]);
+
   // Mitä tapahtuu kun aika loppuu
   document.addEventListener("timerEnd", () => {
     game_dict["time_left_bool"] = false;
@@ -455,8 +460,9 @@ async function main() {
   weather(game_dict.data.coordinates[0])
 
   
-  // PELIN LOOPPI ALKAA TÄSTÄ ##################################################
   let endGame = false;
+  try {game_dict = game_dict.data} catch (error) {console.log(error)}
+  // PELIN LOOPPI ALKAA TÄSTÄ ##################################################
   while (!endGame) {
     // reset airport_menu-helper parameters to default value before entering airport-menu at the new airport
     game_dict["talk_to_chief"] = false;
@@ -465,8 +471,8 @@ async function main() {
     game_dict["next_location_bool"] = false;
     game_dict["clue_solved"] = false;
     game_dict["criminal_was_here"] = false;
-    
-    game_dict["random_luck_bool"] = Math.random() <= game_dict["random_luck"];
+
+    game_dict["random_luck_bool"] = Math.random() < game_dict["random_luck"];
     // AIRPORT-MENU
     while (!game_dict["next_location_bool"]) {
       game_dict = await airportOptions(game_dict); // haetaan vaihtoehdot mitä voidaan tehdä lentoasemalla ja viedään gaming consoleen napeiksi

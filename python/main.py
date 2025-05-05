@@ -41,7 +41,6 @@ def gameSetup():
     data = request.json
     game_dict = game_setup(game_parameters, data)
     game_dict["quiz_questions"] = get_questions(game_dict["quiz_difficulty"], game_dict["quiz_category"])
-
     return jsonify({"message": "Game setup received successfully", "data": game_dict}), 200
 
 
@@ -156,8 +155,7 @@ def solveClue():
     game_dict = request.json
     try: game_dict = game_dict["data"]
     except: pass
-    ask_question_bool, game_dict['previous_question'] = ask_question(game_dict["quiz_questions"])
-    # quiz_icao(ask_question_bool, game_dict)
+    game_dict = ask_question(game_dict)
     
     return game_dict
 
