@@ -173,7 +173,8 @@ footer {
 
 .game-page #map {
     flex: 1;
-    width: 100%;
+    width: 95%;
+    height: 400px;
     border-radius: 10px;
 }
 
@@ -193,13 +194,19 @@ footer {
     box-sizing: border-box;
 }
 
+/*#map {
+  height: 400px;
+  width: 95%;
+  border-radius: 10px;
+}
 
-/*#map-box img {
+#map-box img {
   width: 95%;
   margin-left: calc(45vw * (1 - 0.95) / 2);
 }
 
-#status-box div {
+
+/*#status-box div {
   justify-items: center;
   width: 90%;
 }
@@ -215,11 +222,7 @@ footer {
   align-items: center;
 }
 
-#map {
-  height: 400px;
-  width: 95%;
-  border-radius: 10px;
-}
+
 
 .game-box-header {
   display: flex;
