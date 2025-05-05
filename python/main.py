@@ -110,36 +110,35 @@ def airportOptions():
     
     
 
-# @app.route('/randomLuck', methods=['POST'])
-# def randomLuck():
-#     cursor = mysql_connection.cursor()
-#     game_dict = request.json
-#     try: game_dict = game_dict["data"]
-#     except: pass
+@app.route('/randomLuck', methods=['POST'])
+def randomLuck():
+    cursor = mysql_connection.cursor()
+    game_dict = request.json
+    try: game_dict = game_dict["data"]
+    except: pass
+    game_dict["airport_result"] = []
+    if game_dict["tried_luck"]: # if we have tried our luck at current airport
+            game_dict["airport_result"].append(f"{game_dict["airport_options"][2]["text"][3]}")
+    else:
+        game_dict["airport_result"].append(f"You chose to {game_dict["airport_options"][2]["text"][0].lower()}.\n" )
+        game_dict["tried_luck"] = True
+        if game_dict["random_luck_bool"]:
+            game_dict["next_location_bool"] = True
+            sql = "SELECT location FROM criminal WHERE visited = 0 LIMIT 1;"
+            cursor.execute(sql)
+            result = cursor.fetchone()
+            if type(result) == tuple:
+                longtext = game_dict["airport_options"][2]["text"][1]
+                game_dict["airport_result"].append(f"{longtext}\n" )
+                game_dict["next_location_bool"] = True
+                game_dict["next_location"] = result[0]
+                game_dict["airport_result"].append(f"The next location is: {result[0]}" )
+            else: 
+                print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n@@@@@@@@@@@@@@@@@@@@@@@@@@\nsaimme(ko?) rikollisen kiinni \n@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
+        else:
+            game_dict["airport_result"].append(f"{game_dict["airport_options"][2]["text"][2]}\n" )
 
-#     if game_dict["tried_luck"]: # if we have tried our luck at current airport
-#             print(f"{game_dict["airport_options"][3]}" )
-#     else:
-#         print(f"You chose to {game_dict["airport_options"][2][0].lower()}.\n" )
-#         game_dict["tried_luck"] = True
-#         if game_dict["random_luck_bool"]:
-#             game_dict["next_location_bool"] = True
-#             sql = "SELECT location FROM criminal WHERE visited = 0 LIMIT 1;"
-#             cursor.execute(sql)
-#             result = cursor.fetchone()
-#             if type(result) == tuple:
-#                 longtext = game_dict["airport_options"][2][1]
-#                 print(f"{longtext}\n" )
-#                 game_dict["next_location_bool"] = True
-#                 game_dict["next_location"] = result[0]
-#                 print("44444444444444444444", game_dict["next_location"])
-#                 print(f"The next location is: {result[0]}" )
-#             else: 
-#                 print("saimme(ko?) rikollisen kiinni @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
-#         else:
-#             print(f"{game_dict["airport_options"][2][2]}\n" )
-
-#     return game_dict
+    return game_dict
 
 
 # @app.route('/talkToSecurity', methods='POST')

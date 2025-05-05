@@ -294,9 +294,7 @@ async function airportActions(game_dict) {
     const handleClick = async (event) => {
       const buttonValue = event.target.value;
 
-      if (buttonValue === "talkToSecurity") {
-        console.log("Talking to the airport's security chief...");
-        // Example: Call an endpoint for "talkToSecurity"
+      if (buttonValue === "talkToSecurity") { // TALK TO SECURITY
         try {
           const response = await fetch(baseUrl + "/talkToSecurity", {
             method: "POST",
@@ -312,9 +310,7 @@ async function airportActions(game_dict) {
           console.error("Error:", error);
           resolve(game_dict); // Resolve with the original game_dict in case of error
         }
-      } else if (buttonValue === "solveClue") {
-        console.log("Solving the clue...");
-        // Example: Call an endpoint for "solveClue"
+      } else if (buttonValue === "solveClue") { // SOLVE A CLUE
         try {
           const response = await fetch(baseUrl + "/solveClue", {
             method: "POST",
@@ -330,9 +326,7 @@ async function airportActions(game_dict) {
           console.error("Error:", error);
           resolve(game_dict);
         }
-      } else if (buttonValue === "solvePreviousClue") {
-        console.log("Trying to solve the previous clue again...");
-        // Example: Call an endpoint for "solvePreviousClue"
+      } else if (buttonValue === "solvePreviousClue") { // SOLVE PREVIOUS CLUE
         try {
           const response = await fetch(baseUrl + "/solvePreviousClue", {
             method: "POST",
@@ -348,9 +342,7 @@ async function airportActions(game_dict) {
           console.error("Error:", error);
           resolve(game_dict);
         }
-      } else if (buttonValue === "randomAction") {
-        console.log("Doing the random action...");
-        // Example: Call an endpoint for "randomAction"
+      } else if (buttonValue === "randomAction") { // RANDOM ACTION
         try {
           const response = await fetch(baseUrl + "/randomLuck", {
             method: "POST",
@@ -360,7 +352,6 @@ async function airportActions(game_dict) {
             body: JSON.stringify(game_dict),
           });
           const data = await response.json();
-          console.log("Response from randomAction:", data);
           resolve(data);
         } catch (error) {
           console.error("Error:", error);
@@ -469,9 +460,10 @@ async function main() {
     // AIRPORT-MENU
     while (!game_dict["next_location_bool"]) {
       game_dict = await airportOptions(game_dict); // haetaan vaihtoehdot mitä voidaan tehdä lentoasemalla ja viedään gaming consoleen napeiksi
-      // game_dict = await airportActions(game_dict); // event listener napeille -> tehdään napin mukainen toiminto
+      console.log(game_dict)
+      game_dict = await airportActions(game_dict); // event listener napeille -> tehdään napin mukainen toiminto
+      console.log(game_dict)
       game_dict["next_location_bool"] = true
-      await sleep(5000); // sleep-funktion käyttö, jotta kone ei mene jumiin, poistetaan myöhemmin
     }
     // sisältää kaikki tarvittavat toiminnot kun lennetään kentältä toiselle
     const data = await flyToNextAirport(game_dict, routes, map)
@@ -482,9 +474,7 @@ async function main() {
       game_dict["first_airport"] = false;
     }
 
-    await sleep(5000); // sleep-funktion käyttö, jotta kone ei mene jumiin, poistetaan myöhemmin
     endGame = await stopGame(game_dict); // tarkistaa palvelimelta täyttyykö edellytykset pelin päättämiselle
-    console.log("Game ends:", endGame);
   }
 }
 
