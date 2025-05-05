@@ -82,7 +82,7 @@ COMMON_game_parameters = {
         'criminal_location': "",
         'airport_options': [],
         'random_luck_bool': False,
-        'airport_results': [],
+        'game_output': [],
 }
 
 airport_random_options = [

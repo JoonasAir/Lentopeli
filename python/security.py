@@ -3,7 +3,7 @@ from mysql_connection import mysql_connection
 def talk_to_security(game_dict:dict):
 
     cursor = mysql_connection.cursor()
-    game_dict["airport_results"] = []
+    game_dict["game_output"] = []
 
     if game_dict["talk_to_chief"] == False: # If we haven't talked to the security chief yet at current airport
         game_dict["talk_to_chief"] = True # change state to True = we have talked to security at this airport
@@ -11,7 +11,7 @@ def talk_to_security(game_dict:dict):
         cursor.execute(sql)
         result = cursor.fetchone()
         if type(result) == tuple: # If result is tupole, our location is found on criminal's table
-            game_dict["airport_results"].append(f"\nSecurity chief's monitows were down due to the criminal's attack.\nStill he had a clue about criminal for you. Try to solve it\n")
+            game_dict["game_output"].append(f"\nSecurity chief's monitows were down due to the criminal's attack.\nStill he had a clue about criminal for you. Try to solve it\n")
             game_dict["criminal_was_here"] = True
 
         else:
@@ -26,14 +26,14 @@ def talk_to_security(game_dict:dict):
         result = cursor.fetchone()
         if type(result) == tuple:
             result = result[0][0]
-            game_dict["airport_results"].append(f"\n{result}")
-            game_dict["airport_results"].append(f"\nThe chief had just found the country where the criminal headed from here!")
-            game_dict["airport_results"].append(f"\nThe fight ICAO-code is: {result}")
+            game_dict["game_output"].append(f"\n{result}")
+            game_dict["game_output"].append(f"\nThe chief had just found the country where the criminal headed from here!")
+            game_dict["game_output"].append(f"\nThe fight ICAO-code is: {result}")
         else:
-            game_dict["airport_results"].append("You caught the criminal!!")
+            game_dict["game_output"].append("You caught the criminal!!")
             
     else:
-        game_dict["airport_results"].append(f"\nThe chief had nothing new to tell you. He was still on a mission to recover his monitors from the attack of the criminal.")
+        game_dict["game_output"].append(f"\nThe chief had nothing new to tell you. He was still on a mission to recover his monitors from the attack of the criminal.")
 
 
     return game_dict

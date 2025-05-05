@@ -60,6 +60,13 @@ async function gameSetup() {
   }
 }
 
+// päivitetään sijainti gaming consoleen
+function locationToGamingConsole() {
+  
+}
+
+
+
 // Päivittää html:ään statustiedot
 function updateStatusBox(game_dict) {
   document.querySelector("#screen-name").textContent = game_dict["screen_name"];
@@ -98,7 +105,6 @@ async function weather(coordinates) {
     icon.src = `https://openweathermap.org/img/wn/${data["icon"]}@2x.png`;
     icon.alt = "weather_icon";
 
-    div.append(name);
     div.append(temp);
     div.append(icon);
     div.append(desc);
@@ -371,7 +377,7 @@ async function airportActions(game_dict) {
 function gameOutput(game_dict) {
   const gameOutput = document.getElementById("game-output");
   gameOutput.innerHTML = "<h3>Game output</h3>"
-  for (let result of game_dict["airport_results"]) {
+  for (let result of game_dict["game_output"]) {
   gameOutput.innerHTML += `<p>${result}</p>`;
   }
 }
