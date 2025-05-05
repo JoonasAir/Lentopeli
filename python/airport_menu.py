@@ -76,7 +76,7 @@ def airport_menu(game_dict:dict):
     user_input = 0
     random_action = 0
     while True: # break out from loop when we fly to next location
-        luck_bool = bool(randint(0,1000000)/1000000 <= game_dict["random_luck"]) # check if we are luck_bool. Based on variable random_luck defined on game_setup()
+        game_dict["random_luck_bool"] = bool(randint(0,1000000)/1000000 <= game_dict["random_luck"]) # check if we are lucky calculated with variable "game_dict["random_luck"])" defined on game_setup()
 
         game_dict = airport_menu_input(game_dict) # ask what user wants to do at the airport
 
@@ -90,7 +90,7 @@ def airport_menu(game_dict:dict):
             else:
                 print(f"You chose to {random_action[0].lower()}.\n" )
                 game_dict["tried_luck"] = True
-                if luck_bool:
+                if game_dict["random_luck_bool"]:
                     game_dict["got_location"] = True
                     sql = "SELECT location FROM criminal WHERE visited = 0 LIMIT 1;"
                     cursor.execute(sql)
@@ -111,7 +111,7 @@ def airport_menu(game_dict:dict):
 
 
         elif user_input == "Talk to airport's security chief": 
-            game_dict = talk_to_security(game_dict, luck_bool)
+            game_dict = talk_to_security(game_dict)
             
 
 
@@ -145,7 +145,7 @@ if __name__ == "__main__":
     from game_parameters import game_parameters
 
     game_dict = game_setup(game_parameters)
-    luck_bool = bool(randint(0,1000000)/1000000 <= game_dict["random_luck"])
+    game_dict["random_luck_bool"] = bool(randint(0,1000000)/1000000 <= game_dict["random_luck"])
     game_dict["quiz_category"] = ask_category()
     game_dict["quiz_questions"] = get_questions(game_dict["difficulty"], game_dict["quiz_category"])
     game_dict = airport_menu(game_dict)

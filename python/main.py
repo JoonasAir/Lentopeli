@@ -6,7 +6,8 @@ from flask_cors import CORS
 from game_setup import game_setup
 from game_parameters import game_parameters
 from airport_menu import airport_menu_input
-from questions import get_questions
+from security import talk_to_security
+from questions import ask_question, get_questions, quiz_icao
 from stop_game import stop_game
 import json
 from geopy import distance
@@ -141,17 +142,26 @@ def randomLuck():
     return game_dict
 
 
-# @app.route('/talkToSecurity', methods='POST')
-# def talkToSecurity():
-#     game_dict = request.json
+@app.route('/talkToSecurity', methods=['POST'])
+def talkToSecurity():
+    game_dict = request.json
+    try: game_dict = game_dict["data"]
+    except: pass
+    game_dict = talk_to_security(game_dict)
+    return game_dict
 
 
-# @app.route('/solveClue', methods='POST')
-# def solveClue():
-#     game_dict = request.json
+@app.route('/solveClue', methods=['POST'])
+def solveClue():
+    game_dict = request.json
+    try: game_dict = game_dict["data"]
+    except: pass
+    ask_question_bool, game_dict['previous_question'] = ask_question(game_dict["quiz_questions"])
+    quiz_icao(ask_question_bool, game_dict)
 
 
-# @app.route('/solvePreviousClue', methods='POST')
+
+# @app.route('/solvePreviousClue', methods=['POST'])
 # def solvePreviousClue():
 #     game_dict = request.json
 

@@ -1,9 +1,9 @@
 from mysql_connection import mysql_connection
 
-def talk_to_security(game_dict:dict, luck_bool:bool):
+def talk_to_security(game_dict:dict):
 
     cursor = mysql_connection.cursor()
-
+    game_dict["airport_results"] = []
 
     if game_dict["talk_to_chief"] == False: # If we haven't talked to the security chief yet at current airport
         game_dict["talk_to_chief"] = True # change state to True = we have talked to security at this airport
@@ -11,14 +11,14 @@ def talk_to_security(game_dict:dict, luck_bool:bool):
         cursor.execute(sql)
         result = cursor.fetchone()
         if type(result) == tuple: # If result is tupole, our location is found on criminal's table
-            print(f"\nSecurity chief's monitows were down due to the criminal's attack.\nStill he had a clue about criminal for you. Try to solve it\n")
+            game_dict["airport_results"].append(f"\nSecurity chief's monitows were down due to the criminal's attack.\nStill he had a clue about criminal for you. Try to solve it\n")
             game_dict["criminal_was_here"] = True
 
         else:
             print(f"\nSecurity chief told you the criminal haven't been at the airport. Try to solve last clue again.\n")
             game_dict["criminal_was_here"] = False
 
-    elif luck_bool and game_dict["criminal_was_here"] and not game_dict["tried_luck"]: # If criminal have been here AND we got lucky AND we haven't tried our luck yet at the current airport
+    elif game_dict["random_luck_bool"] and game_dict["criminal_was_here"] and not game_dict["tried_luck"]: # If criminal have been here AND we got lucky AND we haven't tried our luck yet at the current airport
         game_dict["tried_luck"] = True
         game_dict["got_location"] = True
         sql = "SELECT location FROM criminal WHERE visited = 0 LIMIT 1;"
@@ -26,14 +26,14 @@ def talk_to_security(game_dict:dict, luck_bool:bool):
         result = cursor.fetchone()
         if type(result) == tuple:
             result = result[0][0]
-            print(f"\n{result}")
-            print(f"\nThe chief had just found the country where the criminal headed from here!")
-            print(f"\nThe fight ICAO-code is: {result}")
+            game_dict["airport_results"].append(f"\n{result}")
+            game_dict["airport_results"].append(f"\nThe chief had just found the country where the criminal headed from here!")
+            game_dict["airport_results"].append(f"\nThe fight ICAO-code is: {result}")
         else:
-            print("No result from sql query (you're on same airport with the criminal)")
+            game_dict["airport_results"].append("You caught the criminal!!")
             
     else:
-        print(f"\nThe chief had nothing new to tell you. He was still on a mission to recover his monitors from the attack of the criminal.")
+        game_dict["airport_results"].append(f"\nThe chief had nothing new to tell you. He was still on a mission to recover his monitors from the attack of the criminal.")
 
 
     return game_dict
@@ -46,8 +46,8 @@ if __name__ == "__main__":
     from random import randint
 
     game_dict = game_setup(game_parameters)
-    luck_bool = bool(randint(0,1000000)/1000000 <= game_dict["random_luck"])
+    game_dict["random_luck_bool"] = bool(randint(0,1000000)/1000000 <= game_dict["random_luck"])
     # game_dict["quiz_category"] = ask_category()
     # game_dict["quiz_questions"] = get_questions(game_dict["difficulty"], game_dict["quiz_category"])
 
-    game_dict = talk_to_security(game_dict, luck_bool)
+    game_dict = talk_to_security(game_dict)
