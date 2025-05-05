@@ -20,15 +20,13 @@ def talk_to_security(game_dict:dict):
 
     elif game_dict["random_luck_bool"] and game_dict["criminal_was_here"] and not game_dict["tried_luck"]: # If criminal have been here AND we got lucky AND we haven't tried our luck yet at the current airport
         game_dict["tried_luck"] = True
-        game_dict["got_location"] = True
         sql = "SELECT location FROM criminal WHERE visited = 0 LIMIT 1;"
         cursor.execute(sql)
         result = cursor.fetchone()
         if type(result) == tuple:
-            result = result[0][0]
-            game_dict["game_output"].append(f"\n{result}")
+            game_dict["next_location_bool"] = True
+            game_dict["next_location"] = result[0]
             game_dict["game_output"].append(f"\nThe chief had just found the country where the criminal headed from here!")
-            game_dict["game_output"].append(f"\nThe fight ICAO-code is: {result}")
         else:
             game_dict["game_output"].append("You caught the criminal!!")
             
