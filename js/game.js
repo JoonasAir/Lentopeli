@@ -383,15 +383,9 @@ async function airportActions(game_dict) {
         // SOLVE PREVIOUS CLUE
       } else if (buttonValue === "solvePreviousClue") {
         try {
-          const response = await fetch(baseUrl + "/solvePreviousClue", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(game_dict),
-          });
-          const data = await response.json();
-          resolve(data);
+          game_dict = await questionModal(game_dict);
+          resolve(game_dict);
+          
         } catch (error) {
           console.error("Error:", error);
           resolve(game_dict);

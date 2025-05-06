@@ -199,25 +199,6 @@ def solveClue():
     
     return game_dict
 
-    
-@app.route('/nextLocation', methods=['POST'])
-def solvePreviousClue():
-    game_dict = request.json
-    cursor = mysql_connection.cursor()
-    if game_dict["previous_quiz_answer"]:
-        sql = "SELECT location FROM criminal WHERE visited = 0 LIMIT 1;"
-        cursor.execute(sql)
-        result = cursor.fetchone()
-        game_dict['correct_location'] = True
-    else: 
-        sql = "SELECT ident FROM airport WHERE continent = 'EU' AND type = 'large_airport' AND airport.name LIKE '%Airport' AND ident NOT IN (SELECT location FROM criminal) ORDER BY RAND() LIMIT 1;"
-        cursor.execute(sql)
-        result = cursor.fetchone()
-        game_dict['correct_location'] = False
-    game_dict["next_location"] = result[0]
-    game_dict["next_location_bool"] = True
-
-    return game_dict
 
 @app.route('/updateToVisited', methods=['POST'])
 def updateToVisited():
