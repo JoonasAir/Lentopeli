@@ -26,6 +26,20 @@ html, body {
   width: 100%;
 }
 
+.game-page .poliisi {
+  width: 45px;
+  height: auto;
+  margin: 0 5px;
+  vertical-align: middle;
+}
+
+.main-page .poliisi {
+  width: 70px;
+  height: auto;
+  margin: 0 5px;
+  vertical-align: middle;
+}
+
 .menu-container {
     flex: 1;
     display: flex;
@@ -256,6 +270,13 @@ footer {
 #game-input button:hover {
     background-color: #d96a12;
 }
+
+
+
+
+
+
+
 /*
 
 #status-box div {
@@ -300,9 +321,3 @@ h3 {
   text-align: center;
 }
 
-.poliisi {
-  width: 70px;
-  height: auto;
-  margin: 0 5px;
-  vertical-align: middle;
-}
