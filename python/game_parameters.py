@@ -45,7 +45,7 @@ DIFFICULTY_game_parameters = {
         'criminal_time': 30,        # the time interval at which the criminal flies to the next location
         'quiz_difficulty': 'easy',  # difficulty for quiz questions
         'game_difficulty': 'Custom',
-        'random_luck': 0.3,         # the possibility of benefiting from random functions
+        'random_luck': 1,           # the possibility of benefiting from random functions
         'eco_points': 100,          # eco points at the beginning of the game
 
     }
@@ -55,7 +55,7 @@ DIFFICULTY_game_parameters = {
 # Helper parameters for the game. These are combined with difficulty parameters to be one dictionary "game_dict"
 COMMON_game_parameters = {
         'player_location':"",       # player's current location (ICAO)
-        "win_game":False,           # did we win the game? True = Yes, False = No
+        'win_game':False,           # did we win the game? True = Yes, False = No
         'screen_name':"",           # player's screen name
         'quiz_questions':[],        # questions of player's difficulty and category
         'previous_question':{},     # previously asked question in case of player have to solve it again
@@ -64,7 +64,7 @@ COMMON_game_parameters = {
         'talk_to_chief': False,     # have we talked to security chief at current airport or not? True=yes, False=no
         'previous_quiz_answer':True,# did we answer right or wrong on previous quiz question? True=right, False=wrong
         'next_location_bool':False, # have we solved a clue at current airport or got the next location otherwise? True=yes, False=no
-        'next_location': "",
+        'next_location': "EFHK",
         'criminal_was_here':False,  # security chief tells us if the criminal has been at the air port or not. True=has been, False=has not been
         'criminal_caught':False,    # have we caught the criminal yet? True=yes, False=no
         'first_airport':True,       # are we at our first airport?
@@ -82,7 +82,10 @@ COMMON_game_parameters = {
         'criminal_location': "",
         'airport_options': [],
         'random_luck_bool': False,
-        'airport_results': [],
+        'game_output': [],
+        'clue': [],
+        'quiz_answer': False,
+
 }
 
 airport_random_options = [

@@ -11,24 +11,49 @@ async function leaderboard() {
     const closeButton = dialog.querySelector("#closeLeaderboard"); // Sulkemismerkki
 
     button.addEventListener("click", function () {
-      dialog.innerHTML = ""; // Clear dialog content
+      dialog.innerHTML = ""; // Tyhjennetään dialogi
 
       dialog.appendChild(closeButton);
 
-      // Add leaderboard data to dialog
+      // **Lisätään otsikko**
+      const title = document.createElement("h2");
+      title.textContent = "Leaderboard";
+      title.style.textAlign = "center";
+      dialog.appendChild(title);
+
+      // Luodaan taulukko
+      const table = document.createElement("table");
+      table.style.width = "100%";
+      table.style.borderCollapse = "collapse";
+
+      // Luodaan taulukon otsikkorivi
+      const headerRow = document.createElement("tr");
+      headerRow.innerHTML = `
+        <th style="border: 1px solid black; padding: 8px;">Sijoitus</th>
+        <th style="border: 1px solid black; padding: 8px;">Nimi</th>
+        <th style="border: 1px solid black; padding: 8px;">Pisteet</th>
+      `;
+      table.appendChild(headerRow);
+
+      // Lisätään leaderboard-data taulukkoon
       for (let i = 0; i < jsonData.length && i < 10; i++) {
-        const listItem = document.createElement("p");
-        listItem.textContent =
-          i + 1 + ". " + jsonData[i].Name + ": " + jsonData[i].Points;
-        dialog.appendChild(listItem);
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td style="border: 1px solid black; padding: 8px;">${i + 1}</td>
+          <td style="border: 1px solid black; padding: 8px;">${jsonData[i].Name}</td>
+          <td style="border: 1px solid black; padding: 8px;">${jsonData[i].Points}</td>
+        `;
+        table.appendChild(row);
       }
 
-      dialog.showModal(); // Open dialog
+      dialog.appendChild(table); // Lisätään taulukko modal-ikkunaan
+
+      dialog.showModal(); // Avaa dialogin
     });
 
-    // Adding event listener to close button
+    // Lisää tapahtumakuuntelija sulkupainikkeelle
     closeButton.addEventListener("click", function () {
-      dialog.close(); // Close dialog
+      dialog.close(); // Sulkee dialogin
     });
   } catch (error) {
     console.log("Error:", error.message);
@@ -63,7 +88,7 @@ function newGame() {
       "&difficulty=" +
       difficulty +
       "&category=" +
-      category;
+      encodeURIComponent(category);
   });
 }
 
