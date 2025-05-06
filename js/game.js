@@ -613,14 +613,12 @@ let routes = [
 // PELI KASATAAN TÄMÄN FUNKTION SISÄLLE
 async function main() {
 
-
   // PELIN ALUSTUS #####################################################
-
+  
   let game_dict = await gameSetup(); // Pelin parametrien luonti palvelimella, palauttaa pythonista tutun game_dict -sanakirjan
   startTimer(game_dict.data["game_time"]);
   await updateToVisited(game_dict.data["player_location"])
 
-  // try {stopCriminalTimer()} catch (error) {console.log(error)}
   startCriminalTimer(game_dict.data.criminal_time)
 
   // Mitä tapahtuu kun aika loppuu

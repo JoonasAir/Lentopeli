@@ -1,4 +1,5 @@
 from multiprocessing import Event, Process
+import os
 from mysql_connection import mysql_connection
 import requests
 from flask import Flask, request, jsonify
@@ -11,6 +12,8 @@ from questions import ask_question, get_questions, quiz_icao
 from stop_game import stop_game
 from criminal import criminal_timer
 from geopy import distance
+import psutil
+
 
 app = Flask(__name__)
 cors = CORS(app)
@@ -57,13 +60,13 @@ def print_location():
 
 
 
-
 ProcessCriminalTimer = None
 stop_event = Event()
 
 @app.route('/startCriminalTimer', methods=['POST'])
 def startCriminalTimer():
     time = request.json
+    cleanup_processes()
     global ProcessCriminalTimer, stop_event
  # Defining a background process that runs criminal_timer -function
     ProcessCriminalTimer = Process(target=criminal_timer, args=(time, stop_event))
@@ -72,20 +75,15 @@ def startCriminalTimer():
 
     return {"status": "Timer started"}
 
-@app.route('/stopCriminalTimer')
-def stopCriminalTimer():
-    global ProcessCriminalTimer, stop_event
 
-    if ProcessCriminalTimer and ProcessCriminalTimer.is_alive():
- # Terminate the criminal_timer -background process
-        stop_event.set()
-        ProcessCriminalTimer.terminate()
- # Ensures that the main program waits for the terminated process to clean up properly before continuing
-        ProcessCriminalTimer.join()
-        ProcessCriminalTimer = None
-        return {"status": "Timer stopped"}
-    else:
-        return {"status": "No timer running"}
+
+@app.route('/stopCriminalTimer')
+def cleanup_processes():
+    current_pid = os.getpid()
+    current_process = psutil.Process(current_pid)
+    for child in current_process.children(recursive=True):
+        child.terminate()
+        child.wait()
 
 
 
