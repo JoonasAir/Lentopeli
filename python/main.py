@@ -66,14 +66,15 @@ stop_event = Event()
 @app.route('/startCriminalTimer', methods=['POST'])
 def startCriminalTimer():
     time = request.json
-    cleanup_processes()
+    try: cleanup_processes()
+    except: pass
     global ProcessCriminalTimer, stop_event
  # Defining a background process that runs criminal_timer -function
     ProcessCriminalTimer = Process(target=criminal_timer, args=(time, stop_event))
  # Start the process
     ProcessCriminalTimer.start()
 
-    return {"status": "Timer started"}
+    return jsonify({"status": "Timer started"})
 
 
 
@@ -107,7 +108,8 @@ def get_location():
 
     if not flyfrom or not flyto:
         return jsonify({"error": "No data found"}), 404
-
+    print(flyfrom)
+    print(flyto)
     result = {
         "from": {"latitude": flyfrom[0][0], "longitude": flyfrom[0][1]},
         "to": {"latitude": flyto[0][0], "longitude": flyto[0][1]}
@@ -274,10 +276,9 @@ def getTemp():
 def calculateCO2():
     data = request.json
     routes = data["routes"]
-    index = data["index"] #  0 = player  -  1 = criminal
-
-    coord1 = tuple(routes[-1][index])
-    coord2 = tuple(routes[-2][index])
+    print(routes)
+    coord1 = tuple(routes[-1][0])
+    coord2 = tuple(routes[-1][1])
     distanceKM = round(distance.distance(coord1, coord2).km)
     co2 = round(distanceKM * 0.15) 
     result = {

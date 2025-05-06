@@ -60,14 +60,14 @@ async function gameSetup() {
   }
 }
 
-function startCriminalTimer(time) {
+async function startCriminalTimer(time) {
   try {
-    const response = fetch(baseUrl + "/startCriminalTimer", {
+    const response = await fetch(baseUrl + "/startCriminalTimer", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(time),
     });
-    data = response.json();
+    const data = await response.json();
     return data;
   } catch (error) {
     console.error("Error:", error);
@@ -144,10 +144,9 @@ async function weather(coordinates) {
 }
 
 // Funktio co2 sekä kokonaismatkan laskemiseen
-async function co2(routes, index) {
+async function co2(routes) {
   const payload = {
     routes: routes,
-    index: index,
   };
   try {
     const response = await fetch("http://127.0.0.1:5000/co2distance", {
@@ -244,7 +243,6 @@ async function drawLine(game_dict, map) {
     if (progress >= 1) {
       map.removeLayer(polyline);
       await map.flyTo(end, 8, { duration: 3 });
-      routes.push(game_dict["coordinates"]);
       map.removeLayer(airplaneMarker);
 
       await sleep(3000);
@@ -252,7 +250,7 @@ async function drawLine(game_dict, map) {
       const marker = L.circleMarker(
         [game_dict["coordinates"][1][0], game_dict["coordinates"][1][1]],
         {
-          color: "white", // Alkuperäinen väri
+          color: "white", 
           fillColor: "blue",
           fillOpacity: 1,
           radius: 10,
@@ -278,8 +276,7 @@ async function drawLine(game_dict, map) {
       setTimeout(animate, interval);
     }
   }
-
-  animate();
+  animate()
 }
 
 // tarkistaa palvelimelta täyttyykö edellytykset pelin päättämiselle
@@ -512,10 +509,12 @@ async function flyToNextAirport(game_dict, routes, map) {
   game_dict = await fetchCoordinates(game_dict);
 
   // animateAirplane()
-  drawLine(game_dict, map);
+  routes.push(game_dict.coordinates)
+  await drawLine(game_dict, map);
+
 
   // calculate emissions
-  const data = await co2(routes, 0);
+  const data = await co2(routes);
   game_dict["KM_player"] += data.distanceKM;
   game_dict["CO2_player"] += data.co2;
 
@@ -535,49 +534,7 @@ async function flyToNextAirport(game_dict, routes, map) {
   return { game_dict: game_dict, routes: routes };
 }
 
-let routes = [
-  // RANDOM LOCATIONS (temporary)
-  [
-    [50.1109, 8.6821],
-    [48.8566, 2.3522],
-  ], // Frankfurt, Germany to Paris, France
-  [
-    [51.5074, -0.1278],
-    [52.52, 13.405],
-  ], // London, UK to Berlin, Germany
-  [
-    [41.9028, 12.4964],
-    [40.4168, -3.7038],
-  ], // Rome, Italy to Madrid, Spain
-  [
-    [59.3293, 18.0686],
-    [60.1695, 24.9354],
-  ], // Stockholm, Sweden to Helsinki, Finland
-  [
-    [53.3498, -6.2603],
-    [55.7558, 37.6173],
-  ], // Dublin, Ireland to Moscow, Russia
-  [
-    [47.4979, 19.0402],
-    [48.2082, 16.3738],
-  ], // Budapest, Hungary to Vienna, Austria
-  [
-    [37.9838, 23.7275],
-    [45.815, 15.9819],
-  ], // Athens, Greece to Zagreb, Croatia
-  [
-    [50.0755, 14.4378],
-    [52.2297, 21.0122],
-  ], // Prague, Czech Republic to Warsaw, Poland
-  [
-    [55.6761, 12.5683],
-    [59.9139, 10.7522],
-  ], // Copenhagen, Denmark to Oslo, Norway
-  [
-    [43.7102, 7.262],
-    [45.4642, 9.19],
-  ], // Nice, France to Milan, Italy
-];
+let routes = [];
 
 // PELI KASATAAN TÄMÄN FUNKTION SISÄLLE
 async function main() {
@@ -585,21 +542,29 @@ async function main() {
   // PELIN ALUSTUS #####################################################
   
   let game_dict = await gameSetup(); // Pelin parametrien luonti palvelimella, palauttaa pythonista tutun game_dict -sanakirjan
-  startTimer(game_dict.data["game_time"]);
-  await updateToVisited(game_dict.data["player_location"]);
+  game_dict = game_dict.data
 
-  startCriminalTimer(game_dict.data.criminal_time)
+  // käynnistetään ajastin
+  startTimer(game_dict["game_time"]);
+
+  // Päivitetään tietokannasta rikollisen taulun visited -sarake 0 -> 1 
+  await updateToVisited(game_dict["player_location"]);
+
+  // käynnistetään palvelimella taustaprosessina juokseva ajastin, 
+  // joka lisää rikolliselle X ajan välein tietokantaan uuden sijainnin 
+  startCriminalTimer(game_dict.criminal_time)
 
   // Mitä tapahtuu kun aika loppuu
   document.addEventListener("timerEnd", () => {
     game_dict["time_left_bool"] = false;
   });
-  updateStatusBox(game_dict.data); // Päivittää html:ään statustiedot
+  updateStatusBox(game_dict); // Päivittää html:ään statustiedot
   game_dict = await fetchCoordinates(game_dict); // Haetaan rikollisen ja pelaajan koordinaatit
   // Alustetaan kartta
-
+  console.log(game_dict.coordinates)
+  console.log(routes)
   const map = L.map("map").setView(
-    [game_dict.data["coordinates"][0][0], game_dict.data["coordinates"][0][1]],
+    [game_dict["coordinates"][0][0], game_dict["coordinates"][0][1]],
     10
   );
 
@@ -610,19 +575,14 @@ async function main() {
   }).addTo(map);
 
   const marker = L.marker([
-    game_dict.data["coordinates"][0][0],
-    game_dict.data["coordinates"][0][1],
+    game_dict["coordinates"][0][0],
+    game_dict["coordinates"][0][1],
   ]).addTo(map);
   marker.bindPopup("<b>Starting point</b>").openPopup();
 
-  weather(game_dict.data.coordinates[0]);
+  weather(game_dict.coordinates[0]);
 
   let endGame = false;
-  try {
-    game_dict = game_dict.data;
-  } catch (error) {
-    console.log(error);
-  }
   locationToGamingConsole(game_dict["player_location"]);
 
   // PELIN LOOPPI ALKAA TÄSTÄ ##################################################
