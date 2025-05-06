@@ -85,6 +85,7 @@ COMMON_game_parameters = {
         'game_output': [],
         'clue': [],
         'quiz_answer': False,
+        'correct_location': False
 
 }
 

@@ -168,6 +168,7 @@ def randomLuck():
             cursor.execute(sql)
             result = cursor.fetchone()
             if type(result) == tuple:
+                game_dict['correct_location'] = True
                 game_dict["game_output"].append(game_dict["airport_options"][2]["text"][1])
                 game_dict["next_location_bool"] = True
                 game_dict["next_location"] = result[0]
@@ -207,10 +208,12 @@ def solvePreviousClue():
         sql = "SELECT location FROM criminal WHERE visited = 0 LIMIT 1;"
         cursor.execute(sql)
         result = cursor.fetchone()
+        game_dict['correct_location'] = True
     else: 
         sql = "SELECT ident FROM airport WHERE continent = 'EU' AND type = 'large_airport' AND airport.name LIKE '%Airport' AND ident NOT IN (SELECT location FROM criminal) ORDER BY RAND() LIMIT 1;"
         cursor.execute(sql)
         result = cursor.fetchone()
+        game_dict['correct_location'] = False
     game_dict["next_location"] = result[0]
     game_dict["next_location_bool"] = True
 
