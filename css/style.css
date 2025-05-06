@@ -226,13 +226,37 @@ footer {
     background-color: var(--bg-color-secondary);
     padding: 2rem;
     box-sizing: border-box;
+    position: relative;
 }
 
-
-/*#map-box img {
-  width: 95%;
-  margin-left: calc(45vw * (1 - 0.95) / 2);
+#timer-box {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-weight: bold;
+  font-size: 1.1em;
+  text-align: right;
 }
+
+#game-input button {
+    display: block;
+    width: 100%;
+    padding: 1rem;
+    margin: 0.5rem 0;
+    border: none;
+    background-color: #ed7a1a;
+    color: #ffffff;
+    cursor: pointer;
+    font-size: 1.1rem;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+    border-radius: 5px;
+}
+
+#game-input button:hover {
+    background-color: #d96a12;
+
+/*
 
 #status-box div {
   justify-items: center;
@@ -271,13 +295,6 @@ footer {
   font-weight: bold;
 }
 
-#timer-box {
-  position: absolute;
-  top: 10px;
-  right: 50px;
-  font-weight: bold;
-  font-size: 1.1em;
-}
 
 h3 {
   text-align: center;
