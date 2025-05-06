@@ -1,4 +1,5 @@
 from multiprocessing import Event, Process
+import os
 from mysql_connection import mysql_connection
 import requests
 from flask import Flask, request, jsonify
@@ -11,6 +12,8 @@ from questions import ask_question, get_questions, quiz_icao
 from stop_game import stop_game
 from criminal import criminal_timer
 from geopy import distance
+import psutil
+
 
 app = Flask(__name__)
 cors = CORS(app)
@@ -57,35 +60,31 @@ def print_location():
 
 
 
-
 ProcessCriminalTimer = None
 stop_event = Event()
 
 @app.route('/startCriminalTimer', methods=['POST'])
 def startCriminalTimer():
     time = request.json
+    try: cleanup_processes()
+    except: pass
     global ProcessCriminalTimer, stop_event
  # Defining a background process that runs criminal_timer -function
     ProcessCriminalTimer = Process(target=criminal_timer, args=(time, stop_event))
  # Start the process
     ProcessCriminalTimer.start()
 
-    return {"status": "Timer started"}
+    return jsonify({"status": "Timer started"})
+
+
 
 @app.route('/stopCriminalTimer')
-def stopCriminalTimer():
-    global ProcessCriminalTimer, stop_event
-
-    if ProcessCriminalTimer and ProcessCriminalTimer.is_alive():
- # Terminate the criminal_timer -background process
-        stop_event.set()
-        ProcessCriminalTimer.terminate()
- # Ensures that the main program waits for the terminated process to clean up properly before continuing
-        ProcessCriminalTimer.join()
-        ProcessCriminalTimer = None
-        return {"status": "Timer stopped"}
-    else:
-        return {"status": "No timer running"}
+def cleanup_processes():
+    current_pid = os.getpid()
+    current_process = psutil.Process(current_pid)
+    for child in current_process.children(recursive=True):
+        child.terminate()
+        child.wait()
 
 
 
@@ -109,7 +108,8 @@ def get_location():
 
     if not flyfrom or not flyto:
         return jsonify({"error": "No data found"}), 404
-
+    print(flyfrom)
+    print(flyto)
     result = {
         "from": {"latitude": flyfrom[0][0], "longitude": flyfrom[0][1]},
         "to": {"latitude": flyto[0][0], "longitude": flyto[0][1]}
@@ -168,6 +168,7 @@ def randomLuck():
             cursor.execute(sql)
             result = cursor.fetchone()
             if type(result) == tuple:
+                game_dict['correct_location'] = True
                 game_dict["game_output"].append(game_dict["airport_options"][2]["text"][1])
                 game_dict["next_location_bool"] = True
                 game_dict["next_location"] = result[0]
@@ -198,23 +199,6 @@ def solveClue():
     
     return game_dict
 
-    
-@app.route('/nextLocation', methods=['POST'])
-def solvePreviousClue():
-    game_dict = request.json
-    cursor = mysql_connection.cursor()
-    if game_dict["previous_quiz_answer"]:
-        sql = "SELECT location FROM criminal WHERE visited = 0 LIMIT 1;"
-        cursor.execute(sql)
-        result = cursor.fetchone()
-    else: 
-        sql = "SELECT ident FROM airport WHERE continent = 'EU' AND type = 'large_airport' AND airport.name LIKE '%Airport' AND ident NOT IN (SELECT location FROM criminal) ORDER BY RAND() LIMIT 1;"
-        cursor.execute(sql)
-        result = cursor.fetchone()
-    game_dict["next_location"] = result[0]
-    game_dict["next_location_bool"] = True
-
-    return game_dict
 
 @app.route('/updateToVisited', methods=['POST'])
 def updateToVisited():
@@ -273,10 +257,9 @@ def getTemp():
 def calculateCO2():
     data = request.json
     routes = data["routes"]
-    index = data["index"] #  0 = player  -  1 = criminal
-
-    coord1 = tuple(routes[-1][index])
-    coord2 = tuple(routes[-2][index])
+    print(routes)
+    coord1 = tuple(routes[-1][0])
+    coord2 = tuple(routes[-1][1])
     distanceKM = round(distance.distance(coord1, coord2).km)
     co2 = round(distanceKM * 0.15) 
     result = {

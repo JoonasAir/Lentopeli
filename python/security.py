@@ -25,6 +25,7 @@ def talk_to_security(game_dict:dict):
         cursor.execute(sql)
         result = cursor.fetchone()
         if type(result) == tuple:
+            game_dict['correct_location'] = True
             game_dict["next_location_bool"] = True
             game_dict["next_location"] = result[0]
             game_dict["game_output"].append(f"\nThe chief had just found the country where the criminal headed from here!")
