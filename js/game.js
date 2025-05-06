@@ -16,6 +16,8 @@ const dataToFlask = {
   category_input: category_input,
 };
 
+
+
 // Game timer
 const timerElement = document.getElementById("timer");
 const timerEndEvent = new Event("timerEnd");
@@ -35,6 +37,8 @@ function updateTimer(countdownTime) {
   return countdownTime;
 }
 
+
+
 // Käynnistää ajastimen (vain kun peli alkaa tai nollataan)
 function startTimer(countdownTime) {
   clearInterval(timerInterval); // Estetään päällekkäiset ajastimet
@@ -43,6 +47,8 @@ function startTimer(countdownTime) {
   }, 1000);
   updateTimer(countdownTime); // Päivitetään heti, jotta käyttäjä näkee ajan muutoksen
 }
+
+
 
 // Käyttäjän syöttämien aloitustietojen haku
 // ja pelin parametrien luonti palvelimella
@@ -223,6 +229,7 @@ async function fetchCoordinates(game_dict) {
     console.log("Virhe haettaessa tietoa:", error.message);
   }
 }
+
 
 
 async function drawLine(game_dict, map) {
@@ -601,13 +608,19 @@ let routes = [
   ], // Nice, France to Milan, Italy
 ];
 
+
+
 // PELI KASATAAN TÄMÄN FUNKTION SISÄLLE
 async function main() {
+
+
   // PELIN ALUSTUS #####################################################
+
   let game_dict = await gameSetup(); // Pelin parametrien luonti palvelimella, palauttaa pythonista tutun game_dict -sanakirjan
   startTimer(game_dict.data["game_time"]);
   await updateToVisited(game_dict.data["player_location"])
 
+  // try {stopCriminalTimer()} catch (error) {console.log(error)}
   startCriminalTimer(game_dict.data.criminal_time)
 
   // Mitä tapahtuu kun aika loppuu
@@ -637,11 +650,13 @@ async function main() {
 
   weather(game_dict.data.coordinates[0]);
 
-
   let endGame = false;
   try { game_dict = game_dict.data } catch (error) { console.log(error) }
   locationToGamingConsole(game_dict["player_location"]);
+
+
   // PELIN LOOPPI ALKAA TÄSTÄ ##################################################
+  
   while (!endGame) {
     console.log("GAME LOOP'S FIRST ROW", ` Current: ${game_dict.player_location}, Next: ${game_dict.next_location}`)
     // reset airport_menu-helper parameters to default value before entering airport-menu at the new airport
@@ -653,6 +668,8 @@ async function main() {
     game_dict["criminal_was_here"] = false;
 
     game_dict["random_luck_bool"] = Math.random() <= game_dict["random_luck"];
+
+    
     // AIRPORT-MENU
     while (!game_dict["next_location_bool"]) {
       console.log("AIRPORT LOOP'S FIRST ROW", ` Current: ${game_dict.player_location}, Next: ${game_dict.next_location}`)
@@ -661,6 +678,7 @@ async function main() {
       gameOutput(game_dict);
       // game_dict["next_location_bool"] = true
     }
+
 
     // Lennetään kentältä toiselle - funktio sisältää kaikki tarvittavat toiminnot
     console.log("FLY TO NEXT AIRPORT", ` Current: ${game_dict.player_location}, Next: ${game_dict.next_location}`)
