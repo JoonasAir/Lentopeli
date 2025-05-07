@@ -657,7 +657,7 @@ async function main() {
 
   // Luodaan uusi tekstielementti lopputulokselle
   const resultMessage = document.getElementById("game-box");
-  resultMessage.innerHTML = "<h2>Sait rikollisen kiinni, voitit pelin!</h2>"; // tai muu teksti
+  resultMessage.innerHTML = ""; // tai muu teksti
 
   // Lisätään se näkyviin olemassa olevan sisällön alle
 
@@ -701,9 +701,9 @@ async function main() {
       spread: 360,
       origin: { y: 0.2 },
     });
-  } else if (!game_dict.game_money >= game_dict.flight_price) {
+  } else if (!game_dict.game_money <= game_dict.flight_price) {
     // Rahat loppuivat
-    resultMessage = "<h2>Rahasi loppui, hävisit pelin!</h2>";
+    resultMessage.innerHTML = "<h2>Rahasi loppui, hävisit pelin!</h2>";
     resultMessage.style.textAlign = "center";
   } else if (!game_dict.time_left_bool) {
     // Aika loppui
