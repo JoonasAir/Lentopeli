@@ -1,22 +1,22 @@
-from multiprocessing import Event, Process
 import os
-from mysql_connection import mysql_connection
+import psutil
 import requests
-from flask import Flask, request, jsonify
+from geopy import distance
 from flask_cors import CORS
+from stop_game import stop_game
 from game_setup import game_setup
+from criminal import criminal_timer
+from security import talk_to_security
+from flask import Flask, request, jsonify
+from multiprocessing import Event, Process
 from game_parameters import game_parameters
 from airport_menu import airport_menu_input
-from security import talk_to_security
-from questions import ask_question, get_questions, quiz_icao
-from stop_game import stop_game
-from criminal import criminal_timer
-from geopy import distance
-import psutil
+from mysql_connection import mysql_connection
+from questions import ask_question, get_questions
 
 
 app = Flask(__name__)
-cors = CORS(app)
+cors = CORS(app, resources={r"/*": {"origins": "*"}})
 app.config['CORS_HEADERS'] = 'Content-Type'
 
 
@@ -48,9 +48,12 @@ def gameSetup():
 
 
 
-@app.route('/location', methods=['POST'])
+@app.route('/location')
 def print_location():
-    icao = request.json
+    cursor = mysql_connection.cursor()
+    sql = "SELECT location FROM criminal WHERE visited = 1 ORDER BY id DESC LIMIT 1;"
+    cursor.execute(sql)
+    icao = cursor.fetchone()[0]
     cursor = mysql_connection.cursor(dictionary=True)
     sql = f"SELECT country.name AS country, airport.name AS airport FROM airport, country WHERE country.iso_country = airport.iso_country AND airport.ident = '{icao}';"
     cursor.execute(sql)
@@ -80,12 +83,14 @@ def startCriminalTimer():
 
 @app.route('/stopCriminalTimer')
 def cleanup_processes():
-    current_pid = os.getpid()
-    current_process = psutil.Process(current_pid)
-    for child in current_process.children(recursive=True):
-        child.terminate()
-        child.wait()
-
+    try: 
+        current_pid = os.getpid()
+        current_process = psutil.Process(current_pid)
+        for child in current_process.children(recursive=True):
+            child.terminate()
+            child.wait()
+        return jsonify({"message":"Process terminated succesfully"})
+    except: return jsonify({"message":"An error occurred while trying to terminate process"})
 
 
 @app.route("/flyto", methods=['PUT'])
@@ -108,8 +113,6 @@ def get_location():
 
     if not flyfrom or not flyto:
         return jsonify({"error": "No data found"}), 404
-    print(flyfrom)
-    print(flyto)
     result = {
         "from": {"latitude": flyfrom[0][0], "longitude": flyfrom[0][1]},
         "to": {"latitude": flyto[0][0], "longitude": flyto[0][1]}
@@ -172,13 +175,34 @@ def randomLuck():
                 game_dict["game_output"].append(game_dict["airport_options"][2]["text"][1])
                 game_dict["next_location_bool"] = True
                 game_dict["next_location"] = result[0]
-            else: 
-                print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n@@@@@@@@@@@@@@@@@@@@@@@@@@\nsaimme(ko?) rikollisen kiinni \n@@@@@@@@@@@@@@@@@@@@@@@@@@@@\n@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
         else:
             game_dict["game_output"].append(f"{game_dict["airport_options"][2]["text"][2]}\n" )
 
     return game_dict
 
+
+@app.route('/criminalCaught')
+def criminalCaught():
+    print("     criminalCaught 1st row")
+    try:
+        cursor = mysql_connection.cursor()
+        sql1 = "SELECT location FROM criminal WHERE visited = 0 LIMIT 1;"
+        cursor.execute(sql1)
+        criminal_location = cursor.fetchone()
+        if criminal_location is None:
+            print("     None  -  Criminal caught: True")
+            return jsonify(True)
+        elif criminal_location[0] == "":
+            print(f"     '{criminal_location[0]}'  -  Criminal caught: True")
+            return jsonify(True)
+        else:
+            print(f"     '{criminal_location[0]}'  -  Criminal caught: False")
+            return jsonify(False)
+    except Exception as e:
+        print(f"Error in /criminalCaught: {e}")
+        return jsonify({"error": "Internal Server Error"}), 500
+    
+    
 
 @app.route('/talkToSecurity', methods=['POST'])
 def talkToSecurity():
@@ -197,6 +221,26 @@ def solveClue():
     except: pass
     game_dict = ask_question(game_dict)
     
+    return game_dict
+    
+
+@app.route('/nextLocation', methods=['POST'])
+def solvePreviousClue():
+    game_dict = request.json
+    cursor = mysql_connection.cursor()
+    if game_dict["previous_quiz_answer"]:
+        sql = "SELECT location FROM criminal WHERE visited = 0 LIMIT 1;"
+        cursor.execute(sql)
+        result = cursor.fetchone()
+        game_dict['correct_location'] = True
+    else: 
+        sql = "SELECT ident FROM airport WHERE continent = 'EU' AND type = 'large_airport' AND airport.name LIKE '%Airport' AND ident NOT IN (SELECT location FROM criminal) ORDER BY RAND() LIMIT 1;"
+        cursor.execute(sql)
+        result = cursor.fetchone()
+        game_dict['correct_location'] = False
+    game_dict["next_location"] = result[0]
+    game_dict["next_location_bool"] = True
+
     return game_dict
 
 
@@ -257,7 +301,6 @@ def getTemp():
 def calculateCO2():
     data = request.json
     routes = data["routes"]
-    print(routes)
     coord1 = tuple(routes[-1][0])
     coord2 = tuple(routes[-1][1])
     distanceKM = round(distance.distance(coord1, coord2).km)

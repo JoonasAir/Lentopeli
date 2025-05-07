@@ -1,11 +1,11 @@
 from random import randint
 
 from click import option
-from player import change_location
+from unnecessary.player import change_location
 from mysql_connection import mysql_connection
 from questions import quiz_icao, ask_question
 from security import talk_to_security
-from reduce_money import reduce_money
+from unnecessary.reduce_money import reduce_money
 from game_parameters import airport_random_options
 import textwrap
 import shutil

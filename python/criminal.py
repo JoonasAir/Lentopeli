@@ -58,7 +58,7 @@ def criminal_new_location(boolean:bool):
     
 def criminal_timer(time: int, stop_event):
     while not stop_event.is_set():
-        print("!!!!!!!!!!!!!!!!!!!!!!!!")
+        print("!!!!!")
         sleep(time)
         cursor = mysql_connection.cursor()
         sql = "INSERT INTO criminal (location) SELECT ident FROM airport WHERE continent = 'EU' AND type = 'large_airport' AND airport.name LIKE '%Airport' AND ident NOT IN (SELECT location FROM criminal) ORDER BY RAND() LIMIT 1;"

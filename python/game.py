@@ -2,9 +2,9 @@ import threading
 from time import sleep
 from mysql_connection import mysql_connection
 from airport_menu import airport_menu
-from background_story import background_story
+from unnecessary.background_story import background_story
 from criminal import criminal_timer, criminal_caught
-from player import print_location
+from unnecessary.player import print_location
 from stop_game import stop_game
 from multiprocessing import Process
 from questions import ask_category, get_questions
