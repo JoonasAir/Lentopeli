@@ -3,7 +3,7 @@ from game_setup import game_setup
 #from leaderboard import leaderboard
 from questions import practice_quiz
 from game_parameters import game_parameters
-from tutorial import tutorial
+from unnecessary.tutorial import tutorial
 
 
 

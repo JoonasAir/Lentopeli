@@ -14,35 +14,9 @@ const dataToFlask = {
   name_input: name_input,
   difficulty_input: difficulty_input,
   category_input: category_input,
-};
+};  
 
-// Game timer
-const timerElement = document.getElementById("timer");
-const timerEndEvent = new Event("timerEnd");
-let timerInterval;
 
-function updateTimer(countdownTime) {
-  const minutes = Math.floor(countdownTime / 60);
-  const seconds = countdownTime % 60;
-
-  timerElement.textContent = `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
-  if (countdownTime > 0) {
-    countdownTime--; // Vähennetään sekunti
-  } else {
-    clearInterval(timerInterval); // Lopetetaan ajastus
-    document.dispatchEvent(timerEndEvent); // Lähetetään "timerEnd" tapahtuma
-  }
-  return countdownTime;
-}
-
-// Käynnistää ajastimen (vain kun peli alkaa tai nollataan)
-function startTimer(countdownTime) {
-  clearInterval(timerInterval); // Estetään päällekkäiset ajastimet
-  timerInterval = setInterval(() => {
-    countdownTime = updateTimer(countdownTime); // Päivitetään countdownTime sekuntin välein
-  }, 1000);
-  updateTimer(countdownTime); // Päivitetään heti, jotta käyttäjä näkee ajan muutoksen
-}
 
 // Käyttäjän syöttämien aloitustietojen haku
 // ja pelin parametrien luonti palvelimella
@@ -53,13 +27,46 @@ async function gameSetup() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(dataToFlask),
     });
-    const data = await response.json();
+    let data = await response.json();
+    data = data.data
     return data;
   } catch (error) {
     console.error("Error:", error);
   }
 }
 
+
+// Game timer
+const timerElement = document.getElementById("timer");
+const timerEndEvent = new Event("timerEnd");
+let timerInterval;
+
+// Käynnistää ajastimen (vain kun peli alkaa tai nollataan)
+function startGameTimer(countdownTime) {
+  clearInterval(timerInterval); // Estetään päällekkäiset ajastimet
+  timerInterval = setInterval(() => {
+    countdownTime = updateGameTimer(countdownTime); // Päivitetään countdownTime sekuntin välein
+  }, 1000);  
+  updateGameTimer(countdownTime); // Päivitetään heti, jotta käyttäjä näkee ajan muutoksen
+}  
+
+function updateGameTimer(countdownTime) {
+  const minutes = Math.floor(countdownTime / 60);
+  const seconds = countdownTime % 60;
+
+  timerElement.textContent = `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
+  if (countdownTime > 0) {
+    countdownTime--; // Vähennetään sekunti
+  } else {
+    clearInterval(timerInterval); // Lopetetaan ajastus
+    document.dispatchEvent(timerEndEvent); // Lähetetään "timerEnd" tapahtuma
+  }    
+  return countdownTime;
+}    
+
+
+
+// Käynnistää palvelimella taustaprosessin, joka lisää X ajan välein tietokantaan rikolliselle uuden sijainnin
 async function startCriminalTimer(time) {
   try {
     const response = await fetch(baseUrl + "/startCriminalTimer", {
@@ -74,22 +81,51 @@ async function startCriminalTimer(time) {
   }
 }
 
-function stopCriminalTimer() {
+// Pysäyttää palvelimen taustaprosessin
+async function stopCriminalTimer() {
   try {
-    fetch(baseUrl + "/stopCriminalTimer");
+    await fetch(baseUrl + "/stopCriminalTimer");
   } catch (error) {
     console.error("Error:", error);
   }
 }
 
-// päivitetään sijainti gaming consoleen
-async function locationToGamingConsole(icao) {
+
+// Päivittää rikollisen tauluun sijainnin, johon saavuimme, Visited -sarakkeen 0 -> 1
+async function updateToVisited(location) {
   try {
-    const response = await fetch(baseUrl + "/location", {
+    const response = await fetch(baseUrl + "/updateToVisited", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(icao),
+      body: JSON.stringify(location),
     });
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error:", error);
+  }
+}
+
+
+
+// Tarkistetaan ollaanko samalla lentokentällä rikollisen kanssa (yksi pelin päättämisen ehdoista)
+async function criminalCaught() {
+  try {
+    const response = await fetch(baseUrl + "/criminalCaught");
+    const criminal_caught_bool = await response.json()
+    return criminal_caught_bool
+  } catch (error) {
+    console.error("Error:", error);
+  }
+
+}
+
+
+
+// Päivitetään sijaintimme html:ään
+async function locationToGamingConsole() {
+  try {
+    const response = await fetch(baseUrl + "/location");
     const data = await response.json();
     document.getElementById("location").innerText = data;
   } catch (error) {
@@ -97,8 +133,10 @@ async function locationToGamingConsole(icao) {
   }
 }
 
+
+
 // Päivittää html:ään statustiedot
-function updateStatusBox(game_dict) {
+async function updateStatusBox(game_dict) {
   document.querySelector("#screen-name").textContent = game_dict["screen_name"];
   document.querySelector("#difficulty").textContent =
     game_dict["game_difficulty"];
@@ -111,7 +149,9 @@ function updateStatusBox(game_dict) {
     game_dict["CO2_criminal"];
 }
 
-// Funktio säätietojen hakemiseen
+
+
+// Funktio säätietojen hakemiseen ja html:ään lisäämiseen
 async function weather(coordinates) {
   try {
     const response = await fetch("http://127.0.0.1:5000/weather", {
@@ -143,7 +183,9 @@ async function weather(coordinates) {
   }
 }
 
-// Funktio co2 sekä kokonaismatkan laskemiseen
+
+
+// Funktio lentomatkan kilometrejen ja co2-päästöjen laskemiseen
 async function co2(routes) {
   const payload = {
     routes: routes,
@@ -168,7 +210,9 @@ async function co2(routes) {
   }
 }
 
-// Asynkroninen funktio koordinaattien hakemiseen
+
+
+// Funktio lentomatkan alku- ja loppupisteen koordinaattien hakemiseen
 async function fetchCoordinates(game_dict) {
   try {
     // Haetaan koordinaatit backendistä
@@ -184,11 +228,6 @@ async function fetchCoordinates(game_dict) {
 
     // Muunnetaan vastaus JSON-muotoon
     const jsonData = await response.json();
-
-    // const points = [
-    //   [60.1756, 24.9342],
-    //   [52.3667, 4.8833],
-    // ];
 
     // Päivitetään pisteiden käsittely vastaamaan uutta JSON-rakennetta
     const points = [
@@ -206,6 +245,9 @@ async function fetchCoordinates(game_dict) {
   }
 }
 
+
+// Piirretään kartalle lentoreitti ja näytetään lennon animaatio, 
+// sekä lisätään punaiset/vihreät merkit sen mukaan ollaanko oikeassa vai väärässä paikassa
 async function drawLine(game_dict, map) {
   //Piirrä reitti annetuilla koordinaateilla
   const polyline = L.polyline(game_dict["coordinates"], {
@@ -232,7 +274,7 @@ async function drawLine(game_dict, map) {
 
   // Animaation asetukset
   let progress = 0;
-  const steps = 150;
+  const steps = 100;
   const interval = 20;
 
   //Animaatiofunktio
@@ -242,15 +284,15 @@ async function drawLine(game_dict, map) {
 
     if (progress >= 1) {
       map.removeLayer(polyline);
-      await map.flyTo(end, 8, { duration: 3 });
+      await map.flyTo(end, 5, { duration: 1.5 });
       map.removeLayer(airplaneMarker);
 
-      await sleep(3000);
+      await sleep(1500);
 
       const marker = L.circleMarker(
         [game_dict["coordinates"][1][0], game_dict["coordinates"][1][1]],
         {
-          color: "white", 
+          color: "white",
           fillColor: "blue",
           fillOpacity: 1,
           radius: 10,
@@ -279,7 +321,9 @@ async function drawLine(game_dict, map) {
   animate()
 }
 
-// tarkistaa palvelimelta täyttyykö edellytykset pelin päättämiselle
+
+
+// Tarkistaa palvelimelta täyttyykö edellytykset pelin päättämiselle
 async function stopGame(game_dict) {
   try {
     const response = await fetch(baseUrl + "/stopGame", {
@@ -294,7 +338,29 @@ async function stopGame(game_dict) {
   }
 }
 
-// Update game input -buttons in airportOptions()
+
+
+// Haetaan palvelimelta oikeat toiminnot ja tehdään näistä napit html:ään 
+async function airportOptions(game_dict) {
+  try {
+    const response = await fetch(baseUrl + "/airportOptions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(game_dict),
+    });
+    const data = await response.json();
+
+    const options = data["data"]["airport_options"];
+    updateGameInput(options);
+    return data.data;
+  } catch (error) {
+    console.error("Error:", error);
+  }
+}
+
+// Päivitetään html:ään pelin toiminto-napit airportOptions funktiossa
 function updateGameInput(newButtons) {
   const gameInput = document.querySelector("#game-input");
   gameInput.innerHTML = "<h3>Game input</h3>";
@@ -315,27 +381,7 @@ function updateGameInput(newButtons) {
   }
 }
 
-// Get correct input options from backend
-async function airportOptions(game_dict) {
-  try {
-    const response = await fetch(baseUrl + "/airportOptions", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(game_dict),
-    });
-    const data = await response.json();
-
-    const options = data["data"]["airport_options"];
-    updateGameInput(options);
-    return data.data;
-  } catch (error) {
-    console.error("Error:", error);
-  }
-}
-
-// Airport actions
+// Tehdään jatkotoimenpiteet sen mukaan mitä toiminto-nappia pelaaja painaa
 async function airportActions(game_dict) {
   const gameInput = document.querySelector("#game-input");
 
@@ -354,10 +400,10 @@ async function airportActions(game_dict) {
             body: JSON.stringify(game_dict),
           });
           const data = await response.json();
-          resolve(data); // Resolve with the updated game_dict
+          resolve(data);
         } catch (error) {
           console.error("Error:", error);
-          resolve(game_dict); // Resolve with the original game_dict in case of error
+          resolve(game_dict);
         }
 
         // SOLVE A CLUE
@@ -385,7 +431,7 @@ async function airportActions(game_dict) {
         try {
           game_dict = await questionModal(game_dict);
           resolve(game_dict);
-          
+
         } catch (error) {
           console.error("Error:", error);
           resolve(game_dict);
@@ -409,20 +455,18 @@ async function airportActions(game_dict) {
         }
       }
 
-      // Remove the event listener after handling the click
       gameInput.removeEventListener("click", handleClick);
     };
 
-    // Add the event listener
     gameInput.addEventListener("click", handleClick);
   });
 }
 
-// Question modal
+// Luodaan ja avataan modaali, jossa on tietovisa-kysymys ja vastausnapit
 async function questionModal(game_dict) {
-  const question = game_dict["clue"][0]; // Question text
-  const answers = game_dict["clue"][1]; // List of answers
-  const correctAnswer = game_dict["clue"][2]; // Correct answer
+  const question = game_dict["clue"][0];
+  const answers = game_dict["clue"][1];
+  const correctAnswer = game_dict["clue"][2];
   const modal = document.getElementById("questionModal");
   const questionText = document.getElementById("questionText");
   const answersContainer = document.getElementById("answersContainer");
@@ -438,14 +482,15 @@ async function questionModal(game_dict) {
       button.classList.add("answer-button");
 
       button.addEventListener("click", () => {
-        if (answer === correctAnswer) {
-          console.log("Correct answer");
+        if (answer === correctAnswer) { // Oikea vastaus
           game_dict["previous_quiz_answer"] = true;
-        } else {
-          console.log("Wrong answer");
+
+        } else { // Väärä vastaus
           game_dict["previous_quiz_answer"] = false;
-          if (game_dict.clue[1].length > 2) {
-            // Poistetaan vastattu vastaus listasta kun vastasimme väärin
+          
+          // Jos vastausvaihtoehtoja on enemmän kuin 2, 
+          // poistetaan vastattu väärä vastaus seuraavaa kierrosta varten
+          if (game_dict.clue[1].length > 2) { 
             game_dict["clue"][1] = game_dict["clue"][1].filter(
               (item) => item !== answer
             );
@@ -461,6 +506,8 @@ async function questionModal(game_dict) {
   });
 }
 
+
+// Haetaan pelaajan seuraava sijainti sen mukaan, vastasiko kysymykseen oikein
 async function nextLocation(game_dict) {
   try {
     const response = await fetch(baseUrl + "/nextLocation", {
@@ -475,20 +522,8 @@ async function nextLocation(game_dict) {
   }
 }
 
-async function updateToVisited(location) {
-  try {
-    const response = await fetch(baseUrl + "/updateToVisited", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(location),
-    });
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.error("Error:", error);
-  }
-}
 
+// Lisätään html:ään output teksti sen mukaan mikä toiminto tehtiin
 function gameOutput(game_dict) {
   const gameOutput = document.getElementById("game-output");
   gameOutput.innerHTML = "<h3>Game output</h3>";
@@ -497,66 +532,77 @@ function gameOutput(game_dict) {
   }
 }
 
-// Fly to the next airport
+
+// Lennetään seuraavalle lentokentälle, tässä funktiossa
+// tarvittavat toimenpiteet lentokentältä toiselle siirtymisen välissä
 async function flyToNextAirport(game_dict, routes, map) {
-  // Update coordinates
+  // Haetaan koordinaatit lennon alku- ja loppupisteille
   game_dict = await fetchCoordinates(game_dict);
 
-  // animateAirplane()
+  // Lisätään koordinaatit listaan talteen
   routes.push(game_dict.coordinates)
+
+  // Kartan animaatio
   await drawLine(game_dict, map);
 
-
-  // calculate emissions
+  // Lasketaan lentomatka ja päästöt, sekä lisätään nämä kokonaiskilometreihin ja päästöihin
   const data = await co2(routes);
   game_dict["KM_player"] += data.distanceKM;
   game_dict["CO2_player"] += data.co2;
 
-  // Reduce money
+  // Vähennetään lentolipun verran rahaa
   game_dict["game_money"] -= game_dict["flight_price"];
 
-  // Update player's location
+  // Päivitetään pelaajan sijainti
   game_dict["player_location"] = game_dict["next_location"];
 
-  // Update location in criminal table to visited
+  // Päivitetään tietokantaan rikollisen tauluun uuden sijaintimme rivin Visited-sarake 0 -> 1
   await updateToVisited(game_dict["player_location"]);
 
-  // Update html
-  updateStatusBox(game_dict);
-  locationToGamingConsole(game_dict["player_location"]);
+  // Päivitetään html:ään pelin statustiedot
+  await updateStatusBox(game_dict);
+  await locationToGamingConsole();
 
   return { game_dict: game_dict, routes: routes };
 }
 
-let routes = [];
+
+
 
 // PELI KASATAAN TÄMÄN FUNKTION SISÄLLE
 async function main() {
 
   // PELIN ALUSTUS #####################################################
+  let routes = [];
+  let routes_criminal = [];
+  const sleep = (delay) => new Promise((resolve) => setTimeout(resolve, delay));
+
+  // Pelin parametrien luonti palvelimella.
+  // Palauttaa sanakirjan, jossa säilömme pelin keskeiset parametrit.
+  let game_dict = await gameSetup();
+
+  // Käynnistetään pelin ajastin ja lisätään html:ään
+  startGameTimer(game_dict["game_time"]);
   
-  let game_dict = await gameSetup(); // Pelin parametrien luonti palvelimella, palauttaa pythonista tutun game_dict -sanakirjan
-  game_dict = game_dict.data
+  // Luodaan event listener ajan päättymiselle. 
+  document.addEventListener("timerEnd", () => {
+    game_dict["time_left_bool"] = false; // Yksi pelin päättämisen ehdoista
+  });
 
-  // käynnistetään ajastin
-  startTimer(game_dict["game_time"]);
+  // Käynnistetään palvelimella taustaprosessina juokseva ajastin, 
+  // joka lisää rikolliselle X ajan välein tietokantaan uuden sijainnin (X määräytyy vaikeustason mukaan)
+  await startCriminalTimer(game_dict.criminal_time)
 
-  // Päivitetään tietokannasta rikollisen taulun visited -sarake 0 -> 1 
+  // Päivitetään tietokantaan rikollisen tauluun sijaintimme riville visited -sarake 0 -> 1 
   await updateToVisited(game_dict["player_location"]);
 
-  // käynnistetään palvelimella taustaprosessina juokseva ajastin, 
-  // joka lisää rikolliselle X ajan välein tietokantaan uuden sijainnin 
-  startCriminalTimer(game_dict.criminal_time)
+  // Päivittää html:ään statustiedot
+  await updateStatusBox(game_dict); 
 
-  // Mitä tapahtuu kun aika loppuu
-  document.addEventListener("timerEnd", () => {
-    game_dict["time_left_bool"] = false;
-  });
-  updateStatusBox(game_dict); // Päivittää html:ään statustiedot
-  game_dict = await fetchCoordinates(game_dict); // Haetaan rikollisen ja pelaajan koordinaatit
+  // Haetaan koordinaatit karttaa varten
+  game_dict = await fetchCoordinates(game_dict); 
+
   // Alustetaan kartta
-  console.log(game_dict.coordinates)
-  console.log(routes)
   const map = L.map("map").setView(
     [game_dict["coordinates"][0][0], game_dict["coordinates"][0][1]],
     10
@@ -574,19 +620,17 @@ async function main() {
   ]).addTo(map);
   marker.bindPopup("<b>Starting point</b>").openPopup();
 
+  // Haetaan sijaintimme säätiedot API:lla ja lisätään html:ään 
   weather(game_dict.coordinates[0]);
 
-  let endGame = false;
+  // lisätään sijaintimme html:ään
   locationToGamingConsole(game_dict["player_location"]);
-
-  // PELIN LOOPPI ALKAA TÄSTÄ ##################################################
-
+  
+  
+  // PELIN LOOPPI ALKAA TÄSTÄ ########################################################################
+  let endGame = false;
   while (!endGame) {
-    console.log(
-      "GAME LOOP'S FIRST ROW",
-      ` Current: ${game_dict.player_location}, Next: ${game_dict.next_location}`
-    );
-    // reset airport_menu-helper parameters to default value before entering airport-menu at the new airport
+    // nollataan lentokenttä-loopin helper-muuttujat vakioarvoihin ennen kun mennään uudelle lentokentälle
     game_dict["talk_to_chief"] = false;
     game_dict["tried_luck"] = false;
     game_dict["first_iteration"] = true;
@@ -594,36 +638,58 @@ async function main() {
     game_dict["clue_solved"] = false;
     game_dict["criminal_was_here"] = false;
 
+    // Muuttuja, joka määrittää onko pelaajalla mahdollista saada tuuri-apua pelin etenemiseen
     game_dict["random_luck_bool"] = Math.random() <= game_dict["random_luck"];
 
-    // AIRPORT-MENU
+    // LENTOKENTTÄ -LOOPPI ALKAA TÄSTÄ ###############################################################
     while (!game_dict["next_location_bool"]) {
-      console.log(
-        "AIRPORT LOOP'S FIRST ROW",
-        ` Current: ${game_dict.player_location}, Next: ${game_dict.next_location}`
-      );
-      game_dict = await airportOptions(game_dict); // haetaan vaihtoehdot mitä voidaan tehdä lentoasemalla ja viedään gaming consoleen napeiksi
-      game_dict = await airportActions(game_dict); // event listener napeille -> tehdään napin mukainen toiminto
+
+      // Haetaan palvelimelta toiminto-vaihtoehdot ja lisätään html:ään napeiksi
+      game_dict = await airportOptions(game_dict); 
+      
+      // Tehdään painetun napin mukainen toiminto
+      game_dict = await airportActions(game_dict); 
+      
+      // Päivitetään html:ään painetun napin tuottama output
       gameOutput(game_dict);
-      // game_dict["next_location_bool"] = true
     }
 
-    // Lennetään kentältä toiselle - funktio sisältää kaikki tarvittavat toiminnot
-    console.log(
-      "FLY TO NEXT AIRPORT",
-      ` Current: ${game_dict.player_location}, Next: ${game_dict.next_location}`
-    );
+    // Lennetään kentältä toiselle. Funktio sisältää kaikki tarvittavat toiminnot
     const data = await flyToNextAirport(game_dict, routes, map);
     game_dict = data.game_dict;
     routes = data.routes;
 
-    if (game_dict["first_airport"]) {
-      game_dict["first_airport"] = false;
-    }
 
-    endGame = await stopGame(game_dict); // tarkistaa palvelimelta täyttyykö edellytykset pelin päättämiselle
+    // if (game_dict["first_airport"]) {
+    //   game_dict["first_airport"] = false;
+    // }
+
+    // Tarkistetaan palvelimelta, olemmeko saaneet rikollisen kiinni
+    game_dict["criminal_caught"] = await criminalCaught()
+
+    // tarkistaa palvelimelta täyttyykö edellytykset pelin päättämiselle
+    endGame = await stopGame(game_dict); 
   }
-  stopCriminalTimer();
+  // PELIN LOOPPI PÄÄTTYI ##################################################################
+
+  // Pysäytetään palvelimella taustaprosessina pyörivä ajastin
+  await stopCriminalTimer()
+
+  // Odotetaan, että kartan animaatio päättyy
+  await sleep(4500)
+  
+  // Pelin jälkeinen html 
+  const boxes = document.querySelector(".boxes")
+
+  if (game_dict.criminal_caught) { // Saimme rikollisen kiinni
+    boxes.innerHTML = "<h2>Sait rikollisen kiinni, voitit pelin!</h2>"
+
+  } else if (!game_dict.game_money >= game_dict.flight_price) { // Rahat loppuivat
+    boxes.innerHTML = "<h2>Rahasi loppui, hävisit pelin!</h2>"
+
+  } else if (!game_dict.time_left_bool) { // Aika loppui
+    boxes.innerHTML = "<h2>Aika loppui, hävisit pelin!</h2>"
+  }
 }
 
 main();
