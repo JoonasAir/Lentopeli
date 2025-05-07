@@ -46,7 +46,6 @@ def criminal_new_location(boolean:bool):
     
 def criminal_timer(time: int, stop_event):
     while not stop_event.is_set():
-        print("!!!!!")
         sleep(time)
 
         cursor = mysql_connection.cursor()

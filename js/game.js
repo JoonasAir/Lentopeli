@@ -85,7 +85,7 @@ async function stopCriminalTimer() {
   }
 }
 
-
+// Päivitetään rikollisen status -tiedot html:ään
 async function criminalCO2() {
   try {
     const result = await fetch(baseUrl + "/criminalCO2");
@@ -576,8 +576,7 @@ async function leaderboardUpdate(game_dict){
 // PELI KASATAAN TÄMÄN FUNKTION SISÄLLE
 async function main() {
   // PELIN ALUSTUS #####################################################
-  let routes = [];
-  let routes_criminal = [];
+  let routes = []; // pelaajan koordinaatit
   const sleep = (delay) => new Promise((resolve) => setTimeout(resolve, delay));
 
   // Pelin parametrien luonti palvelimella.
@@ -665,10 +664,6 @@ async function main() {
     game_dict = data.game_dict;
     routes = data.routes;
 
-    // if (game_dict["first_airport"]) {
-    //   game_dict["first_airport"] = false;
-    // }
-
     // Tarkistetaan palvelimelta, olemmeko saaneet rikollisen kiinni
     game_dict["criminal_caught"] = await criminalCaught();
 
@@ -683,8 +678,8 @@ async function main() {
   // Odotetaan, että kartan animaatio päättyy
   await sleep(4500);
 
-  // Pelin jälkeinen html
 
+  // Pelin jälkeinen html ##################################33
   // Piirretään reitti kartalle
   const polyline = L.polyline(routes, { color: "blue" }).addTo(map);
 
