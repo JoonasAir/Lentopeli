@@ -31,6 +31,7 @@ DROP TABLE goal;
 #### Create **criminal** table
 ```
 CREATE TABLE criminal (ID INT AUTO_INCREMENT PRIMARY KEY, Location VARCHAR(255), Visited INT DEFAULT 0);
+ALTER TABLE criminal ADD latitude DOUBLE, ADD longitude DOUBLE;
 ```
 
 #### Create **leaderboard** table
