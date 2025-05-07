@@ -183,11 +183,16 @@ dialog form button#closeModal:hover {
     margin-top: 20px;
     margin-bottom: 20px;
     border-collapse: collapse;
+    position: absolute;
+    width:auto;
+    right: 0;
+    top: 0;
 }
 
 .game-page #game-parameters td {
     padding: 0.2rem 0.5rem;
     text-align: left;
+    width: 100%;
 }
 
 /* Quit game */
