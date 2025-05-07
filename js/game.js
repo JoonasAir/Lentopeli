@@ -127,7 +127,8 @@ async function updateStatusBox(game_dict) {
   document.querySelector("#screen-name").textContent = game_dict["screen_name"];
   document.querySelector("#difficulty").textContent =
     game_dict["game_difficulty"];
-  document.querySelector("#flight-price").textContent = game_dict["flight_price"];
+  document.querySelector("#flight-price").textContent =
+    game_dict["flight_price"];
   document.querySelector("#category").textContent = game_dict["quiz_category"];
   document.querySelector("#money").textContent = game_dict["game_money"];
   document.querySelector("#co2-player").textContent = game_dict["CO2_player"];
@@ -703,7 +704,7 @@ async function main() {
       spread: 360,
       origin: { y: 0.2 },
     });
-  } else if (!game_dict.game_money <= game_dict.flight_price) {
+  } else if (game_dict.game_money < game_dict.flight_price) {
     // Rahat loppuivat
     resultMessage.innerHTML = "<h2>Rahasi loppui, hävisit pelin!</h2>";
     resultMessage.style.textAlign = "center";

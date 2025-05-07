@@ -38,7 +38,7 @@ DIFFICULTY_game_parameters = {
 
     },
     'Custom': { # Custom (played can modify these in: main menu -> settings -> custom difficulty's settings)
-        'game_money': 400,         # money at the beginning of the game
+        'game_money': 2500,         # money at the beginning of the game
         'flight_price':200,         # price of a flight ticket          
         'game_time': 60*5,          # time at the beginning of the game
         'criminal_headstart': 2,    # the criminal's head start at the start of the game
