@@ -29,40 +29,43 @@ def criminal_new_location(boolean:bool):
     sql = "INSERT INTO criminal (location, latitude, longitude) SELECT ident, latitude_deg, longitude_deg FROM airport WHERE continent = 'EU' AND type = 'large_airport' AND airport.name LIKE '%Airport' AND ident NOT IN (SELECT location FROM criminal) ORDER BY RAND() LIMIT 1;"
     cursor.execute(sql)
     if boolean:
-        # Fetch the last and second-to-last ICAO codes
-        sql1 = "SELECT location FROM criminal ORDER BY ID DESC LIMIT 2;"
-        cursor.execute(sql1)
-        icao_codes = cursor.fetchall()
-
-        if len(icao_codes) < 2:
-            raise ValueError("Not enough rows in the criminal table to fetch two locations.")
-
-        # Extract ICAO codes
-        icao1, icao2 = icao_codes[0][0], icao_codes[1][0]
-
-        # Fetch coordinates for the ICAO codes
-        sql2 = f"SELECT latitude_deg, longitude_deg FROM airport WHERE ident IN ('{icao1}', '{icao2}');"
-        cursor.execute(sql2)
+        cursor = mysql_connection.cursor(dictionary=True)
+        sql = "SELECT latitude, longitude FROM criminal ORDER BY ID DESC LIMIT 2;"
+        cursor.execute(sql)
         coordinates = cursor.fetchall()
-        if len(coordinates) < 2:
-            raise ValueError("Could not fetch coordinates for the given ICAO codes.")
 
-        coord1 = tuple(coordinates[0])
-        coord2 = tuple(coordinates[1])
+        coord1 = (coordinates[1]["latitude"], coordinates[1]["longitude"])
+        coord2 = (coordinates[0]["latitude"], coordinates[0]["longitude"])
+
         distanceKM = round(distance.distance(coord1, coord2).km)
         co2 = round(distanceKM * 0.15) 
-        return distanceKM, co2 
 
-    else: return 0, 0
-    
+        sql = f"UPDATE criminal SET km = {distanceKM}, co2 = {co2} where id = (SELECT MAX(id) FROM criminal);"
+        cursor.execute(sql)
+
     
 def criminal_timer(time: int, stop_event):
     while not stop_event.is_set():
         print("!!!!!")
         sleep(time)
+
         cursor = mysql_connection.cursor()
         sql = "INSERT INTO criminal (location, latitude, longitude) SELECT ident, latitude_deg, longitude_deg FROM airport WHERE continent = 'EU' AND type = 'large_airport' AND airport.name LIKE '%Airport' AND ident NOT IN (SELECT location FROM criminal) ORDER BY RAND() LIMIT 1;"
         cursor.execute(sql)
+
+        cursor = mysql_connection.cursor(dictionary=True)
+        sql = "SELECT latitude, longitude FROM criminal ORDER BY ID DESC LIMIT 2;"
+        cursor.execute(sql)
+        coordinates = cursor.fetchall()
+
+        coord1 = (coordinates[1]["latitude"], coordinates[1]["longitude"])
+        coord2 = (coordinates[0]["latitude"], coordinates[0]["longitude"])
+        distanceKM = round(distance.distance(coord1, coord2).km)
+        co2 = round(distanceKM * 0.15) 
+
+        sql = f"UPDATE criminal SET km = {distanceKM}, co2 = {co2} where id = (SELECT MAX(id) FROM criminal);"
+        cursor.execute(sql)
+
 
 
 def criminal_headstart(headstart:int):
@@ -75,11 +78,7 @@ def criminal_headstart(headstart:int):
     cursor.execute(sql)
 
     for i in range(headstart+1): # adds X amount of locations to criminal table (amt. specified by difficulty) 
-        km, co2 = criminal_new_location(bool(i))
-        km_ttl =+ km
-        co2_ttl =+ co2
-    
-    return [km_ttl, co2_ttl]
+        criminal_new_location(bool(i))
 
 
 def criminal_caught(): # check at the new airport if we are at the same airport as the criminal is (write function criminal_caught function that retuns True if we are and False if we aren't)
