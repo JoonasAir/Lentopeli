@@ -85,6 +85,24 @@ async function stopCriminalTimer() {
   }
 }
 
+
+async function criminalCO2() {
+  try {
+    const result = await fetch(baseUrl + "/criminalCO2");
+    const data = await result.json()
+    const co2 = data.co2
+    const km = data.km
+    const hacked = data.hacked
+    document.querySelector("#airports-hacked").textContent = +hacked - 1;
+    document.querySelector("#co2-criminal").textContent = co2;
+    document.querySelector("#km-criminal").textContent = km;
+  } 
+  catch (error) {
+    console.error("Error:", error);
+  }
+}
+
+
 // Päivittää rikollisen tauluun sijainnin, johon saavuimme, Visited -sarakkeen 0 -> 1
 async function updateToVisited(location) {
   try {
@@ -133,10 +151,6 @@ async function updateStatusBox(game_dict) {
   document.querySelector("#money").textContent = game_dict["game_money"];
   document.querySelector("#co2-player").textContent = game_dict["CO2_player"];
   document.querySelector("#km-player").textContent = game_dict["KM_player"];
-  document.querySelector("#airports-hacked").textContent =
-    game_dict["airports_hacked"];
-  document.querySelector("#co2-criminal").textContent =
-    game_dict["CO2_criminal"];
 }
 
 // Funktio säätietojen hakemiseen ja html:ään lisäämiseen
@@ -535,9 +549,10 @@ async function flyToNextAirport(game_dict, routes, map) {
   // Päivitetään tietokantaan rikollisen tauluun uuden sijaintimme rivin Visited-sarake 0 -> 1
   await updateToVisited(game_dict["player_location"]);
 
-  // Päivitetään html:ään pelin statustiedot
+  // Päivitetään html
   await updateStatusBox(game_dict);
   await locationToGamingConsole();
+  await criminalCO2()
 
   return { game_dict: game_dict, routes: routes };
 }
@@ -586,6 +601,10 @@ async function main() {
 
   // Päivittää html:ään statustiedot
   await updateStatusBox(game_dict);
+
+  // rikollisen tietojen päivitys
+  await criminalCO2()
+
 
   // Haetaan koordinaatit karttaa varten
   game_dict = await fetchCoordinates(game_dict);

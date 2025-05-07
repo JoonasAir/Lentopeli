@@ -94,6 +94,16 @@ def cleanup_processes():
     except: return jsonify({"message":"An error occurred while trying to terminate process"})
 
 
+@app.route("/criminalCO2")
+def criminalCO2():
+        cursor = mysql_connection.cursor(dictionary=True)
+        sql = "SELECT SUM(km) AS km, SUM(co2) AS co2, MAX(id) AS hacked FROM criminal;"
+        cursor.execute(sql)
+        result = cursor.fetchone()
+
+        return jsonify(result)
+
+
 # haetaan sijaintimme ja määränpäämme koordinaatit
 @app.route("/flyto", methods=['PUT'])
 def get_location():
