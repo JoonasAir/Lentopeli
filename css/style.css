@@ -282,6 +282,7 @@ dialog form button#closeModal:hover {
     width: 30%px;
     background-color: var(--bg-color-secondary);
     padding: 1rem;
+    border-radius: 10px;
 }
 
 /* GAME */
@@ -305,6 +306,7 @@ dialog form button#closeModal:hover {
     padding: 1rem;
     box-sizing: border-box;
     position: relative;
+    border-radius: 10px;
 }
 
 #timer-box {
