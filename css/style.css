@@ -144,7 +144,18 @@ dialog form button#closeModal:hover {
   background-color: #dddddd;
 }
 
+/* LEADERBOARD */
 
+#leaderboardModal {
+    width: 80vw;
+    max-width: 800px;
+    padding: 2rem;
+    border-radius: 12px;
+    background-color: var(--bg-color-secondary);
+    color: var(--text-color-secondary);
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.1rem;
+}
 
 /* GAME PAGE */
 
@@ -436,10 +447,6 @@ dialog form button#closeModal:hover {
 #closeModal:hover {
   background-color: #444;
 }
-
-
-
-
 
 
 
