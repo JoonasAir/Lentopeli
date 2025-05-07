@@ -649,15 +649,20 @@ async function main() {
 
     // LENTOKENTTÄ -LOOPPI ALKAA TÄSTÄ ###############################################################
     while (!game_dict["next_location_bool"]) {
+      await criminalCO2()
+
       // Haetaan palvelimelta toiminto-vaihtoehdot ja lisätään html:ään napeiksi
       game_dict = await airportOptions(game_dict);
+      await criminalCO2()
 
       // Tehdään painetun napin mukainen toiminto
       game_dict = await airportActions(game_dict);
+      await criminalCO2()
 
       // Päivitetään html:ään painetun napin tuottama output
       gameOutput(game_dict);
     }
+    await criminalCO2()
 
     // Lennetään kentältä toiselle. Funktio sisältää kaikki tarvittavat toiminnot
     const data = await flyToNextAirport(game_dict, routes, map);
