@@ -19,7 +19,6 @@ def airport_menu_input(game_dict:dict):
     
     if game_dict["first_iteration"]:
         game_dict["random_event_index"] = randint(0, len(airport_random_options)-1)
-        game_dict["first_iteration"] = False
     
 
     airport_options = [
@@ -28,7 +27,6 @@ def airport_menu_input(game_dict:dict):
         {"text": "Try to solve the previous clue again", "value": "solvePreviousClue"},    # visible if we gave wrong ansver in quiz -> we came to wrong airport and we have talked to security chief to find out that the criminal has not been here
         {"text": airport_random_options, "value": "randomAction"},
     ]
-
 
     if len(game_dict['airport_options']) == 0 or game_dict["first_iteration"]:
         option_list = [str(game_dict["player_location"])]
@@ -63,6 +61,7 @@ def airport_menu_input(game_dict:dict):
 
         game_dict["airport_options"] = option_list
 
+    game_dict["first_iteration"] = False
 
     return game_dict
 
