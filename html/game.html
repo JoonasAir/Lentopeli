@@ -61,18 +61,17 @@
         <div class="boxes">
             <main class="main-content">
                 <div class="top-row">
-                    <section class="box" id="map-box"> <!-- MAP -->
-                        <h2></h2>
+                    <section class="box" id="map-box"> <!-- MAP -->                     
                         <!-- <img src="/images/map.gif" alt="Map"> -->
                         <div id="map">
-                            <div id="weather"></div>
+                            <div id="weather"><p id="location"></p></div>
                         </div>
                         
                         <!-- Map, Location, Weather -->
                     </section>
 
                     <section class="box" id="status-box"> <!-- PLAYER / CRIMINAL STATUS -->
-                        <h2><u>Status-box</u></h2>
+                       <!-- <h2><u>Status-box</u></h2> -->
 
                         <div id="player-status">
                             <header>
@@ -85,6 +84,7 @@
                                 <tr>
                                     <p>CO² emissions: <span id="CO2-player"> - </span> kg</p>
                                 </tr>
+                                
                             </table>
                         </div>
 
@@ -100,21 +100,22 @@
                                     <p>CO² emissions: <span id="CO2-criminal"> - </span> kg</p>
                                 </tr>
                             </table>
+                        
                         </div>
                     </section>
                 </div>
                 <section class="box" id="game-box"> <!-- GAME -->
-                    <h2><u>Gaming console</u></h2>
+                    <!-- <h2><u>Gaming console</u></h2> -->
                     <div id="timer-box">
                         <p><strong>Time remaining:&nbsp;&nbsp;</strong> <span id="timer"> </span></p>
-                        <p><strong>Your location:&nbsp;</strong><span id="location">airport</span></p>
+                        
                     </div>
                     <div id="game-input">
-                        <h3>Game input</h3>
+                        <!-- <h3>Game input</h3> -->
                         <button value="security">Talk to airport's security chief</button>
                     </div>
                     <div id="game-output">
-                        <h3>Game output</h3>
+                       <!-- <h3>Game output</h3> --> 
                     </div>
                 </section>
                 <dialog id="questionModal">
@@ -126,6 +127,7 @@
         <footer>
             <p>Ryhmä 1</p>
         </footer>
+        <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     </div>
 </body>
 

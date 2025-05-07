@@ -363,7 +363,7 @@ async function airportOptions(game_dict) {
 // Päivitetään html:ään pelin toiminto-napit airportOptions funktiossa
 function updateGameInput(newButtons) {
   const gameInput = document.querySelector("#game-input");
-  gameInput.innerHTML = "<h3>Game input</h3>";
+  gameInput.innerHTML = "";
   for (const newButton of newButtons) {
     if (typeof newButton !== "string") {
       if (newButton["value"] != "randomAction") {
@@ -526,9 +526,9 @@ async function nextLocation(game_dict) {
 // Lisätään html:ään output teksti sen mukaan mikä toiminto tehtiin
 function gameOutput(game_dict) {
   const gameOutput = document.getElementById("game-output");
-  gameOutput.innerHTML = "<h3>Game output</h3>";
+  gameOutput.innerHTML = "";
   for (let result of game_dict["game_output"]) {
-    gameOutput.innerHTML += `<p>${result}</p>`;
+    gameOutput.innerHTML += `<p id="outputText">${result}</p>`;
   }
 }
 
@@ -679,16 +679,74 @@ async function main() {
   await sleep(4500)
   
   // Pelin jälkeinen html 
-  const boxes = document.querySelector(".boxes")
+
+
+  // Piirretään reitti kartalle
+  const polyline = L.polyline(routes, { color: "blue" }).addTo(map);
+
+  const bounds = polyline.getBounds();
+  map.fitBounds(bounds, {
+    padding: [100, 100],
+    maxZoom: 10,
+  });
+
+  // Luodaan uusi tekstielementti lopputulokselle
+  const resultMessage = document.getElementById("game-box");
+  resultMessage.innerHTML = "<h2>Sait rikollisen kiinni, voitit pelin!</h2>"; // tai muu teksti
+
+  // Lisätään se näkyviin olemassa olevan sisällön alle
+ 
 
   if (game_dict.criminal_caught) { // Saimme rikollisen kiinni
-    boxes.innerHTML = "<h2>Sait rikollisen kiinni, voitit pelin!</h2>"
+    resultMessage.innerHTML = "<h2>Sait rikollisen kiinni, voitit pelin!</h2>"
+    resultMessage.style.textAlign = "center";
+
+    // Hae tai luo canvas-confettin luoma canvas-elementti
+    const canvas = document.createElement("canvas");
+    canvas.id = "confetti-canvas";
+    canvas.style.position = "fixed";
+    canvas.style.top = "0";
+    canvas.style.left = "0";
+    canvas.style.width = "100%";
+    canvas.style.height = "100%";
+    canvas.style.pointerEvents = "none"; // ettei estä klikkauksia alla
+    canvas.style.zIndex = "999999"; // todella korkea z-index
+    document.body.appendChild(canvas);
+
+    // Luo konfetti käyttämään tätä canvas-elementtiä
+    const myConfetti = confetti.create(canvas, {
+      resize: true,
+      useWorker: true,
+    });
+
+    // Käynnistä konfetti
+    myConfetti({
+      particleCount: 1000,
+      spread: 360,
+      origin: { y: 0.7 }
+    
+    });
+    myConfetti({
+      particleCount: 1000,
+      spread: 360,
+      origin: { y: 1 }
+    
+    });
+
+    myConfetti({
+      particleCount: 1000,
+      spread: 360,
+      origin: { y: 0.2 }
+    
+    });
 
   } else if (!game_dict.game_money >= game_dict.flight_price) { // Rahat loppuivat
-    boxes.innerHTML = "<h2>Rahasi loppui, hävisit pelin!</h2>"
+    resultMessage = "<h2>Rahasi loppui, hävisit pelin!</h2>"
+    resultMessage.style.textAlign = "center";
 
   } else if (!game_dict.time_left_bool) { // Aika loppui
-    boxes.innerHTML = "<h2>Aika loppui, hävisit pelin!</h2>"
+    resultMessage.innerHTML = "<h2>Aika loppui, hävisit pelin!</h2>"
+    resultMessage.style.textAlign = "center";
   }
 }
 
