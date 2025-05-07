@@ -1,12 +1,13 @@
 :root {
-  --bg-color-main: #392467;
+  --bg-color-main: #2b3a8f;
   --text-color-main: #ffffff;
-  --bg-color-secondary: #5C469C;
+  --bg-color-secondary: #5168ec;
   --text-color-secondary: #ffffff;
 }
 
 html, body {
-    height: 100%;
+    height: 100vh;
+    width: 100vw;
     margin: 0;
     padding: 0;
     background-color: var(--bg-color-main);
@@ -15,7 +16,6 @@ html, body {
     display: flex;
     flex-direction: column;
     overflow-x: hidden;
-
 }
 
 #page-header {
@@ -54,7 +54,7 @@ html, body {
     background-color: var(--bg-color-secondary);
     padding: 1.5rem;
     text-align: center;
-    width: 90%;
+    width: 100%;
     max-width: 400px;
     margin: 0 auto 2rem auto;
 }
@@ -95,7 +95,9 @@ footer {
     text-align: center;
     padding: 1rem;
     width: 100%;
+    height: 4rem;
 }
+
 dialog {
   border: none;
   border-radius: 12px;
@@ -177,6 +179,28 @@ dialog form button#closeModal:hover {
     font-size: 1.8rem;
 }
 
+#achtionH2 {
+  margin: 0;
+  margin-top: 0.5rem;
+  margin-left: 0.5rem;
+}
+
+#quit_game {
+  padding: 1rem;
+  background-color: var(--bg-color-main);
+  color: var(--text-color-main);
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 1rem;
+  border-radius: 10px;
+}
+
+#quit_game:hover {
+  background-color: #c26112;
+  color: #392467;
+  text-decoration: underline;
+}
+
 /* Lista */
 .game-page #game-parameters {
     font-size: 0.85rem;
@@ -185,7 +209,7 @@ dialog form button#closeModal:hover {
     border-collapse: collapse;
     position: absolute;
     width:auto;
-    right: 0;
+    right: 1.5rem;
     top: 0;
 }
 
@@ -196,23 +220,6 @@ dialog form button#closeModal:hover {
 }
 
 /* Quit game */
-.game-page #page-header nav a {
-    color: #ffffff;
-    text-decoration: none;
-    font-weight: bold;
-    font-size: 1rem;
-}
-
-.game-page #page-header nav a:hover {
-    text-decoration: underline;
-}
-
-.game-page #page-header nav a {
-    color: #ffffff;
-    text-decoration: none;
-    font-weight: bold;
-    font-size: 1rem;
-}
 
 .game-page #page-header nav a:hover {
     text-decoration: underline;
@@ -243,7 +250,8 @@ dialog form button#closeModal:hover {
   z-index: 1000;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
   gap: 10px;
-  background-color:#392467ad;
+  background-color:#2b3a8fb9;
+  ;
 }
 
 #weather img {
@@ -312,22 +320,23 @@ dialog form button#closeModal:hover {
     box-sizing: border-box;
     position: relative;
     border-radius: 10px;
+    min-height: 17rem;
 }
 
 #timer-box {
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: 0;
+  right: 2rem;
   font-weight: bold;
   font-size: 1.1em;
   text-align: right;
 }
 
 #game-input button {
-  padding: 2rem;
+  padding: 1.3rem 2rem;
   margin: 1rem;
   border: none;
-  background-color: #ed7a1a;
+  background-color: #d96a12;
   color: #ffffff;
   cursor: pointer;
   font-size: 1.1rem;
@@ -336,6 +345,7 @@ dialog form button#closeModal:hover {
   border-radius: 5px;
   flex-wrap: flex;
   gap: 3rem;
+  
 }
 
 .answer-button {
@@ -367,7 +377,7 @@ dialog form button#closeModal:hover {
 
 
 #game-input button:hover {
-    background-color: #d96a12;
+    background-color: #a35718;
 }
 
 #gameForm {
