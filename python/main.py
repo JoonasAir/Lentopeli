@@ -5,6 +5,7 @@ from geopy import distance
 from flask_cors import CORS
 from stop_game import stop_game
 from game_setup import game_setup
+from game import leaderboard_update
 from criminal import criminal_timer
 from security import talk_to_security
 from flask import Flask, request, jsonify
@@ -13,6 +14,7 @@ from game_parameters import game_parameters
 from airport_menu import airport_menu_input
 from mysql_connection import mysql_connection
 from questions import ask_question, get_questions
+
 
 
 app = Flask(__name__)
@@ -294,7 +296,7 @@ def getTemp():
 
 
 ## CO2 laskuri, ottaa koordinaatit routes listasta johon upataan koordinaatit aina kun lennetään. 
-## Index 0 pelaaja, index 1 rikollinen
+
 @app.route('/co2distance', methods=['POST'])
 def calculateCO2():
     data = request.json
@@ -308,6 +310,16 @@ def calculateCO2():
         'distanceKM':distanceKM
     }
     return jsonify(result)
+
+
+@app.route('/leaderboardUpdate', methods=['POST'])
+def leaderboard_up():
+    data = request.json
+    score = leaderboard_update(data)
+    
+    return jsonify(score)
+
+
 
 
 if __name__ == "__main__":

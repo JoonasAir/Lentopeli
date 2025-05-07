@@ -542,6 +542,22 @@ async function flyToNextAirport(game_dict, routes, map) {
   return { game_dict: game_dict, routes: routes };
 }
 
+// Tallenetaan pisteet leaderboardiin
+
+async function leaderboardUpdate(game_dict){
+  try {
+    const response = await fetch(baseUrl + "/leaderboardUpdate", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(game_dict),
+    });
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error:", error);
+  }
+}
+
 // PELI KASATAAN TÄMÄN FUNKTION SISÄLLE
 async function main() {
   // PELIN ALUSTUS #####################################################
@@ -668,6 +684,7 @@ async function main() {
     // Saimme rikollisen kiinni
     resultMessage.innerHTML = "<h2>Sait rikollisen kiinni, voitit pelin!</h2>";
     resultMessage.style.textAlign = "center";
+    resultMessage.innerHTML += `<p>${await leaderboardUpdate(game_dict)}</p>`
 
     //luodaan canvas-elementti
     const canvas = document.createElement("canvas");

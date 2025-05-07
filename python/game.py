@@ -101,12 +101,14 @@ def play_game(game_dict:dict):
 def point_calculator(game_dict:dict):
     mode = 0
     time = game_dict["game_time"]
-    if game_dict["difficulty"] == "easy":
+    if game_dict["game_difficulty"] == "Easy":
         mode = 1
-    if game_dict["difficulty"] == "medium":
+    elif game_dict["game_difficulty"] == "Medium":
         mode = 1.5
-    elif game_dict["difficulty"] == "hard":
+    elif game_dict["game_difficulty"] == "Hard":
         mode = 2.5
+    elif game_dict["game_difficulty"] == "Custom":
+        mode = 10
 
     score = time * mode * 150
     
@@ -126,14 +128,16 @@ def leaderboard_update(game_dict:dict):
         if result[1] < points: # update points if new personal highscore
             sql = f"UPDATE leaderboard SET points = '{points}' WHERE screen_name = '{screen_name}';"
             cursor.execute(sql)
-            print(f"\nYou got a new highscore: {points} \nYour previous highscore: {result[1]}".upper())
+            score = f"\nYou got a new highscore: {points} \nYour previous highscore: {result[1]}"
 
         else:
-            print(f"\nYour score: {points} \nYou didn't beat your highscore: {result[1]}".upper())
+            score = f"\nYour score: {points} \nYou didn't beat your highscore: {result[1]}"
     else: # screen_name is found in leaderboard
         sql = f"INSERT into leaderboard (screen_name, points) values('{screen_name}' ,{points});"
         cursor.execute(sql)
-        print(f"\nYour score: {points} ".upper())
+        score = f"\nYour score: {points} "
+        
+    return score
 
 
 
