@@ -140,12 +140,14 @@ async function updateStatusBox(game_dict) {
   document.querySelector("#screen-name").textContent = game_dict["screen_name"];
   document.querySelector("#difficulty").textContent =
     game_dict["game_difficulty"];
+  document.querySelector("#flight-price").textContent = game_dict["flight_price"];
   document.querySelector("#category").textContent = game_dict["quiz_category"];
   document.querySelector("#money").textContent = game_dict["game_money"];
-  document.querySelector("#CO2-player").textContent = game_dict["CO2_player"];
+  document.querySelector("#co2-player").textContent = game_dict["CO2_player"];
+  document.querySelector("#km-player").textContent = game_dict["KM_player"];
   document.querySelector("#airports-hacked").textContent =
     game_dict["airports_hacked"];
-  document.querySelector("#CO2-criminal").textContent =
+  document.querySelector("#co2-criminal").textContent =
     game_dict["CO2_criminal"];
 }
 
@@ -677,7 +679,7 @@ async function main() {
 
   // Odotetaan, että kartan animaatio päättyy
   await sleep(4500)
-  
+
   // Pelin jälkeinen html 
   const boxes = document.querySelector(".boxes")
 
