@@ -54,13 +54,16 @@ def print_location():
     cursor = mysql_connection.cursor()
     sql = "SELECT location FROM criminal WHERE visited = 1 ORDER BY id DESC LIMIT 1;"
     cursor.execute(sql)
-    icao = cursor.fetchone()[0]
-    cursor = mysql_connection.cursor(dictionary=True)
-    sql = f"SELECT country.name AS country, airport.name AS airport FROM airport, country WHERE country.iso_country = airport.iso_country AND airport.ident = '{icao}';"
-    cursor.execute(sql)
-    result = cursor.fetchone()
-    location = f"{result['airport']}, {result['country']}"
-    return jsonify(location)
+    icao = cursor.fetchone()
+    if icao != None:
+        icao = icao[0]
+        cursor = mysql_connection.cursor(dictionary=True)
+        sql = f"SELECT country.name AS country, airport.name AS airport FROM airport, country WHERE country.iso_country = airport.iso_country AND airport.ident = '{icao}';"
+        cursor.execute(sql)
+        result = cursor.fetchone()
+        location = f"{result['airport']}, {result['country']}"
+        return jsonify(location)
+    else: return jsonify("Airport, country")
 
 
 # taustaprosessina juokseva ajastin joka lisää X ajan välein uuden sijainnin rikollisen tietokanta-tauluun
