@@ -281,7 +281,7 @@ def updateToVisited():
         cursor.execute(sql_update, (criminal_id,))
         return jsonify({"message": "Updated", "value": True})
     else:
-        return jsonify({"message": "No matching record found", "value": False}), 404
+        return jsonify({"message": "No matching record found", "value": False})
 
 
 # haetaan säätiedot 
@@ -309,7 +309,6 @@ def getTemp():
 
 
 ## CO2 laskuri, ottaa koordinaatit routes listasta johon upataan koordinaatit aina kun lennetään. 
-
 @app.route('/co2distance', methods=['POST'])
 def calculateCO2():
     data = request.json
@@ -325,6 +324,7 @@ def calculateCO2():
     return jsonify(result)
 
 
+# päivitetään tietokannan leaderboard tauluun pelin tiedot
 @app.route('/leaderboardUpdate', methods=['POST'])
 def leaderboard_up():
     data = request.json
