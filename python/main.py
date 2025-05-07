@@ -20,7 +20,7 @@ cors = CORS(app, resources={r"/*": {"origins": "*"}})
 app.config['CORS_HEADERS'] = 'Content-Type'
 
 
-
+# Leaderboard haku
 @app.route("/leaderboard")
 def leaderboard():
     sql = "SELECT screen_name, points FROM leaderboard ORDER BY points DESC;"
@@ -37,8 +37,7 @@ def leaderboard():
     return jsonify(results)
     
 
-
-# create game_dict and return to game.js
+# tehdään game_dict ja palautetaan game.js:ään
 @app.route("/gameSetup", methods=['POST'])
 def gameSetup():
     data = request.json
@@ -47,7 +46,7 @@ def gameSetup():
     return jsonify({"message": "Game setup received successfully", "data": game_dict}), 200
 
 
-
+# haetaan lentokentän nimi ja maa ICAO:lla
 @app.route('/location')
 def print_location():
     cursor = mysql_connection.cursor()
@@ -62,10 +61,11 @@ def print_location():
     return jsonify(location)
 
 
-
+# taustaprosessina juokseva ajastin joka lisää X ajan välein uuden sijainnin rikollisen tietokanta-tauluun
 ProcessCriminalTimer = None
 stop_event = Event()
 
+# käynnistetään ajastin
 @app.route('/startCriminalTimer', methods=['POST'])
 def startCriminalTimer():
     time = request.json
@@ -79,8 +79,7 @@ def startCriminalTimer():
 
     return jsonify({"status": "Timer started"})
 
-
-
+# pysäytetään ajastin
 @app.route('/stopCriminalTimer')
 def cleanup_processes():
     try: 
@@ -93,21 +92,20 @@ def cleanup_processes():
     except: return jsonify({"message":"An error occurred while trying to terminate process"})
 
 
+# haetaan sijaintimme ja määränpäämme koordinaatit
 @app.route("/flyto", methods=['PUT'])
 def get_location():
     data = request.json
     try: data = data["data"]
     except: pass
+
     cursor1 = mysql_connection.cursor()
-    cursor2 = mysql_connection.cursor()
-    sqlto = f"SELECT latitude_deg, longitude_deg FROM airport WHERE ident='{data["next_location"]}'"
-
     sqlfrom = f"SELECT latitude_deg, longitude_deg FROM airport WHERE ident='{data["player_location"]}'"
-
-
     cursor1.execute(sqlfrom)
     flyfrom = cursor1.fetchall()
 
+    cursor2 = mysql_connection.cursor()
+    sqlto = f"SELECT latitude_deg, longitude_deg FROM airport WHERE ident='{data["next_location"]}'"
     cursor2.execute(sqlto)
     flyto = cursor2.fetchall()
 
@@ -120,7 +118,7 @@ def get_location():
     return jsonify(result)
 
 
-
+# tarkistetaan täyttyykö edellytykset pelin päättämiselle
 @app.route('/stopGame', methods=['POST'])
 def stopGame():
     data = request.json
@@ -137,7 +135,7 @@ def stopGame():
         return jsonify({"message": "Game continues", "data": False}), 200
 
 
-
+# haetaan lentokentän toiminto-vaihtoehdot
 @app.route('/airportOptions', methods=['POST'])
 def airportOptions():
     game_dict = request.json
@@ -154,7 +152,7 @@ def airportOptions():
         return jsonify({'message':"Airport menu options returned", 'data': game_dict})
     
     
-
+# jos pelaaja valitsee random-toiminnon lentokentällä, tämä funktio kertoo mitä tapahtuu seuraavaksi
 @app.route('/randomLuck', methods=['POST'])
 def randomLuck():
     cursor = mysql_connection.cursor()
@@ -162,25 +160,26 @@ def randomLuck():
     try: game_dict = game_dict["data"]
     except: pass
     game_dict["game_output"] = []
-    if game_dict["tried_luck"]: # if we have tried our luck at current airport
+    if game_dict["tried_luck"]: # jos pelaaja on koittanut onneaan kyseisellä lentokentällä
             game_dict["game_output"].append(f"{game_dict["airport_options"][2]["text"][3]}")
     else:
         game_dict["tried_luck"] = True
-        if game_dict["random_luck_bool"]:
+        if game_dict["random_luck_bool"]: # jos käy tuuri
             sql = "SELECT location FROM criminal WHERE visited = 0 LIMIT 1;"
             cursor.execute(sql)
             result = cursor.fetchone()
-            if type(result) == tuple:
+            if type(result) == tuple: 
                 game_dict['correct_location'] = True
                 game_dict["game_output"].append(game_dict["airport_options"][2]["text"][1])
                 game_dict["next_location_bool"] = True
                 game_dict["next_location"] = result[0]
-        else:
+        else: # jos ei käy tuuri
             game_dict["game_output"].append(f"{game_dict["airport_options"][2]["text"][2]}\n" )
 
     return game_dict
 
 
+# tarkistetaan olemmeko samalla kentällä rikollisen kanssa
 @app.route('/criminalCaught')
 def criminalCaught():
     try:
@@ -199,7 +198,7 @@ def criminalCaught():
         return jsonify({"error": "Internal Server Error"}), 500
     
     
-
+# jos pelaaja valitsee lentokentällä puhua turvallisuuspäällikölle
 @app.route('/talkToSecurity', methods=['POST'])
 def talkToSecurity():
     game_dict = request.json
@@ -210,6 +209,7 @@ def talkToSecurity():
     return game_dict
 
 
+# jos pelaaja haluaa ratkaista vihjeen lentokentällä
 @app.route('/solveClue', methods=['POST'])
 def solveClue():
     game_dict = request.json
@@ -220,6 +220,7 @@ def solveClue():
     return game_dict
     
 
+# palautetaan oikea tai väärä seuraava sijainti sen mukaan vastasiko pelaaja kysymykseen oikein vai väärin
 @app.route('/nextLocation', methods=['POST'])
 def solvePreviousClue():
     game_dict = request.json
@@ -240,6 +241,7 @@ def solvePreviousClue():
     return game_dict
 
 
+# päivitetään tietokannan criminal -tauluun sijaintimme kohdalle visited -sarake 0 -> 1 
 @app.route('/updateToVisited', methods=['POST'])
 def updateToVisited():
     location = request.json
@@ -267,7 +269,7 @@ def updateToVisited():
         return jsonify({"message": "No matching record found", "value": False}), 404
 
 
-
+# haetaan säätiedot 
 @app.route('/weather', methods=["POST"])
 def getTemp():
     coordinates = request.json
