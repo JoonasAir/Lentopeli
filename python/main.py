@@ -183,20 +183,16 @@ def randomLuck():
 
 @app.route('/criminalCaught')
 def criminalCaught():
-    print("     criminalCaught 1st row")
     try:
         cursor = mysql_connection.cursor()
         sql1 = "SELECT location FROM criminal WHERE visited = 0 LIMIT 1;"
         cursor.execute(sql1)
         criminal_location = cursor.fetchone()
         if criminal_location is None:
-            print("     None  -  Criminal caught: True")
             return jsonify(True)
         elif criminal_location[0] == "":
-            print(f"     '{criminal_location[0]}'  -  Criminal caught: True")
             return jsonify(True)
         else:
-            print(f"     '{criminal_location[0]}'  -  Criminal caught: False")
             return jsonify(False)
     except Exception as e:
         print(f"Error in /criminalCaught: {e}")

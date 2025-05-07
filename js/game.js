@@ -483,11 +483,9 @@ async function questionModal(game_dict) {
 
       button.addEventListener("click", () => {
         if (answer === correctAnswer) { // Oikea vastaus
-          console.log("Correct answer");
           game_dict["previous_quiz_answer"] = true;
 
         } else { // Väärä vastaus
-          console.log("Wrong answer");
           game_dict["previous_quiz_answer"] = false;
           
           // Jos vastausvaihtoehtoja on enemmän kuin 2, 
@@ -577,6 +575,7 @@ async function main() {
   // PELIN ALUSTUS #####################################################
   let routes = [];
   let routes_criminal = [];
+  const sleep = (delay) => new Promise((resolve) => setTimeout(resolve, delay));
 
   // Pelin parametrien luonti palvelimella.
   // Palauttaa sanakirjan, jossa säilömme pelin keskeiset parametrit.
@@ -671,24 +670,25 @@ async function main() {
     // tarkistaa palvelimelta täyttyykö edellytykset pelin päättämiselle
     endGame = await stopGame(game_dict); 
   }
-
   // PELIN LOOPPI PÄÄTTYI ##################################################################
-  console.log("EXIT FROM GAME LOOP")
 
   // Pysäytetään palvelimella taustaprosessina pyörivä ajastin
-  await stopCriminalTimer();
+  await stopCriminalTimer()
 
+  // Odotetaan, että kartan animaatio päättyy
+  await sleep(4500)
+  
   // Pelin jälkeinen html 
   const boxes = document.querySelector(".boxes")
 
   if (game_dict.criminal_caught) { // Saimme rikollisen kiinni
-    boxes.innerHTML = "Sait rikollisen kiinni, voitit pelin!"
+    boxes.innerHTML = "<h2>Sait rikollisen kiinni, voitit pelin!</h2>"
 
   } else if (!game_dict.game_money >= game_dict.flight_price) { // Rahat loppuivat
-    boxes.innerHTML = "Rahasi loppui, hävisit pelin!"
+    boxes.innerHTML = "<h2>Rahasi loppui, hävisit pelin!</h2>"
 
   } else if (!game_dict.time_left_bool) { // Aika loppui
-    boxes.innerHTML = "Aika loppui, hävisit pelin!"
+    boxes.innerHTML = "<h2>Aika loppui, hävisit pelin!</h2>"
   }
 }
 
