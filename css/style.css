@@ -26,6 +26,7 @@ html, body {
   width: 100%;
 }
 
+
 .game-page .poliisi {
   width: 45px;
   height: auto;
@@ -159,7 +160,7 @@ dialog form button#closeModal:hover {
     padding: 1rem;
     width: 100%;
     box-sizing: border-box;
-    min-height: 180px;
+    min-height: 100px;
 }
 
 .game-page .header-top {
@@ -179,7 +180,7 @@ dialog form button#closeModal:hover {
 /* Lista */
 .game-page #game-parameters {
     font-size: 0.85rem;
-    margin-top: 60px;
+    margin-top: 20px;
     margin-bottom: 20px;
     border-collapse: collapse;
 }
@@ -225,8 +226,9 @@ dialog form button#closeModal:hover {
 #weather {
   position: absolute;
   top: 0px;
-  width: 25%;
-  right: calc(50% - 12.5%);
+  width: auto;
+  left: 50%;
+  transform: translateX(-50%);
   display: flex;
   align-items: center;
   background-color: rgba(255, 255, 255, 0.8);
@@ -262,31 +264,49 @@ dialog form button#closeModal:hover {
     flex: 1 1 50%;
     min-width: 300px;
     background-color: var(--bg-color-secondary);
-    padding: 1rem;
+    padding: 0rem;
+    border-radius: 10px;
+    height: 500px;
 }
 
 .game-page #map {
     flex: 1;
     width: 100%;
-    height: 400px;
+    height: 100%;
     border-radius: 10px;
 }
 
 /* GAME STATUS */
 .game-page #status-box {
-    flex: 1 1 40%;
-    min-width: 300px;
+    
+    width: 30%px;
     background-color: var(--bg-color-secondary);
     padding: 1rem;
+    border-radius: 10px;
 }
 
 /* GAME */
+
+#outputText{
+  font-size: large;
+}
+
+#player-status{
+  height: 50%;
+  padding-top: 20px;
+}
+
+#criminal-status{
+  height: 50%;
+}
+
 .game-page #game-box {
     margin: 2rem 0;
     background-color: var(--bg-color-secondary);
-    padding: 2rem;
+    padding: 1rem;
     box-sizing: border-box;
     position: relative;
+    border-radius: 10px;
 }
 
 #timer-box {
@@ -299,18 +319,18 @@ dialog form button#closeModal:hover {
 }
 
 #game-input button {
-    display: block;
-    width: 100%;
-    padding: 1rem;
-    margin: 0.5rem 0;
-    border: none;
-    background-color: #ed7a1a;
-    color: #ffffff;
-    cursor: pointer;
-    font-size: 1.1rem;
-    font-weight: bold;
-    transition: background-color 0.3s ease;
-    border-radius: 5px;
+  padding: 2rem;
+  margin: 1rem;
+  border: none;
+  background-color: #ed7a1a;
+  color: #ffffff;
+  cursor: pointer;
+  font-size: 1.1rem;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+  border-radius: 5px;
+  flex-wrap: flex;
+  gap: 3rem;
 }
 
 #game-input button:hover {
@@ -353,6 +373,7 @@ dialog form button#closeModal:hover {
   cursor: pointer;
   font-size: 1rem;
   transition: background-color 0.3s ease;
+
 }
 
 #gameForm button[type="submit"] {
