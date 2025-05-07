@@ -333,6 +333,34 @@ dialog form button#closeModal:hover {
   gap: 3rem;
 }
 
+.answer-button {
+  padding: 2rem;
+  margin: 1rem;
+  border: none;
+  background-color: #ed7a1a;
+  color: #ffffff;
+  cursor: pointer;
+  font-size: 1.1rem;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+  border-radius: 5px;
+  flex-wrap: flex;
+  gap: 3rem;
+}
+
+.answer-button:hover {
+  background-color: #d96a12;
+}
+
+#answersContainer {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 20px;
+}
+
+
 #game-input button:hover {
     background-color: #d96a12;
 }
