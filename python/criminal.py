@@ -26,7 +26,7 @@ from geopy import distance
 
 def criminal_new_location(boolean:bool):
     cursor = mysql_connection.cursor()
-    sql = "INSERT INTO criminal (location) SELECT ident FROM airport WHERE continent = 'EU' AND type = 'large_airport' AND airport.name LIKE '%Airport' AND ident NOT IN (SELECT location FROM criminal) ORDER BY RAND() LIMIT 1;"
+    sql = "INSERT INTO criminal (location, latitude, longitude) SELECT ident, latitude_deg, longitude_deg FROM airport WHERE continent = 'EU' AND type = 'large_airport' AND airport.name LIKE '%Airport' AND ident NOT IN (SELECT location FROM criminal) ORDER BY RAND() LIMIT 1;"
     cursor.execute(sql)
     if boolean:
         # Fetch the last and second-to-last ICAO codes
@@ -61,7 +61,7 @@ def criminal_timer(time: int, stop_event):
         print("!!!!!")
         sleep(time)
         cursor = mysql_connection.cursor()
-        sql = "INSERT INTO criminal (location) SELECT ident FROM airport WHERE continent = 'EU' AND type = 'large_airport' AND airport.name LIKE '%Airport' AND ident NOT IN (SELECT location FROM criminal) ORDER BY RAND() LIMIT 1;"
+        sql = "INSERT INTO criminal (location, latitude, longitude) SELECT ident, latitude_deg, longitude_deg FROM airport WHERE continent = 'EU' AND type = 'large_airport' AND airport.name LIKE '%Airport' AND ident NOT IN (SELECT location FROM criminal) ORDER BY RAND() LIMIT 1;"
         cursor.execute(sql)
 
 
