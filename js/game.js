@@ -281,7 +281,7 @@ async function drawLine(game_dict, map) {
 
     if (progress >= 1) {
       map.removeLayer(polyline);
-      await map.flyTo(end, 5, { duration: 1.5 });
+      await map.flyTo(end, 3, { duration: 2 });
       map.removeLayer(airplaneMarker);
 
       await sleep(1500);
@@ -676,7 +676,7 @@ async function main() {
   await stopCriminalTimer();
 
   // Odotetaan, että kartan animaatio päättyy
-  await sleep(4500);
+  await sleep(5000);
 
 
   // Pelin jälkeinen html ##################################33
